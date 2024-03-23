@@ -9,7 +9,18 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="首页">
+        android:text="消息页">
     </TextView>
+
+    <Button
+        android:id="@+id/activity_jump_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Activity跳转">
+    </Button>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

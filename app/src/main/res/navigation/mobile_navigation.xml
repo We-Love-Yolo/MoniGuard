@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.weloveyolo.moniguard.ui.dashboard.DashboardFragment"
+        android:name="com.weloveyolo.moniguard.ui.discover.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.weloveyolo.moniguard.ui.notifications.NotificationsFragment"
+        android:name="com.weloveyolo.moniguard.ui.message.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
 </navigation>

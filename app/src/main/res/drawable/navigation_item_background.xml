@@ -1,0 +1,6 @@
+<!-- res/drawable/navigation_item_background.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@android:color/transparent" android:state_checked="true"/>
+    <item android:drawable="@android:color/transparent"/>
+<!--    导航栏点击，屏蔽默认效果-->
+</selector>

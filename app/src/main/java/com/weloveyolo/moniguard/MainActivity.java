@@ -11,7 +11,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.weloveyolo.moniguard.databinding.ActivityMainBinding;
-
+//改了点
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;

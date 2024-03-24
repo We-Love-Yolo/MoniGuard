@@ -3,4 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="has_account"><u>已有账号？去登陆</u></string>
+    <string name="to_signin"><u>去注册</u></string>
+    <string name="forget_password"><u>忘记密码</u></string>
 </resources>

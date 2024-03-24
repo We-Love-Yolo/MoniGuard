@@ -2,7 +2,13 @@ package com.weloveyolo.moniguard;
 
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +20,7 @@ import com.weloveyolo.moniguard.ui.discover.DiscoverFragment;
 import com.weloveyolo.moniguard.ui.home.HomeFragment;
 import com.weloveyolo.moniguard.ui.message.MessageFragment;
 import com.weloveyolo.moniguard.ui.my.MyFragment;
+import com.weloveyolo.moniguard.utils.TheToast;
 
 
 public class MainActivity extends AppCompatActivity {

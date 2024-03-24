@@ -10,4 +10,7 @@
     <color name="background_color">#E8EFFC</color>
     <color name="bar_background">#FFFFFF</color>
     <color name="bar_text">#101010</color>
+    <color name="main_tone">#4095E5</color>
+    <color name="edit_placeholder">#BBBBBB</color>
+    <color name="half_black">#80000000</color>
 </resources>

@@ -1,26 +1,19 @@
 package com.weloveyolo.moniguard;
 
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.weloveyolo.moniguard.activitys.LoginActivity;
 import com.weloveyolo.moniguard.ui.discover.DiscoverFragment;
 import com.weloveyolo.moniguard.ui.home.HomeFragment;
 import com.weloveyolo.moniguard.ui.message.MessageFragment;
 import com.weloveyolo.moniguard.ui.my.MyFragment;
-import com.weloveyolo.moniguard.utils.TheToast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -40,6 +33,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(!getSharedPreferences("user", MODE_PRIVATE).getBoolean("isLogin", false)){
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+
         setContentView(R.layout.activity_main);
 
         // 初始化Fragment实例

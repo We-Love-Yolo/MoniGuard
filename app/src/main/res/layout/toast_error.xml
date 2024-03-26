@@ -29,14 +29,15 @@
 
     <TextView
         android:id="@+id/text_toast_error"
-        android:layout_width="wrap_content"
+        android:layout_width="190dp"
         android:layout_height="wrap_content"
         android:elevation="1dp"
         android:layout_marginBottom="26dp"
         android:text="出错"
         android:textSize="20sp"
         android:textColor="@color/white"
-        android:maxLength="9"
+        android:gravity="center"
+        android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="@id/text_background"
         app:layout_constraintStart_toStartOf="@id/text_background"
         app:layout_constraintEnd_toEndOf="@id/text_background">

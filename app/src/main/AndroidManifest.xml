@@ -38,6 +38,14 @@
             android:launchMode="standard">
         </activity>
 
+        <activity android:name=".activitys.HomeActivity" />
+
+        <activity android:name=".activitys.MonitorActivity" />
+
+        <activity android:name=".activitys.AlbumActivity" />
+
+
+
     </application>
 
 </manifest>

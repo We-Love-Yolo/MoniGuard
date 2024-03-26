@@ -41,7 +41,9 @@
         android:adjustViewBounds="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/goback3" />
+        app:srcCompat="@drawable/goback3"
+        android:clickable="true"
+        android:onClick="goto_homepage"/>
 
     <ImageView
         android:id="@+id/more"
@@ -58,9 +60,9 @@
         android:layout_width="320dp"
         android:layout_height="240dp"
         android:layout_marginTop="140dp"
-        android:layout_marginEnd="20dp"
         android:background="@drawable/rounded_border"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
@@ -111,8 +113,8 @@
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="450dp" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="450dp" />
 
     <!-- ImageView -->
     <ImageView
@@ -121,17 +123,21 @@
         android:layout_height="25dp"
         app:srcCompat="@drawable/right"
         app:layout_constraintTop_toTopOf="@id/textView"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginEnd="16dp"
-    android:layout_marginTop="0dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="0dp"
+        android:clickable="true"
+        android:onClick="goto_album"/>
 
     <ImageView
         android:id="@+id/imageView6"
         android:layout_width="60dp"
         android:layout_height="45dp"
         android:scaleType="centerCrop"
-        tools:layout_editor_absoluteX="36dp"
-        tools:layout_editor_absoluteY="492dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="490dp"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
@@ -139,17 +145,22 @@
         android:layout_width="60dp"
         android:layout_height="45dp"
         android:scaleType="centerCrop"
-        tools:layout_editor_absoluteX="110dp"
-        tools:layout_editor_absoluteY="492dp"
+        app:layout_constraintTop_toTopOf="@+id/imageView6"
+        app:layout_constraintStart_toStartOf="@+id/imageView6"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="0dp"
         tools:srcCompat="@tools:sample/avatars" />
 
+
     <ImageView
-        android:id="@+id/imageView13"
+        android:id="@+id/imageView8"
         android:layout_width="60dp"
         android:layout_height="45dp"
         android:scaleType="centerCrop"
-        tools:layout_editor_absoluteX="270dp"
-        tools:layout_editor_absoluteY="551dp"
+        app:layout_constraintTop_toTopOf="@+id/imageView7"
+        app:layout_constraintStart_toStartOf="@+id/imageView7"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="0dp"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
@@ -157,26 +168,23 @@
         android:layout_width="60dp"
         android:layout_height="45dp"
         android:scaleType="centerCrop"
-        tools:layout_editor_absoluteX="270dp"
-        tools:layout_editor_absoluteY="492dp"
+        app:layout_constraintTop_toTopOf="@+id/imageView8"
+        app:layout_constraintStart_toStartOf="@+id/imageView8"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="0dp"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <ImageView
-        android:id="@+id/imageView8"
-        android:layout_width="60dp"
-        android:layout_height="45dp"
-        android:scaleType="centerCrop"
-        tools:layout_editor_absoluteX="188dp"
-        tools:layout_editor_absoluteY="492dp"
-        tools:srcCompat="@tools:sample/avatars" />
+
 
     <ImageView
         android:id="@+id/imageView10"
         android:layout_width="60dp"
         android:layout_height="45dp"
         android:scaleType="centerCrop"
-        tools:layout_editor_absoluteX="36dp"
-        tools:layout_editor_absoluteY="551dp"
+        app:layout_constraintTop_toTopOf="@+id/imageView6"
+        app:layout_constraintStart_toStartOf="@+id/imageView6"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="65dp"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
@@ -184,8 +192,10 @@
         android:layout_width="60dp"
         android:layout_height="45dp"
         android:scaleType="centerCrop"
-        tools:layout_editor_absoluteX="110dp"
-        tools:layout_editor_absoluteY="551dp"
+        app:layout_constraintTop_toTopOf="@+id/imageView10"
+        app:layout_constraintStart_toStartOf="@+id/imageView10"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="0dp"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
@@ -193,9 +203,20 @@
         android:layout_width="60dp"
         android:layout_height="45dp"
         android:scaleType="centerCrop"
-        tools:layout_editor_absoluteX="188dp"
-        tools:layout_editor_absoluteY="551dp"
+        app:layout_constraintTop_toTopOf="@+id/imageView11"
+        app:layout_constraintStart_toStartOf="@+id/imageView11"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="0dp"
         tools:srcCompat="@tools:sample/avatars" />
 
-
+    <ImageView
+        android:id="@+id/imageView13"
+        android:layout_width="60dp"
+        android:layout_height="45dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="@+id/imageView12"
+        app:layout_constraintStart_toStartOf="@+id/imageView12"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="0dp"
+        tools:srcCompat="@tools:sample/avatars" />
 </androidx.constraintlayout.widget.ConstraintLayout>

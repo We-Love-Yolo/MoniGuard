@@ -2,8 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
 
+    <!--
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -11,5 +14,193 @@
         app:layout_constraintStart_toStartOf="parent"
         android:text="首页">
     </TextView>
+    -->
+
+    <!-- 导航栏 -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/bar_background"
+        app:itemTextColor="@color/bar_text"
+        app:labelVisibilityMode="labeled"
+        app:itemBackground="@drawable/navigation_item_background"
+        app:elevation="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:maxHeight="5dp"
+        android:maxWidth="0dp"
+        app:menu="@menu/bottom_navigation_menu" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_weight="3"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Spinner
+            android:id="@+id/scene_spinner"
+            style="@style/Widget.AppCompat.Spinner"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:entries="@array/option"
+            tools:ignore="MissingConstraints">
+
+        </Spinner>
+
+        <ImageView
+            android:id="@+id/add_scene"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="250dp"
+            android:layout_marginTop="30dp"
+            android:scaleType="centerCrop"
+            tools:ignore="MissingConstraints"
+            tools:srcCompat="@drawable/img_add_scene" />
+
+    </LinearLayout>
+
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="设备"
+        android:textColor="@android:color/black"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="20dp"
+        tools:layout_editor_absoluteY="80dp"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/camera_button1"
+        android:layout_width="170dp"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="130dp"
+        tools:srcCompat="@drawable/camera_button" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"
+        tools:layout_editor_absoluteX="60dp"
+        tools:layout_editor_absoluteY="150dp"
+        tools:srcCompat="@drawable/img_camera"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/camera_name1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="门禁"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="50dp"
+        tools:layout_editor_absoluteY="240dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="已连接"
+        android:textColor="@android:color/black"
+        android:textSize="15dp"
+        android:textStyle="normal"
+        tools:layout_editor_absoluteX="140dp"
+        tools:layout_editor_absoluteY="245dp"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/camera_button2"
+        android:layout_width="170dp"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop"
+        tools:layout_editor_absoluteX="210dp"
+        tools:layout_editor_absoluteY="130dp"
+        tools:srcCompat="@drawable/camera_button"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"
+        tools:layout_editor_absoluteX="240dp"
+        tools:layout_editor_absoluteY="150dp"
+        tools:srcCompat="@drawable/img_camera"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/camera_name2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="客厅"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="230dp"
+        tools:layout_editor_absoluteY="240dp"
+        tools:ignore="MissingConstraints" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="未连接"
+        android:textColor="@android:color/black"
+        android:textSize="15dp"
+        android:textStyle="normal"
+        tools:layout_editor_absoluteX="320dp"
+        tools:layout_editor_absoluteY="245dp"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/add_camera"
+        android:layout_width="170dp"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="300dp"
+        tools:srcCompat="@drawable/camera_button" />
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="75dp"
+        tools:layout_editor_absoluteY="320dp"
+        tools:srcCompat="@drawable/img_add_camera" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="添加设备"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="18dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="410dp" />
+
+
+
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

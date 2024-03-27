@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.weloveyolo.moniguard.R;
-
+import android.widget.ImageButton;
 
 public class DiscoverFragment extends Fragment {
 
@@ -25,4 +25,8 @@ public class DiscoverFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
+
+    private ImageButton SmartPhotoAlbumButton;
+
+
 }

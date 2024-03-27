@@ -16,19 +16,11 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints">
 
-        <ImageView
-            android:id="@+id/faketime"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="0dp"
-            android:src="@drawable/fake_time"
-            tools:ignore="MissingConstraints" />
-
         <TextView
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:text="功能"
             android:textSize="30dp"
             android:textStyle="bold"
@@ -39,7 +31,7 @@
         <ImageButton
             android:id="@+id/smart_photo_album"
             android:layout_width="350dp"
-            android:layout_height="130dp"
+            android:layout_height="160dp"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/smart_photo_album"
@@ -50,7 +42,7 @@
         <ImageButton
             android:id="@+id/health_monitoring"
             android:layout_width="350dp"
-            android:layout_height="130dp"
+            android:layout_height="160dp"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/health_monitoring"
@@ -61,7 +53,7 @@
         <ImageButton
             android:id="@+id/happy_sport"
             android:layout_width="350dp"
-            android:layout_height="130dp"
+            android:layout_height="160dp"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/happy_sport"
@@ -72,31 +64,13 @@
         <ImageButton
             android:id="@+id/coming_soon"
             android:layout_width="350dp"
-            android:layout_height="130dp"
+            android:layout_height="160dp"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/coming_soon"
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="30dp"
             tools:layout_editor_absoluteY="540dp" />
-        <!-- 导航栏 -->
-        <!-- 导航栏 -->
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@color/bar_background"
-            android:maxWidth="0dp"
-            android:maxHeight="5dp"
-            app:elevation="0dp"
-            app:itemBackground="@drawable/navigation_item_background"
-            app:itemTextColor="@color/bar_text"
-            app:labelVisibilityMode="labeled"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/bottom_navigation_menu" />
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

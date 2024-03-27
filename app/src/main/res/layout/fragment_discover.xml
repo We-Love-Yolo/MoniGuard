@@ -27,7 +27,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- 健康检测 -->
+        <!-- 智能相册 -->
         <ImageButton
             android:id="@+id/smart_photo_album"
             android:layout_width="350dp"
@@ -38,7 +38,7 @@
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="50dp"
             tools:layout_editor_absoluteY="90dp" />
-
+        <!-- 健康检测 -->
         <ImageButton
             android:id="@+id/health_monitoring"
             android:layout_width="350dp"

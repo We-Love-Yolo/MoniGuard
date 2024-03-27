@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <application
         android:allowBackup="true"
@@ -36,10 +37,10 @@
         <activity android:name=".activitys.HomeActivity" />
         <activity android:name=".activitys.MonitorActivity" />
 
-        <activity android:name=".activitys.AlbumActivity">
-    </activity>
+        <activity android:name=".activitys.AlbumActivity"></activity>
 
-        <activity android:name=".activitys.DiscoverFragmentActivity"
+        <activity
+            android:name=".activitys.DiscoverFragmentActivity"
             android:exported="true"
             tools:ignore="DuplicateActivity"></activity>
 

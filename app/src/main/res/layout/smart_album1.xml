@@ -4,21 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:orientation="vertical"
-    tools:ignore="MissingConstraints">
-    <ImageView
-        android:layout_marginTop="0dp"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:id="@+id/faketime"
-        android:src="@drawable/fake_time"
-        tools:ignore="MissingConstraints"/>
-</LinearLayout>
-
     <!--  页面标签 -->
+    <!-- 示例中使用 androidx.appcompat.widget.Toolbar -->
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,16 +15,14 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="40dp" >
-        <TextView
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
-            android:text="智能相册"
-            android:textSize="30dp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="智能相册"
+            app:titleTextColor="@android:color/black"
+            tools:ignore="MissingConstraints" />
 
         <LinearLayout
             android:layout_width="match_parent"

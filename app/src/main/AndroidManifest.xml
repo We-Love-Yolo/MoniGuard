@@ -36,12 +36,13 @@
         <activity android:name=".activitys.HomeActivity" />
         <activity android:name=".activitys.MonitorActivity" />
 
-        <activity android:name=".activitys.AlbumActivity">
-    </activity>
+        <activity android:name="com.weloveyolo.moniguard.activitys.AlbumActivity">
+        </activity>
 
         <activity android:name=".activitys.DiscoverFragmentActivity"
             android:exported="true"
-            tools:ignore="DuplicateActivity"></activity>
+            tools:ignore="DuplicateActivity"
+            android:launchMode="standard"></activity>
 
     </application>
 

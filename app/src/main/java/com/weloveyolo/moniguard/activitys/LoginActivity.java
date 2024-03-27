@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.utils.CustomToast;
@@ -15,7 +13,7 @@ import com.weloveyolo.moniguard.utils.CustomToast;
 import java.util.HashMap;
 
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private SharedPreferences sharedPreferences;
     private CustomToast ct;
@@ -26,7 +24,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
-        if(sharedPreferences.getBoolean("isLogin", false)){
+        if (sharedPreferences.getBoolean("isLogin", false)) {
             toHome();
         }
 
@@ -36,11 +34,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     // 点击登录
     public void onClick(View v) {
-        if(!sharedPreferences.getBoolean("isLogin", false)){
-            HashMap<String, String> hash = new HashMap();
-            hash.put("phone", "16689576331");
-            hash.put("token", "ASDFGHJ");
-            setPersist(hash);
+        if (!sharedPreferences.getBoolean("isLogin", false)) {
+
+
+//            HashMap<String, String> hash = new HashMap();
+//            hash.put("phone", "16689576331");
+//            hash.put("token", "ASDFGHJ");
+//            setPersist(hash);
 
 //            OkHttpClient client = new OkHttpClient();
 //            Request request = new Request.Builder()
@@ -58,12 +58,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                throw new RuntimeException(e);
 //            }
 
-                toHome();
+            toHome();
         }
     }
 
     // 跳转主页
-    private void toHome(){
+    private void toHome() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         // 设置启动标志：跳转到新页面时，栈中的原有实例都被清空，同时开辟新任务的活动栈
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     // 持久化
-    private void setPersist(HashMap<String, String> hash){
+    private void setPersist(HashMap<String, String> hash) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("phone", hash.get("phone"));
         editor.putString("token", hash.get("token"));

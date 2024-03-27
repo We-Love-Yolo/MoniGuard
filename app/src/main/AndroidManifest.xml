@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <application
         android:allowBackup="true"
@@ -15,9 +16,6 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
-            android:name=".activitys.AddSceneActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
@@ -27,23 +25,20 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity> <!-- activity都要写在这 -->
-        <activity android:name=".activitys.InfoActivity" />
-        <activity android:name=".activitys.SigninActivity" />
+        <activity android:name=".activitys.InfoActivity"></activity>
+        <activity android:name=".activitys.SigninActivity"></activity>
         <activity
             android:name=".activitys.LoginActivity"
             android:exported="true"
             android:launchMode="standard"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activitys.HomeActivity"
-            android:exported="true" />
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".activitys.HomeActivity" />
         <activity android:name=".activitys.MonitorActivity" />
+
         <activity android:name=".activitys.AlbumActivity"></activity>
-        <activity
-            android:name=".activitys.DiscoverFragmentActivity"
-            android:exported="true"
-            tools:ignore="DuplicateActivity" />
+
     </application>
 
 </manifest>

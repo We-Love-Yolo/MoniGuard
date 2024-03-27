@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".activitys.DiscoverFragmentActivity"
+    >
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -30,12 +32,14 @@
         <!-- 智能相册 -->
         <ImageButton
             android:id="@+id/smart_photo_album"
+            android:clickable="true"
+            android:onClick="onClickalbum"
             android:layout_width="350dp"
             android:layout_height="160dp"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/smart_photo_album"
-            tools:ignore="MissingConstraints"
+
             tools:layout_editor_absoluteX="50dp"
             tools:layout_editor_absoluteY="90dp" />
         <!-- 健康检测 -->

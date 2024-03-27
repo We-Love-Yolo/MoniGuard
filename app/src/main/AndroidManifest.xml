@@ -34,15 +34,13 @@
             android:exported="true"
             android:launchMode="standard"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".activitys.HomeActivity" />
+        <activity
+            android:name=".activitys.HomeActivity"
+            android:exported="true"
+            />
         <activity android:name=".activitys.MonitorActivity" />
 
         <activity android:name=".activitys.AlbumActivity"></activity>
-
-        <activity
-            android:name=".activitys.DiscoverFragmentActivity"
-            android:exported="true"
-            tools:ignore="DuplicateActivity"></activity>
 
     </application>
 

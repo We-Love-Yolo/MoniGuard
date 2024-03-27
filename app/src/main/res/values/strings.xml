@@ -6,4 +6,9 @@
     <string name="has_account"><u>已有账号？去登陆</u></string>
     <string name="to_signin"><u>去注册</u></string>
     <string name="forget_password"><u>忘记密码</u></string>
+
+    <string name="camera1_name">门禁</string>
+    <string name="camera2_name">客厅</string>
+    <string name="connected">已连接</string>
+    <string name="unconnected">未连接</string>
 </resources>

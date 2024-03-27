@@ -13,4 +13,6 @@
     <color name="main_tone">#4095E5</color>
     <color name="edit_placeholder">#BBBBBB</color>
     <color name="half_black">#80000000</color>
+    <color name="green">#A0EE00</color>
+    <color name="red">#FE0302</color>
 </resources>

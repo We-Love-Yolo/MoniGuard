@@ -24,8 +24,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@color/bar_background"
-        android:maxWidth="0dp"
-        android:maxHeight="5dp"
         app:elevation="0dp"
         app:itemBackground="@drawable/navigation_item_background"
         app:itemTextColor="@color/bar_text"

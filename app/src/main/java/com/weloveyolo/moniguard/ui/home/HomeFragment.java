@@ -27,14 +27,15 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ImageButton addSceneButton=view.findViewById(R.id.add_scene);
+        // 进入添加设备
+        ImageButton addSceneButton=view.findViewById(R.id.add_camera_button);
         addSceneButton.setOnClickListener(view1 -> {
             Intent intent=new Intent(getActivity(), AddDeviceActivity.class);
             startActivity(intent);
         });
 
-        // 添加设备
-        ImageButton addCameraButton = view.findViewById(R.id.add_camera_button);
+        // 进入添加场景
+        ImageButton addCameraButton = view.findViewById(R.id.add_scene);
 //        addCameraButton.setOnClickListener(v -> {
 //            Intent intent=new Intent(getActivity(), );
 //            startActivity(intent);

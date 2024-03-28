@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,15 +35,23 @@ public class MonitorActivity extends AppCompatActivity {
 
     // 进入智能相册
     public void goto_album(View view) {
-        // Create an intent to start HomeActivity
-        Intent intent = new Intent(this, AlbumActivity.class);
-        // Start the activity
-        startActivity(intent);
+        try {
+            // Create an intent to start AlbumActivity
+            Intent intent = new Intent(this, AlbumActivity.class);
+            // Start the activity
+            startActivity(intent);
+        } catch (Exception e) {
+            // Handle any exceptions that occur during activity startup
+            e.printStackTrace(); // 可以将异常信息输出到日志中
+            // 或者显示一个错误提示给用户
+            Toast.makeText(this, "Error starting AlbumActivity", Toast.LENGTH_SHORT).show();
+        }
     }
 
     // 返回上一页
     public void gotoHomePage(View view){
         onBackPressed();
     }
+
 }
 

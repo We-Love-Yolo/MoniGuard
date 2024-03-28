@@ -112,7 +112,9 @@
                     android:layout_marginLeft="5dp"
                     android:background="@null"
                     android:src="@drawable/img_camera_button"
-                    tools:ignore="MissingConstraints" />
+                    tools:ignore="MissingConstraints"
+                    android:clickable="true"
+                    android:onClick="onClick"/>
 
                 <TextView
                     android:layout_width="wrap_content"

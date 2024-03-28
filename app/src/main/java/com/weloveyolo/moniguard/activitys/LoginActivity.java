@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Toast;
 
@@ -34,14 +35,28 @@ import com.weloveyolo.moniguard.utils.MSGraphRequestWrapper;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private SharedPreferences sharedPreferences;
     private CustomToast ct;
+
+    final String defaultGraphResourceUrl = MSGraphRequestWrapper.MS_GRAPH_ROOT_ENDPOINT + "v1.0/me";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +71,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         findViewById(R.id.imgButton_login).setOnClickListener(this);
         ct = new CustomToast(getApplicationContext());
 
-        Toast.makeText(getApplicationContext(), BuildConfig.BUILD_TYPE, Toast.LENGTH_SHORT).show();
         // Creates a PublicClientApplication object with res/raw/auth_config_single_account.json
-        int authConfigSingleAccountResource = (BuildConfig.DEBUG || Build.TYPE.equals("debug")) ? R.raw.auth_config_single_account_debug : R.raw.auth_config_single_account;
-        PublicClientApplication.createSingleAccountPublicClientApplication(getApplicationContext(), authConfigSingleAccountResource, new IPublicClientApplication.ISingleAccountApplicationCreatedListener() {
+        PublicClientApplication.createSingleAccountPublicClientApplication(getApplicationContext(), R.raw.auth_config_single_account, new IPublicClientApplication.ISingleAccountApplicationCreatedListener() {
             @Override
             public void onCreated(ISingleAccountPublicClientApplication application) {
                 /*
@@ -72,7 +85,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onError(MsalException exception) {
-                displayError(exception);
+                PublicClientApplication.createSingleAccountPublicClientApplication(getApplicationContext(), R.raw.auth_config_single_account_debug, new IPublicClientApplication.ISingleAccountApplicationCreatedListener() {
+                    @Override
+                    public void onCreated(ISingleAccountPublicClientApplication application) {
+                        /*
+                         * This test app assumes that the app is only going to support one account.
+                         * This requires "account_mode" : "SINGLE" in the config json file.
+                         */
+                        Identity.singleAccountApp = application;
+                        loadAccount();
+                    }
+
+                    @Override
+                    public void onError(MsalException exception) {
+                        displayError(exception);
+                    }
+                });
+//                displayError(exception);
             }
         });
     }
@@ -127,36 +156,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     // 点击登录
     public void onClick(View v) {
-        if (!sharedPreferences.getBoolean("isLogin", false)) {
-            if (Identity.singleAccountApp == null) {
-                return;
-            }
-            final SignInParameters signInParameters = SignInParameters.builder().withActivity(this).withLoginHint(null).withScopes(Arrays.asList("MoniGuard.Read")).withCallback(getAuthInteractiveCallback()).build();
-            Identity.singleAccountApp.signIn(signInParameters);
-
-//            HashMap<String, String> hash = new HashMap();
-//            hash.put("phone", "16689576331");
-//            hash.put("token", "ASDFGHJ");
-//            setPersist(hash);
-
-//            OkHttpClient client = new OkHttpClient();
-//            Request request = new Request.Builder()
-//                    .url("https://cube.meituan.com/ipromotion/cube/toc/component/base/getServerCurrentTime")
-//                    .build();
-//
-//            try {
-//                Response response = client.newCall(request).execute();
-//                String responseData = response.body().string();
-//                JSONObject jsonObject = new JSONObject(responseData);
-//                String data = jsonObject.getString("data");
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            } catch (JSONException e) {
-//                throw new RuntimeException(e);
-//            }
-
-            toHome();
+        if (Identity.singleAccountApp == null) {
+            return;
         }
+
+        final SignInParameters signInParameters = SignInParameters.builder().withActivity(this).withLoginHint(null).withScopes(Arrays.asList(getScopes())).withCallback(getAuthInteractiveCallback()).build();
+        Identity.singleAccountApp.signInAgain(signInParameters);
+        toHome();
+    }
+
+    /**
+     * Extracts a scope array from a text field,
+     * i.e. from "User.Read User.ReadWrite" to ["user.read", "user.readwrite"]
+     */
+    private String[] getScopes() {
+        String clientId = Identity.singleAccountApp.getConfiguration().getClientId();
+        String[] scopes = new String[]{"MoniGuard.Read"};
+        for (int i = 0; i < scopes.length; i++) {
+            scopes[i] = "api://" + clientId + "/" + scopes[i];
+        }
+        return scopes;
     }
 
     private AuthenticationCallback getAuthInteractiveCallback() {
@@ -173,8 +192,36 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                updateUI();
                 Toast.makeText(getApplicationContext(), "Successfully authenticated", Toast.LENGTH_SHORT).show();
 
+                // mgapi.bitterorange.cn/weatherforecast
+                String url = "https://mgapi.bitterorange.cn/weatherforecast";
+                Request request = new Request.Builder().url(url).build();
+                OkHttpClient client = new OkHttpClient();
+
+                // 发起异步请求
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                        // 请求失败处理
+                        Toast.makeText(getApplicationContext(), "请求失败", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                        // 请求成功处理
+                        if (response.isSuccessful()) {
+                            String responseData = Objects.requireNonNull(response.body()).string();
+//                            get
+//                            Toast.makeText(getApplicationContext(), responseData, Toast.LENGTH_SHORT).show();
+                            // 在这里处理API返回的数据
+                        } else {
+                            // 请求失败处理
+//                            Toast.makeText(getApplicationContext(), "请求失败", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
                 /* call graph */
-                callGraphAPI(authenticationResult);
+//                callGraphAPI(authenticationResult);
             }
 
             @Override
@@ -202,7 +249,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * Make an HTTP request to obtain MSGraph data
      */
     private void callGraphAPI(final IAuthenticationResult authenticationResult) {
-        MSGraphRequestWrapper.callGraphAPIUsingVolley(getApplicationContext(), "https://graph.microsoft.com/v1.0/me", authenticationResult.getAccessToken(), response -> {
+        MSGraphRequestWrapper.callGraphAPIUsingVolley(getApplicationContext(), defaultGraphResourceUrl, authenticationResult.getAccessToken(), response -> {
             /* Successfully called graph, process data and send to UI */
             Log.d(TAG, "Response: " + response.toString());
             displayGraphResult(response);

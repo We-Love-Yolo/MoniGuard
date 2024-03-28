@@ -43,7 +43,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/goback3"
         android:clickable="true"
-        android:onClick="goto_homepage"/>
+        android:onClick="gotoHomePage"/>
 
     <ImageView
         android:id="@+id/more"

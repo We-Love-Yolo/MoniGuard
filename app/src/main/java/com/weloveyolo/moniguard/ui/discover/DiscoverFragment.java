@@ -27,13 +27,11 @@ public class DiscoverFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // 进入智能相册
         ImageButton button1 = view.findViewById(R.id.smart_photo_album);
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), AlbumActivity.class);
-                startActivity(intent);
-            }
+        button1.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getActivity(), AlbumActivity.class);
+            startActivity(intent);
         });
     }
 }

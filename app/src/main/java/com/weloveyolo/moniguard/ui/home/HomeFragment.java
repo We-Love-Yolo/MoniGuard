@@ -12,7 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.weloveyolo.moniguard.R;
-import com.weloveyolo.moniguard.activitys.AddSceneActivity;
+import com.weloveyolo.moniguard.activitys.AddDeviceActivity;
+import com.weloveyolo.moniguard.activitys.MonitorActivity;
 
 
 public class HomeFragment extends Fragment {
@@ -27,13 +28,23 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ImageButton addSceneButton=view.findViewById(R.id.add_scene);
-        addSceneButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent=new Intent(getActivity(), AddSceneActivity.class);
-                startActivity(intent);
-            }
+        addSceneButton.setOnClickListener(view1 -> {
+            Intent intent=new Intent(getActivity(), AddDeviceActivity.class);
+            startActivity(intent);
+        });
 
+        // 添加设备
+        ImageButton addCameraButton = view.findViewById(R.id.add_camera_button);
+//        addCameraButton.setOnClickListener(v -> {
+//            Intent intent=new Intent(getActivity(), );
+//            startActivity(intent);
+//        });
+
+        // 进入门禁
+        ImageButton cameraButton1 = view.findViewById(R.id.camera1_button);
+        cameraButton1.setOnClickListener(v -> {
+            Intent intent=new Intent(getActivity(), MonitorActivity.class);
+            startActivity(intent);
         });
     }
 }

@@ -26,13 +26,11 @@ public class MessageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-         Button button = view.findViewById(R.id.activity_jump_button);
-         button.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 Intent intent = new Intent(getActivity(), InfoActivity.class);
-                 startActivity(intent);
-             }
-         });
+        // 仅用于测试
+//         Button button = view.findViewById(R.id.activity_jump_button);
+//         button.setOnClickListener(v -> {
+//             Intent intent = new Intent(getActivity(), InfoActivity.class);
+//             startActivity(intent);
+//         });
     }
 }

@@ -12,7 +12,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddLettuceEncrypt();
+if (!builder.Environment.IsDevelopment())
+{
+    builder.Services.AddLettuceEncrypt();
+}
 
 var app = builder.Build();
 

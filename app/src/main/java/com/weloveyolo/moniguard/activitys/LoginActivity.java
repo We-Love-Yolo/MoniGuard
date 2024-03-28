@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.BuildConfig;
+import com.microsoft.identity.client.AcquireTokenParameters;
 import com.microsoft.identity.client.AuthenticationCallback;
 import com.microsoft.identity.client.IAccount;
 import com.microsoft.identity.client.IAuthenticationResult;
@@ -42,6 +43,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import okhttp3.Call;
@@ -71,39 +73,44 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         findViewById(R.id.imgButton_login).setOnClickListener(this);
         ct = new CustomToast(getApplicationContext());
 
-        // Creates a PublicClientApplication object with res/raw/auth_config_single_account.json
-        PublicClientApplication.createSingleAccountPublicClientApplication(getApplicationContext(), R.raw.auth_config_single_account, new IPublicClientApplication.ISingleAccountApplicationCreatedListener() {
-            @Override
-            public void onCreated(ISingleAccountPublicClientApplication application) {
-                /*
-                 * This test app assumes that the app is only going to support one account.
-                 * This requires "account_mode" : "SINGLE" in the config json file.
-                 */
-                Identity.singleAccountApp = application;
-                loadAccount();
-            }
+        if (Identity.singleAccountApp == null) {
+            PublicClientApplication.createSingleAccountPublicClientApplication(getApplicationContext(), R.raw.auth_config_single_account_debug, new IPublicClientApplication.ISingleAccountApplicationCreatedListener() {
+                @Override
+                public void onCreated(ISingleAccountPublicClientApplication application) {
+                    /*
+                     * This test app assumes that the app is only going to support one account.
+                     * This requires "account_mode" : "SINGLE" in the config json file.
+                     */
+                    Identity.singleAccountApp = application;
+                    loadAccount();
+                }
 
-            @Override
-            public void onError(MsalException exception) {
-                PublicClientApplication.createSingleAccountPublicClientApplication(getApplicationContext(), R.raw.auth_config_single_account_debug, new IPublicClientApplication.ISingleAccountApplicationCreatedListener() {
-                    @Override
-                    public void onCreated(ISingleAccountPublicClientApplication application) {
-                        /*
-                         * This test app assumes that the app is only going to support one account.
-                         * This requires "account_mode" : "SINGLE" in the config json file.
-                         */
-                        Identity.singleAccountApp = application;
-                        loadAccount();
-                    }
+                @Override
+                public void onError(MsalException exception) {
+                    displayError(exception);
+                }
+            });
+        }
 
-                    @Override
-                    public void onError(MsalException exception) {
-                        displayError(exception);
-                    }
-                });
-//                displayError(exception);
-            }
-        });
+//        // Creates a PublicClientApplication object with res/raw/auth_config_single_account.json
+//        if (Identity.singleAccountApp == null) {
+//            PublicClientApplication.createSingleAccountPublicClientApplication(getApplicationContext(), R.raw.auth_config_single_account, new IPublicClientApplication.ISingleAccountApplicationCreatedListener() {
+//                @Override
+//                public void onCreated(ISingleAccountPublicClientApplication application) {
+//                    /*
+//                     * This test app assumes that the app is only going to support one account.
+//                     * This requires "account_mode" : "SINGLE" in the config json file.
+//                     */
+//                    Identity.singleAccountApp = application;
+//                    loadAccount();
+//                }
+//
+//                @Override
+//                public void onError(MsalException exception) {
+//                    displayError(exception);
+//                }
+//            });
+//        }
     }
 
     /**
@@ -159,9 +166,33 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (Identity.singleAccountApp == null) {
             return;
         }
+        final SignInParameters signInParameters = SignInParameters.builder()
+                .withActivity(this)
+                .withLoginHint(null)
+                .withScopes(Arrays.asList(getScopes()))
+                .withCallback(getAuthInteractiveCallback())
+                .build();
+        Identity.singleAccountApp.signIn(signInParameters);
 
-        final SignInParameters signInParameters = SignInParameters.builder().withActivity(this).withLoginHint(null).withScopes(Arrays.asList(getScopes())).withCallback(getAuthInteractiveCallback()).build();
-        Identity.singleAccountApp.signInAgain(signInParameters);
+//        if (Identity.singleAccountApp == null) {
+//            return;
+//        }
+//
+//        final SignInParameters signInParameters = SignInParameters.builder().withActivity(this).withLoginHint(null).withScopes(Arrays.asList(getScopes())).withCallback(getAuthInteractiveCallback()).build();
+//        Identity.singleAccountApp.signInAgain(signInParameters);
+//
+//        final AcquireTokenParameters parameters = new AcquireTokenParameters.Builder().startAuthorizationFromActivity(this).withScopes(Arrays.asList(getScopes())).withCallback(getAuthInteractiveCallback()).forAccount(Identity.account).build();
+//        /*
+//         * If acquireTokenSilent() returns an error that requires an interaction (MsalUiRequiredException),
+//         * invoke acquireToken() to have the user resolve the interrupt interactively.
+//         *
+//         * Some example scenarios are
+//         *  - password change
+//         *  - the resource you're acquiring a token for has a stricter set of requirement than your Single Sign-On refresh token.
+//         *  - you're introducing a new scope which the user has never consented for.
+//         */
+//        Identity.singleAccountApp.acquireToken(parameters);
+
         toHome();
     }
 
@@ -170,12 +201,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * i.e. from "User.Read User.ReadWrite" to ["user.read", "user.readwrite"]
      */
     private String[] getScopes() {
-        String clientId = Identity.singleAccountApp.getConfiguration().getClientId();
-        String[] scopes = new String[]{"MoniGuard.Read"};
-        for (int i = 0; i < scopes.length; i++) {
-            scopes[i] = "api://" + clientId + "/" + scopes[i];
-        }
-        return scopes;
+//        String clientId = Identity.singleAccountApp.getConfiguration().getClientId();
+//        String[] scopes = new String[]{"MoniGuard.Read"};
+//        for (int i = 0; i < scopes.length; i++) {
+//            scopes[i] = "api://" + clientId + "/" + scopes[i];
+//        }
+//        return scopes;
+        return new String[]{"user.read"};
     }
 
     private AuthenticationCallback getAuthInteractiveCallback() {
@@ -189,39 +221,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 /* Update account */
                 Identity.account = authenticationResult.getAccount();
-//                updateUI();
-                Toast.makeText(getApplicationContext(), "Successfully authenticated", Toast.LENGTH_SHORT).show();
 
-                // mgapi.bitterorange.cn/weatherforecast
-                String url = "https://mgapi.bitterorange.cn/weatherforecast";
-                Request request = new Request.Builder().url(url).build();
-                OkHttpClient client = new OkHttpClient();
-
-                // 发起异步请求
-                client.newCall(request).enqueue(new Callback() {
-                    @Override
-                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                        // 请求失败处理
-                        Toast.makeText(getApplicationContext(), "请求失败", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                        // 请求成功处理
-                        if (response.isSuccessful()) {
-                            String responseData = Objects.requireNonNull(response.body()).string();
-//                            get
-//                            Toast.makeText(getApplicationContext(), responseData, Toast.LENGTH_SHORT).show();
-                            // 在这里处理API返回的数据
-                        } else {
-                            // 请求失败处理
-//                            Toast.makeText(getApplicationContext(), "请求失败", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-                /* call graph */
-//                callGraphAPI(authenticationResult);
+                callGraphAPI(authenticationResult);
             }
 
             @Override
@@ -249,7 +250,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * Make an HTTP request to obtain MSGraph data
      */
     private void callGraphAPI(final IAuthenticationResult authenticationResult) {
-        MSGraphRequestWrapper.callGraphAPIUsingVolley(getApplicationContext(), defaultGraphResourceUrl, authenticationResult.getAccessToken(), response -> {
+        MSGraphRequestWrapper.callGraphAPIUsingVolley(this, defaultGraphResourceUrl, authenticationResult.getAccessToken(), response -> {
             /* Successfully called graph, process data and send to UI */
             Log.d(TAG, "Response: " + response.toString());
             displayGraphResult(response);
@@ -277,13 +278,49 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     // 跳转注册
     public void onLinkClicked(View view) {
-        Intent intent = new Intent(this, SigninActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+//        Intent intent = new Intent(this, SigninActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        startActivity(intent);
+        if (Identity.singleAccountApp == null) {
+            return;
+        }
+
+        /*
+         * Removes the signed-in account and cached tokens from this app (or device, if the device is in shared mode).
+         */
+        Identity.singleAccountApp.signOut(new ISingleAccountPublicClientApplication.SignOutCallback() {
+            @Override
+            public void onSignOut() {
+                Identity.account = null;
+//                updateUI();
+                Toast.makeText(getApplicationContext(), "Signed Out.", Toast.LENGTH_SHORT).show();
+                showToastOnSignOut();
+            }
+
+            @Override
+            public void onError(@NonNull MsalException exception) {
+                displayError(exception);
+            }
+        });
     }
 
     // 跳转忘记密码
     public void onLinkClicked2(View view) {
+        if (Identity.singleAccountApp == null) {
+            return;
+        }
+
+        final AcquireTokenParameters parameters = new AcquireTokenParameters.Builder().startAuthorizationFromActivity(this).withScopes(Arrays.asList(getScopes())).withCallback(getAuthInteractiveCallback()).forAccount(Identity.account).build();
+        /*
+         * If acquireTokenSilent() returns an error that requires an interaction (MsalUiRequiredException),
+         * invoke acquireToken() to have the user resolve the interrupt interactively.
+         *
+         * Some example scenarios are
+         *  - password change
+         *  - the resource you're acquiring a token for has a stricter set of requirement than your Single Sign-On refresh token.
+         *  - you're introducing a new scope which the user has never consented for.
+         */
+        Identity.singleAccountApp.acquireToken(parameters);
 //        Intent intent = new Intent(this, SigninActivity.class);
 //        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //        startActivity(intent);

@@ -7,7 +7,11 @@ using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MoniGuardAPIContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MoniGuardAPIContext") ?? throw new InvalidOperationException("Connection string 'MoniGuardAPIContext' not found.")));
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MoniGuardAPIContext") ??
+                         throw new InvalidOperationException("Connection string 'MoniGuardAPIContext' not found."));
+    options.EnableSensitiveDataLogging();
+});
 
 var azureAdConfigurationSection = builder.Configuration.GetSection("AzureAd");
 // Add services to the container.

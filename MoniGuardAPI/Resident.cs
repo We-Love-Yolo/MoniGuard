@@ -10,6 +10,10 @@ public class Resident(int residentId, string nameIdentifier, string? nickname, s
     {
     }
 
+    public Resident() : this(string.Empty, string.Empty, string.Empty, string.Empty, string.Empty)
+    {
+    }
+
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int ResidentId { get; set; } = residentId;

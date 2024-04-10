@@ -3,6 +3,10 @@
     "identityapp1": {
       "connectionInfo": "应用注册: MoniGuard，租户: 默认目录 (ab12345678902014outlook.onmicrosoft.com - Microsoft Entra ID)",
       "type": "identityapp.default"
+    },
+    "mssql1": {
+      "type": "mssql.local",
+      "connectionId": "ConnectionStrings:MoniGuardAPIContext"
     }
   }
 }

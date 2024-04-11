@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.activitys.AlbumActivity;
+import com.weloveyolo.moniguard.utils.HttpClient;
 
 import android.widget.ImageButton;
 

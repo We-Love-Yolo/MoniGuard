@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="baseUrl">http://ip:port/webapiv1</string>
+<!--    设备部分接口-->
+    <string name="get获取设备信息">/Camera/Information/Request</string>
+    <string name="post新增设备信息">/Camera/Information/Add</string>
+    <string name="get获取设备视频流">/Camera/Information/GetHLS</string>
+</resources>

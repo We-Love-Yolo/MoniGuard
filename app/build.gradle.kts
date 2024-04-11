@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.masl)
     implementation(libs.volley)
     implementation(libs.okhttp)
+    implementation(libs.libvlc)
     implementation(libs.activity)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

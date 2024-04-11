@@ -14,6 +14,7 @@ import com.weloveyolo.moniguard.ui.discover.DiscoverFragment;
 import com.weloveyolo.moniguard.ui.home.HomeFragment;
 import com.weloveyolo.moniguard.ui.message.MessageFragment;
 import com.weloveyolo.moniguard.ui.my.MyFragment;
+import com.weloveyolo.moniguard.utils.HttpClient;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
         setContentView(R.layout.activity_main);
+
+        HttpClient.getClient();
 
         // 初始化Fragment实例
         homeFragment = new HomeFragment();

@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.activitys.AlbumActivity;
+import com.weloveyolo.moniguard.activitys.Health_monitoring;
 import com.weloveyolo.moniguard.utils.HttpClient;
 
 import android.widget.ImageButton;
@@ -34,6 +35,13 @@ public class DiscoverFragment extends Fragment {
             Intent intent = new Intent(getActivity(), AlbumActivity.class);
             startActivity(intent);
         });
+        //进入健康检测
+        ImageButton button2 = view.findViewById(R.id.health_monitoring);
+        button2.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getActivity(), Health_monitoring.class);
+            startActivity(intent);
+        });
     }
+
 }
 

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <!--  页面标签 -->
+    <!-- 示例中使用 androidx.appcompat.widget.Toolbar -->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="645dp"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="43dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="健康检测"
+            app:titleTextColor="@android:color/black"
+            tools:ignore="MissingConstraints" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:orientation="vertical">
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="20dp"
+            android:text="久坐提醒"
+            android:textSize="20dp"
+            android:textStyle="bold"></TextView>
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="40dp"
+            android:text="超过1小时未检测更换姿势"
+            android:textSize="15dp"
+            android:textStyle="italic"></TextView>
+        </LinearLayout>
+            <Button
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp"></Button>
+        </LinearLayout>
+        <TextView
+            android:layout_width="370dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="20dp"
+            android:background="@color/edit_placeholder"></TextView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="100dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="20dp"
+                    android:text="喝水提醒"
+                    android:textSize="20dp"
+                    android:textStyle="bold"></TextView>
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="40dp"
+                    android:text="超过3小时未检测到喝水动作"
+                    android:textSize="15dp"
+                    android:textStyle="italic"></TextView>
+            </LinearLayout>
+            <Button
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp"></Button>
+        </LinearLayout>
+        <TextView
+            android:layout_width="370dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="20dp"
+            android:background="@color/edit_placeholder"></TextView>
+    </LinearLayout>
+
+
+    <!--  白名单 -->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

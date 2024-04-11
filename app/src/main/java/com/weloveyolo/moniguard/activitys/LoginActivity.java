@@ -5,10 +5,8 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.Toast;
 
@@ -16,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.BuildConfig;
 import com.microsoft.identity.client.AcquireTokenParameters;
 import com.microsoft.identity.client.AuthenticationCallback;
 import com.microsoft.identity.client.IAccount;
@@ -36,21 +33,8 @@ import com.weloveyolo.moniguard.utils.MSGraphRequestWrapper;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -334,4 +318,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editor.putBoolean("isLogin", true);
         editor.commit();
     }
+
 }

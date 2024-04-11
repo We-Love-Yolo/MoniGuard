@@ -16,7 +16,7 @@
         android:background="@drawable/toast_default_background">
     </TextView>
 
-    toast_success.xml<ImageView
+    <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:elevation="1dp"

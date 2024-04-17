@@ -1,19 +1,19 @@
 [versions]
-agp = "8.3.1"
+agp = "8.3.2"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 appcompat = "1.6.1"
 material = "1.11.0"
 constraintlayout = "2.1.4"
-lifecycleLivedataKtx = "2.6.1"
-lifecycleViewmodelKtx = "2.6.1"
+lifecycleLivedataKtx = "2.7.0"
+lifecycleViewmodelKtx = "2.7.0"
 navigationFragment = "2.7.7"
 navigationUi = "2.7.7"
-activity = "1.8.0"
+activity = "1.8.2"
 masl = "5.2.0"
 volley = "1.2.1"
-okhttp = "4.4.1"
+okhttp = "4.9.0"
 libvlc = "3.3.0"
 
 [libraries]
@@ -35,4 +35,3 @@ libvlc = { group = "org.videolan.android", name = "libvlc-all", version.ref = "l
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
-

@@ -5,16 +5,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
-import com.weloveyolo.moniguard.utils.Identity;
 
 import java.util.HashMap;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -26,15 +26,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (sharedPreferences.getBoolean("isLogin", false)) {
             toHome();
         }
-
-        findViewById(R.id.imgButton_login).setOnClickListener(this);
     }
 
-    public void onClick(View v) {
-        if (Identity.singleAccountApp == null) {
-            return;
-        }
-        toHome();
+    public void buttonLoginOnClick(View v) {
+        Toast.makeText(this, "Clicked!", Toast.LENGTH_SHORT).show();
     }
 
     private void toHome() {

@@ -42,7 +42,6 @@
             android:layout_marginTop="-40dp"
             android:layout_marginRight="25dp"
             android:layout_weight="9"
-            android:onClick="onLinkClicked2"
             android:orientation="vertical">
 
             <TextView
@@ -101,14 +100,14 @@
         android:id="@+id/imgButton_login"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:scaleType="fitCenter"
+        android:layout_marginBottom="115dp"
         android:background="@null"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/label_signin"
+        android:onClick="buttonLoginOnClick"
+        android:scaleType="fitCenter"
         android:src="@drawable/button_circle_right"
-        android:layout_marginBottom="115dp">
-    </ImageButton>
+        app:layout_constraintBottom_toBottomOf="@id/label_signin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"></ImageButton>
 
     <TextView
         android:id="@+id/label_signin"

@@ -42,11 +42,52 @@ public class ResidentsApi implements IResidentsApi {
                 .build();
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                throw new IOException("Failed to get resident: " + response);
+                callback.onCallback(null, false);
+                return;
             }
             Gson gson = new Gson();
             Resident resident = gson.fromJson(Objects.requireNonNull(response.body()).string(), Resident.class);
             callback.onCallback(resident, true);
+        } catch (IOException e) {
+            callback.onCallback(null, false);
+        }
+    }
+
+    @Override
+    public void putResident(Resident resident, ICallback<?> callback) {
+        OkHttpClient client = new OkHttpClient();
+        Gson gson = new Gson();
+        String json = gson.toJson(resident);
+        okhttp3.RequestBody body = okhttp3.RequestBody.create(json, okhttp3.MediaType.parse("application/json"));
+        Request request = new Request.Builder()
+                .url(getApiUrl() + "/PutResident")
+                .header("Authorization", "Bearer " + getAccessToken())
+                .put(body)
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                callback.onCallback(null, false);
+                return;
+            }
+            callback.onCallback(null, true);
+        } catch (IOException e) {
+            callback.onCallback(null, false);
+        }
+    }
+
+    @Override
+    public void getAvatar(ICallback<byte[]> callback) {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(getApiUrl() + "/GetAvatar")
+                .header("Authorization", "Bearer " + getAccessToken())
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                callback.onCallback(null, false);
+                return;
+            }
+            callback.onCallback(Objects.requireNonNull(response.body()).bytes(), true);
         } catch (IOException e) {
             callback.onCallback(null, false);
         }

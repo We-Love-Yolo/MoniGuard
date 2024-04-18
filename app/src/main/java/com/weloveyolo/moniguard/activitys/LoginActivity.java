@@ -27,6 +27,7 @@ import net.openid.appauth.AuthorizationServiceConfiguration;
 import net.openid.appauth.ResponseTypeValues;
 import net.openid.appauth.TokenResponse;
 
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -103,6 +104,16 @@ public class LoginActivity extends AppCompatActivity {
                             });
                         } else {
                             Log.e("LoginActivity", "Failed to get resident");
+                        }
+                    })).start();
+                    new Thread(() -> moniGuardApi.getResidentsApi().getAvatar((avatar, success) -> {
+                        if (success) {
+                            runOnUiThread(() -> {
+                                Log.i("LoginActivity", "成狗获取头像, 头像大小: " + avatar.length);
+                                toHome();
+                            });
+                        } else {
+                            Log.e("LoginActivity", "Failed to get avatar");
                         }
                     })).start();
                 } else {

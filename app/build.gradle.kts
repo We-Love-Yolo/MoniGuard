@@ -14,14 +14,15 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+//        manifestPlaceholders["appAuthRedirectScheme"] = "com.weloveyolo.moniguard"
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -35,6 +36,7 @@ android {
     lint {
         baseline = file("lint-baseline.xml")
     }
+
 }
 
 dependencies {
@@ -45,12 +47,21 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
-    implementation(libs.masl)
     implementation(libs.volley)
     implementation(libs.okhttp)
     implementation(libs.libvlc)
     implementation(libs.activity)
+    implementation(libs.appauth)
+    implementation(libs.gson)
+
+    compileOnly(libs.lombok)
+
     testImplementation(libs.junit)
+    annotationProcessor(libs.lombok)
+
+    testCompileOnly(libs.lombok)
+    testAnnotationProcessor(libs.lombok)
+
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }

@@ -11,10 +11,12 @@ lifecycleViewmodelKtx = "2.7.0"
 navigationFragment = "2.7.7"
 navigationUi = "2.7.7"
 activity = "1.8.2"
-masl = "5.2.0"
 volley = "1.2.1"
 okhttp = "4.9.0"
 libvlc = "3.3.0"
+appauth = "0.11.1"
+lombok = "1.18.32"
+gson = "2.10.1"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -28,10 +30,12 @@ lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-view
 navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
-masl = { group = "com.microsoft.identity.client", name = "msal", version.ref = "masl" }
 volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 libvlc = { group = "org.videolan.android", name = "libvlc-all", version.ref = "libvlc" }
+appauth = { group = "net.openid", name = "appauth", version.ref = "appauth" }
+lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

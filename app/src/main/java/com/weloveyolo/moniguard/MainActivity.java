@@ -10,14 +10,20 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.weloveyolo.moniguard.activitys.LoginActivity;
+import com.weloveyolo.moniguard.api.IMoniGuardApi;
+import com.weloveyolo.moniguard.api.MoniGuardApi;
 import com.weloveyolo.moniguard.ui.discover.DiscoverFragment;
 import com.weloveyolo.moniguard.ui.home.HomeFragment;
 import com.weloveyolo.moniguard.ui.message.MessageFragment;
 import com.weloveyolo.moniguard.ui.my.MyFragment;
 import com.weloveyolo.moniguard.utils.HttpClient;
 
+import lombok.Getter;
 
 public class MainActivity extends AppCompatActivity {
+    @Getter
+    private IMoniGuardApi moniGuardApi;
+
     private HomeFragment homeFragment;  // 首页
     private DiscoverFragment discoverFragment;  // 发现
     private MessageFragment messageFragment;    // 消息
@@ -35,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        moniGuardApi = new MoniGuardApi();
 //        if(!getSharedPreferences("user", MODE_PRIVATE).getBoolean("isLogin", false)){
 //            Intent intent = new Intent(this, LoginActivity.class);
 //            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -56,9 +63,7 @@ public class MainActivity extends AppCompatActivity {
         // 禁用默认颜色过滤器
         navView.setItemIconTintList(null);
         // fragment管理
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, homeFragment)
-                .commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
         currentFragment = homeFragment; // 设置当前显示的Fragment为homeFragment
 
         navView.setOnNavigationItemSelectedListener(item -> {
@@ -71,28 +76,25 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // 根据点击的导航项切换Fragment
-            if(item.getItemId() == R.id.navigation_home) {
+            if (item.getItemId() == R.id.navigation_home) {
                 if (!homeFragment.isAdded()) {
                     transaction.add(R.id.fragment_container, homeFragment);
                 }
                 transaction.show(homeFragment);
                 currentFragment = homeFragment;
-            }
-            else if(item.getItemId() == R.id.navigation_discover) {
+            } else if (item.getItemId() == R.id.navigation_discover) {
                 if (!discoverFragment.isAdded()) {
                     transaction.add(R.id.fragment_container, discoverFragment);
                 }
                 transaction.show(discoverFragment);
                 currentFragment = discoverFragment;
-            }
-            else if(item.getItemId() == R.id.navigation_message) {
+            } else if (item.getItemId() == R.id.navigation_message) {
                 if (!messageFragment.isAdded()) {
                     transaction.add(R.id.fragment_container, messageFragment);
                 }
                 transaction.show(messageFragment);
                 currentFragment = messageFragment;
-            }
-            else if(item.getItemId() == R.id.navigation_my) {
+            } else if (item.getItemId() == R.id.navigation_my) {
                 if (!myFragment.isAdded()) {
                     transaction.add(R.id.fragment_container, myFragment);
                 }
@@ -109,5 +111,18 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
 //        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    public void setAccessToken(String accessToken) {
+        moniGuardApi.setAccessToken(accessToken);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_OK) {
+            String s = data.getStringExtra("token");
+            setAccessToken(s);
+        }
     }
 }

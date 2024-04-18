@@ -50,10 +50,10 @@ public class LoginActivity extends AppCompatActivity {
 
         authService = new AuthorizationService(this);
 
-//        sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
-//        if (sharedPreferences.getBoolean("isLogin", false)) {
-//            toHome();
-//        }
+        sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
+        if (sharedPreferences.getBoolean("isLogin", false)) {
+            toHome();
+        }
     }
 
     public void buttonLoginOnClick(View v) {
@@ -99,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                             runOnUiThread(() -> {
                                 Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
                                 Log.i("LoginActivity", "Resident: " + resident);
+                                setPersist(Objects.requireNonNull(resp1).accessToken);
                                 toHome();
                             });
                         } else {
@@ -121,10 +122,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @SuppressLint("ApplySharedPref")
-    private void setPersist(HashMap<String, String> hash) {
+//    private void setPersist(HashMap<String, String> hash) {
+    private void setPersist(String token) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("phone", hash.get("phone"));
-        editor.putString("token", hash.get("token"));
+        editor.putString("token", token);
         editor.putBoolean("isLogin", true);
         editor.commit();
     }

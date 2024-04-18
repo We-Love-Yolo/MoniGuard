@@ -1,4 +1,4 @@
-package com.weloveyolo.moniguard.ui.home;
+package com.weloveyolo.moniguard.ui;
 
 import android.content.Intent;
 import android.os.Bundle;

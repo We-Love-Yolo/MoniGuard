@@ -12,10 +12,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.weloveyolo.moniguard.activitys.LoginActivity;
 import com.weloveyolo.moniguard.api.IMoniGuardApi;
 import com.weloveyolo.moniguard.api.MoniGuardApi;
-import com.weloveyolo.moniguard.ui.discover.DiscoverFragment;
-import com.weloveyolo.moniguard.ui.home.HomeFragment;
-import com.weloveyolo.moniguard.ui.message.MessageFragment;
-import com.weloveyolo.moniguard.ui.my.MyFragment;
+import com.weloveyolo.moniguard.ui.DiscoverFragment;
+import com.weloveyolo.moniguard.ui.HomeFragment;
+import com.weloveyolo.moniguard.ui.MessageFragment;
+import com.weloveyolo.moniguard.ui.MyFragment;
 import com.weloveyolo.moniguard.utils.HttpClient;
 
 import lombok.Getter;
@@ -42,11 +42,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         moniGuardApi = new MoniGuardApi();
-//        if(!getSharedPreferences("user", MODE_PRIVATE).getBoolean("isLogin", false)){
-//            Intent intent = new Intent(this, LoginActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(intent);
-//        }
+        if(!getSharedPreferences("user", MODE_PRIVATE).getBoolean("isLogin", false)){
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
 
         setContentView(R.layout.activity_main);
 
@@ -108,9 +108,9 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        Intent intent = new Intent(this, LoginActivity.class);
+//        Intent intent = new Intent(this, LoginActivity.class);
 //        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+//        startActivity(intent);
     }
 
     public void setAccessToken(String accessToken) {

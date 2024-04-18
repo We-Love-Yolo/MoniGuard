@@ -17,4 +17,12 @@ public class Resident {
     private String phone;
 
     private String email;
+
+    public String getName(){
+        return nickname;
+    }
+
+    public String getPhone(){
+        return phone;
+    }
 }

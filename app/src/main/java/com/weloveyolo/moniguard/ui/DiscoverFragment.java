@@ -1,4 +1,4 @@
-package com.weloveyolo.moniguard.ui.discover;
+package com.weloveyolo.moniguard.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

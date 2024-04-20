@@ -2,27 +2,29 @@ package com.weloveyolo.moniguard;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.weloveyolo.moniguard.activitys.LoginActivity;
-import com.weloveyolo.moniguard.api.IMoniGuardApi;
-import com.weloveyolo.moniguard.api.MoniGuardApi;
+import com.weloveyolo.moniguard.activity.LoginActivity;
 import com.weloveyolo.moniguard.ui.DiscoverFragment;
 import com.weloveyolo.moniguard.ui.HomeFragment;
 import com.weloveyolo.moniguard.ui.MessageFragment;
 import com.weloveyolo.moniguard.ui.MyFragment;
-import com.weloveyolo.moniguard.utils.HttpClient;
+import com.weloveyolo.moniguard.util.HttpClient;
 
-import lombok.Getter;
+import net.openid.appauth.AuthorizationService;
+import net.openid.appauth.AuthorizationServiceConfiguration;
+import net.openid.appauth.TokenRequest;
 
 public class MainActivity extends AppCompatActivity {
-    @Getter
-    private IMoniGuardApi moniGuardApi;
+    SharedPreferences user;
 
     private HomeFragment homeFragment;  // 首页
     private DiscoverFragment discoverFragment;  // 发现
@@ -41,16 +43,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        moniGuardApi = new MoniGuardApi();
         if(!getSharedPreferences("user", MODE_PRIVATE).getBoolean("isLogin", false)){
             Intent intent = new Intent(this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            return;
         }
 
-        setContentView(R.layout.activity_main);
+        user = getSharedPreferences("user", MODE_PRIVATE);
+        refreshToken();
+        HttpClient.setToken(user.getString("accessToken", ""));
 
-        HttpClient.getClient();
+        setContentView(R.layout.activity_main);
 
         // 初始化Fragment实例
         homeFragment = new HomeFragment();
@@ -107,22 +111,38 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         });
-
-//        Intent intent = new Intent(this, LoginActivity.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(intent);
     }
 
-    public void setAccessToken(String accessToken) {
-        moniGuardApi.setAccessToken(accessToken);
-    }
+    private void refreshToken(){
+        if(user.getLong("expireTime", 0) - System.currentTimeMillis() > 1800000) return;
 
-    protected void onActivityResult(int requestCode, int resultCode,
-                                    Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_OK) {
-            String s = data.getStringExtra("token");
-            setAccessToken(s);
-        }
+        final String MY_CLIENT_ID = "6e7fcbc1-b51f-4111-ad44-2cf0baee8597";
+
+        AuthorizationService authService = new AuthorizationService(this);
+
+        AuthorizationServiceConfiguration serviceConfig = new AuthorizationServiceConfiguration(
+                Uri.parse("https://login.microsoftonline.com/28fe96eb-e8dc-47a0-8b84-f7af6525ec71/oauth2/v2.0/authorize"),
+                Uri.parse("https://login.microsoftonline.com/28fe96eb-e8dc-47a0-8b84-f7af6525ec71/oauth2/v2.0/token")
+        );
+
+        TokenRequest tokenRequest = new TokenRequest.Builder(serviceConfig, MY_CLIENT_ID)
+                .setGrantType("refresh_token")
+                .setRefreshToken(user.getString("refreshToken", " "))
+                .build();
+
+        authService.performTokenRequest(tokenRequest, (res, ex) -> {
+            if (res != null) {
+                HttpClient.setToken(res.accessToken);
+                SharedPreferences.Editor editor = user.edit();
+                editor.putString("accessToken", res.accessToken);
+                editor.putString("refreshToken", res.refreshToken);
+                editor.putLong("expireTime", res.accessTokenExpirationTime);
+                editor.commit();
+            } else {
+                if (ex != null) {
+                    Log.e("TokenRefresh", "Refresh failed: " + ex.errorDescription);
+                }
+            }
+        });
     }
 }

@@ -1,4 +1,4 @@
-package com.weloveyolo.moniguard.activitys;
+package com.weloveyolo.moniguard.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -13,11 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
-import com.weloveyolo.moniguard.api.ICallback;
-import com.weloveyolo.moniguard.api.IMoniGuardApi;
-import com.weloveyolo.moniguard.api.IResidentsApi;
 import com.weloveyolo.moniguard.api.MoniGuardApi;
-import com.weloveyolo.moniguard.api.Resident;
+import com.weloveyolo.moniguard.util.HttpClient;
 
 import net.openid.appauth.AuthorizationException;
 import net.openid.appauth.AuthorizationRequest;
@@ -25,11 +22,7 @@ import net.openid.appauth.AuthorizationResponse;
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
 import net.openid.appauth.ResponseTypeValues;
-import net.openid.appauth.TokenResponse;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
@@ -64,8 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                 ResponseTypeValues.CODE, // the response_type value: we want a code
                 MY_REDIRECT_URI); // the redirect URI to which the auth response is sent
 
-        AuthorizationRequest authRequest = authRequestBuilder.setScope("api://6e7fcbc1-b51f-4111-ad44-2cf0baee8597/MoniGuard.Read")
-//                .setLoginHint("jdoe@user.example.com")
+        AuthorizationRequest authRequest = authRequestBuilder.setScope("api://6e7fcbc1-b51f-4111-ad44-2cf0baee8597/MoniGuard.Read  offline_access")
                 .build();
 
         doAuthorization(authRequest);
@@ -83,36 +75,37 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_AUTH) {
+
             AuthorizationResponse resp = AuthorizationResponse.fromIntent(data);
             AuthorizationException ex = AuthorizationException.fromIntent(data);
             if (ex != null) {
                 Log.e("LoginActivity", "Authorization flow failed: " + ex.getMessage());
                 return;
             }
-
-            IMoniGuardApi moniGuardApi = new MoniGuardApi();
+//            IMoniGuardApi moniGuardApi = new MoniGuardApi();
             authService.performTokenRequest(Objects.requireNonNull(resp).createTokenExchangeRequest(), (resp1, ex1) -> {
                 if (resp1 != null) {
-                    moniGuardApi.setAccessToken(Objects.requireNonNull(resp1).accessToken);
-                    new Thread(() -> moniGuardApi.getResidentsApi().getResident((resident, success) -> {
-                        if (success) {
-                            runOnUiThread(() -> {
-                                Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-                                Log.i("LoginActivity", "Resident: " + resident);
-                                setPersist(Objects.requireNonNull(resp1).accessToken);
-                                toHome();
-                            });
-                        } else {
-                            Log.e("LoginActivity", "Failed to get resident");
-                        }
-                    })).start();
+                    setPersist(resp1.accessToken, resp1.refreshToken, resp1.accessTokenExpirationTime);
+                    toHome();
+//                    MoniGuardApi moniGuardApi = new MoniGuardApi();
+//                    moniGuardApi.setAccessToken(Objects.requireNonNull(resp1).accessToken);
+//                    moniGuardApi.getResidentsApi().getResident((resident, success) -> {
+//                        if (success) {
+//                            runOnUiThread(() -> {
+//                                Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
+//                                Log.i("LoginActivity", "Resident: " + resident);
+//                                toHome();
+//                            });
+//                        } else {
+//                            Log.e("LoginActivity", "Failed to get resident");
+//                        }
+//                    });
                 } else {
                     Log.e("LoginActivity", "Token exchange failed: " + Objects.requireNonNull(ex1).getMessage());
                 }
             });
         }
     }
-
 
     private void toHome() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -122,10 +115,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @SuppressLint("ApplySharedPref")
-//    private void setPersist(HashMap<String, String> hash) {
-    private void setPersist(String token) {
+    private void setPersist(String accessToken, String refreshToken, Long expireTime) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("token", token);
+        editor.putString("accessToken", accessToken);
+        editor.putString("refreshToken", refreshToken);
+        editor.putLong("expireTime", expireTime);
         editor.putBoolean("isLogin", true);
         editor.commit();
     }

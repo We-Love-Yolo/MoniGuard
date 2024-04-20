@@ -14,10 +14,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.weloveyolo.moniguard.R;
-import com.weloveyolo.moniguard.activitys.AddDeviceActivity;
-import com.weloveyolo.moniguard.activitys.MonitorActivity;
-import com.weloveyolo.moniguard.utils.CustomToast;
-import com.weloveyolo.moniguard.utils.HttpClient;
+import com.weloveyolo.moniguard.activity.AddDeviceActivity;
+import com.weloveyolo.moniguard.activity.MonitorActivity;
+import com.weloveyolo.moniguard.util.CustomToast;
+import com.weloveyolo.moniguard.util.HttpClient;
 
 import org.json.JSONObject;
 
@@ -52,30 +52,6 @@ public class HomeFragment extends Fragment {
         addCameraButton.setOnClickListener(v -> {
 //            Intent intent=new Intent(getActivity(), );
 //            startActivity(intent);
-
-//            HttpUrl.Builder urlBuilder = HttpUrl.parse(String.valueOf(R.string.get获取设备视频流)).newBuilder();
-//            urlBuilder.addQueryParameter("CameraID", "1");
-//            Call call = HttpClient.get(urlBuilder.build().toString());
-            Call call = HttpClient.get("");
-            call.enqueue(new Callback() {
-                @Override
-                public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                    Looper.prepare();
-                    Toast.makeText(getActivity(), "失败", Toast.LENGTH_SHORT).show();
-                    Looper.loop();
-                }
-                @Override
-                public void onResponse(@NonNull Call call, @NonNull Response response) {
-                    Looper.prepare();
-                    try{
-                        JSONObject json = new JSONObject(response.body().string());
-                        Toast.makeText(getActivity(), json.get("data").toString(), Toast.LENGTH_SHORT).show();
-                    }catch (Exception e){
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                    Looper.loop();
-                }
-            });
         });
 
         // 进入门禁
@@ -84,9 +60,5 @@ public class HomeFragment extends Fragment {
             Intent intent=new Intent(getActivity(), MonitorActivity.class);
             startActivity(intent);
         });
-
-        // 测试
-        CustomToast ct = new CustomToast(getActivity());
-        ct.showSuccessToast("场景已创建", 1000);
     }
 }

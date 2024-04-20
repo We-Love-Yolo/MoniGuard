@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package com.weloveyolo.moniguard.utils;
+package com.weloveyolo.moniguard.util;
 
 import android.content.Context;
 import android.util.Log;

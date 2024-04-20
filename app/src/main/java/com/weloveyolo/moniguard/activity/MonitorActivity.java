@@ -1,4 +1,4 @@
-package com.weloveyolo.moniguard.activitys;
+package com.weloveyolo.moniguard.activity;
 
 
 import android.content.Intent;
@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.weloveyolo.moniguard.R;
-import com.weloveyolo.moniguard.utils.CustomToast;
+import com.weloveyolo.moniguard.util.CustomToast;
 
 import org.videolan.libvlc.LibVLC;
 import org.videolan.libvlc.Media;

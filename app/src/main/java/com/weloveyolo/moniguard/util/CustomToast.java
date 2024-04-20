@@ -1,4 +1,4 @@
-package com.weloveyolo.moniguard.utils;
+package com.weloveyolo.moniguard.util;
 
 import android.content.Context;
 import android.os.Handler;

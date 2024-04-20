@@ -10,9 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.weloveyolo.moniguard.R;
-import com.weloveyolo.moniguard.activitys.AlbumActivity;
-import com.weloveyolo.moniguard.activitys.Health_monitoring;
-import com.weloveyolo.moniguard.utils.HttpClient;
+import com.weloveyolo.moniguard.activity.AlbumActivity;
+import com.weloveyolo.moniguard.activity.Health_monitoring;
 
 import android.widget.ImageButton;
 

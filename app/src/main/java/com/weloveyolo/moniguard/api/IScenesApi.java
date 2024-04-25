@@ -15,6 +15,8 @@ DELETE
 /Scenes/DeleteCamera/{cameraId}
  */
 
+import java.util.List;
+
 public interface IScenesApi {
     String getAccessToken();
 
@@ -24,11 +26,11 @@ public interface IScenesApi {
 
     void getScenes(ICallback<Scene> callback);
 
-    void getCameras(int sceneId, ICallback<?> callback);
+    void getCameras(int sceneId, ICallback<List<Camera>> callback);
 
     void postScene(String sceneName, ICallback<?> callback);
 
-    void postCamera(int sceneId, ICallback<?> callback);
+    void postCamera(int sceneId, Camera camera, ICallback<?> callback);
 
     void deleteScene(int sceneId, ICallback<?> callback);
 

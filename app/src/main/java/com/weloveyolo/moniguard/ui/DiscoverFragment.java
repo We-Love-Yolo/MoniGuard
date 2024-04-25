@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.activity.AlbumActivity;
 import com.weloveyolo.moniguard.activity.Health_monitoring;
+import com.weloveyolo.moniguard.activity.Sports;
 
 import android.widget.ImageButton;
 
@@ -38,6 +39,12 @@ public class DiscoverFragment extends Fragment {
         ImageButton button2 = view.findViewById(R.id.health_monitoring);
         button2.setOnClickListener(view1 -> {
             Intent intent = new Intent(getActivity(), Health_monitoring.class);
+            startActivity(intent);
+        });
+        //进入趣味运动
+        ImageButton button3 = view.findViewById(R.id.happy_sport);
+        button2.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getActivity(), Sports.class);
             startActivity(intent);
         });
     }

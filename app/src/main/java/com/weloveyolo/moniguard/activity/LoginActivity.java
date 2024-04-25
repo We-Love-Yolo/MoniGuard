@@ -1,4 +1,4 @@
-package com.weloveyolo.moniguard.activitys;
+package com.weloveyolo.moniguard.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -13,11 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
-import com.weloveyolo.moniguard.api.ICallback;
-import com.weloveyolo.moniguard.api.IMoniGuardApi;
-import com.weloveyolo.moniguard.api.IResidentsApi;
-import com.weloveyolo.moniguard.api.MoniGuardApi;
-import com.weloveyolo.moniguard.api.Resident;
 
 import net.openid.appauth.AuthorizationException;
 import net.openid.appauth.AuthorizationRequest;
@@ -25,11 +20,7 @@ import net.openid.appauth.AuthorizationResponse;
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
 import net.openid.appauth.ResponseTypeValues;
-import net.openid.appauth.TokenResponse;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
@@ -124,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @SuppressLint("ApplySharedPref")
 //    private void setPersist(HashMap<String, String> hash) {
-    private void setPersist(String token) {
+    private void setPersist(String accessToken, String token, Long accessTokenExpirationTime) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("token", token);
         editor.putBoolean("isLogin", true);

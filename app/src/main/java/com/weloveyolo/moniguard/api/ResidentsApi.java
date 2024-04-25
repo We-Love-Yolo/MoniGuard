@@ -1,7 +1,5 @@
 package com.weloveyolo.moniguard.api;
 
-import android.util.Log;
-
 import androidx.annotation.WorkerThread;
 
 import com.google.gson.Gson;

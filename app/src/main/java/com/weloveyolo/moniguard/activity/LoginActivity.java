@@ -13,8 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
-import com.weloveyolo.moniguard.api.MoniGuardApi;
-import com.weloveyolo.moniguard.util.HttpClient;
 
 import net.openid.appauth.AuthorizationException;
 import net.openid.appauth.AuthorizationRequest;
@@ -57,7 +55,8 @@ public class LoginActivity extends AppCompatActivity {
                 ResponseTypeValues.CODE, // the response_type value: we want a code
                 MY_REDIRECT_URI); // the redirect URI to which the auth response is sent
 
-        AuthorizationRequest authRequest = authRequestBuilder.setScope("api://6e7fcbc1-b51f-4111-ad44-2cf0baee8597/MoniGuard.Read  offline_access")
+        AuthorizationRequest authRequest = authRequestBuilder.setScope("api://6e7fcbc1-b51f-4111-ad44-2cf0baee8597/MoniGuard.Read")
+//                .setLoginHint("jdoe@user.example.com")
                 .build();
 
         doAuthorization(authRequest);
@@ -75,7 +74,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_AUTH) {
-
             AuthorizationResponse resp = AuthorizationResponse.fromIntent(data);
             AuthorizationException ex = AuthorizationException.fromIntent(data);
             if (ex != null) {
@@ -107,6 +105,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+
     private void toHome() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         // 设置启动标志：跳转到新页面时，栈中的原有实例都被清空，同时开辟新任务的活动栈
@@ -115,11 +114,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @SuppressLint("ApplySharedPref")
-    private void setPersist(String accessToken, String refreshToken, Long expireTime) {
+//    private void setPersist(HashMap<String, String> hash) {
+    private void setPersist(String accessToken, String token, Long accessTokenExpirationTime) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("accessToken", accessToken);
-        editor.putString("refreshToken", refreshToken);
-        editor.putLong("expireTime", expireTime);
+        editor.putString("token", token);
         editor.putBoolean("isLogin", true);
         editor.commit();
     }

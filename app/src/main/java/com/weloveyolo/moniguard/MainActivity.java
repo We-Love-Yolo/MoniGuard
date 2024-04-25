@@ -1,15 +1,23 @@
 package com.weloveyolo.moniguard;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.weloveyolo.moniguard.activity.LoginActivity;
@@ -22,6 +30,8 @@ import com.weloveyolo.moniguard.util.HttpClient;
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
 import net.openid.appauth.TokenRequest;
+
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
     SharedPreferences user;
@@ -52,6 +62,17 @@ public class MainActivity extends AppCompatActivity {
 
         user = getSharedPreferences("user", MODE_PRIVATE);
         refreshToken();
+
+        // 在应用程序后台定时执行
+        PeriodicWorkRequest refreshWorkRequest =
+                new PeriodicWorkRequest.Builder(TokenRefreshWorker.class, 11, TimeUnit.HOURS).build();
+        String uniqueWorkName = "tokenRefreshWork";
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+                uniqueWorkName,
+                ExistingPeriodicWorkPolicy.KEEP, // 如果已存在，则保持原有的工作
+                refreshWorkRequest
+        );
+
         HttpClient.setToken(user.getString("accessToken", ""));
 
         setContentView(R.layout.activity_main);
@@ -144,5 +165,18 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public class TokenRefreshWorker extends Worker {
+        public TokenRefreshWorker(
+                @NonNull Context context,
+                @NonNull WorkerParameters params) {
+            super(context, params);
+        }
+        @Override
+        public Result doWork() {
+            refreshToken();
+            return Result.success();
+        }
     }
 }

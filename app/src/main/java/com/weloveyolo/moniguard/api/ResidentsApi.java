@@ -76,7 +76,7 @@ public class ResidentsApi implements IResidentsApi {
     }
 
     public void putResident(ICallback<Resident> callback){
-        HttpClient.put(getApiUrl() + "/PutResident", new Resident()).enqueue(new Callback() {
+        HttpClient.put(getApiUrl() + "/PutResident", null).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 callback.onCallback(null, false);
@@ -93,4 +93,6 @@ public class ResidentsApi implements IResidentsApi {
             }
         });
     }
+
+
 }

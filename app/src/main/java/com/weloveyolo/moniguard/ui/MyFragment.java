@@ -38,15 +38,17 @@ public class MyFragment extends Fragment {
 
     public void initAccount() {
         IMoniGuardApi moniGuardApi = new MoniGuardApi();
-        moniGuardApi.getResidentsApi().getResident((resident, success) -> {
-            requireActivity().runOnUiThread(() -> {
-                TextView nameView = requireActivity().findViewById(R.id.cname);
-                if (success) {
-                    nameView.setText(resident.getNickname());
-                } else {
-                    nameView.setText("未知");
-                }
+        new Thread(() -> {
+            moniGuardApi.getResidentsApi().getResident((resident, success) -> {
+                requireActivity().runOnUiThread(() -> {
+                    TextView nameView = requireActivity().findViewById(R.id.cname);
+                    if (success) {
+                        nameView.setText(resident.getNickname());
+                    } else {
+                        nameView.setText("未知");
+                    }
+                });
             });
-        });
+        }).start();
     }
 }

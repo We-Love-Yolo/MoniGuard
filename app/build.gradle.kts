@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.appauth)
     implementation(libs.gson)
+    implementation(libs.worker)
 
     compileOnly(libs.lombok)
 

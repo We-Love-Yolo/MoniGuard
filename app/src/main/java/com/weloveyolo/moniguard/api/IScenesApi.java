@@ -22,11 +22,15 @@ public interface IScenesApi {
 
     IMoniGuardApi getMainApi();
 
-    void getScenes(ICallback<?> callback);
+    void getScenes(ICallback<Scene> callback);
 
     void getCameras(int sceneId, ICallback<?> callback);
 
     void postScene(String sceneName, ICallback<?> callback);
 
     void postCamera(int sceneId, ICallback<?> callback);
+
+    void deleteScene(int sceneId, ICallback<?> callback);
+
+    void deleteCamera(int cameraId, ICallback<?> callback);
 }

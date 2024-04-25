@@ -16,7 +16,7 @@ import okhttp3.Response;
 @Getter
 @Setter
 public class ResidentsApi implements IResidentsApi {
-    private IMoniGuardApi mainApi;
+    private final IMoniGuardApi mainApi;
 
     public ResidentsApi(IMoniGuardApi mainApi) {
         this.mainApi = mainApi;

@@ -1,4 +1,4 @@
-package com.weloveyolo.moniguard.activitys;
+package com.weloveyolo.moniguard.activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;

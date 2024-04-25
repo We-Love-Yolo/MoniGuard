@@ -1,4 +1,4 @@
-package com.weloveyolo.moniguard.activitys;
+package com.weloveyolo.moniguard.activity;
 
 import android.os.Bundle;
 

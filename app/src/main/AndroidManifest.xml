@@ -45,10 +45,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activitys.InfoActivity" />
-        <activity android:name=".activitys.SigninActivity" />
+        <activity android:name=".activity.InfoActivity" />
+        <activity android:name=".activity.SigninActivity" />
         <activity
-            android:name=".activitys.LoginActivity"
+            android:name=".activity.LoginActivity"
             android:exported="true"
             android:launchMode="standard"
             android:screenOrientation="portrait" />
@@ -57,10 +57,10 @@
         <!--            android:exported="true"-->
         <!--            />-->
 
-        <activity android:name=".activitys.MonitorActivity" />
-        <activity android:name=".activitys.AlbumActivity"></activity>
-        <activity android:name=".activitys.AddDeviceActivity"></activity>
-        <activity android:name=".activitys.Health_monitoring"></activity>
+        <activity android:name=".activity.MonitorActivity" />
+        <activity android:name=".activity.AlbumActivity"></activity>
+        <activity android:name=".activity.AddDeviceActivity"></activity>
+        <activity android:name=".activity.Health_monitoring"></activity>
 
     </application>
 </manifest>

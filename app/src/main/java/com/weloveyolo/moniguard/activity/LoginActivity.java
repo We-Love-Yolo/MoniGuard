@@ -27,7 +27,6 @@ import net.openid.appauth.AuthorizationServiceConfiguration;
 import net.openid.appauth.ResponseTypeValues;
 import net.openid.appauth.TokenResponse;
 
-import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -90,33 +89,24 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e("LoginActivity", "Authorization flow failed: " + ex.getMessage());
                 return;
             }
-
-            IMoniGuardApi moniGuardApi = new MoniGuardApi();
+//            IMoniGuardApi moniGuardApi = new MoniGuardApi();
             authService.performTokenRequest(Objects.requireNonNull(resp).createTokenExchangeRequest(), (resp1, ex1) -> {
                 if (resp1 != null) {
-                    moniGuardApi.setAccessToken(Objects.requireNonNull(resp1).accessToken);
-                    new Thread(() -> moniGuardApi.getResidentsApi().getResident((resident, success) -> {
-                        if (success) {
-                            runOnUiThread(() -> {
-                                Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-                                Log.i("LoginActivity", "Resident: " + resident);
-                                setPersist(Objects.requireNonNull(resp1).accessToken);
-                                toHome();
-                            });
-                        } else {
-                            Log.e("LoginActivity", "Failed to get resident");
-                        }
-                    })).start();
-                    new Thread(() -> moniGuardApi.getResidentsApi().getAvatar((avatar, success) -> {
-                        if (success) {
-                            runOnUiThread(() -> {
-                                Log.i("LoginActivity", "成狗获取头像, 头像大小: " + avatar.length);
-                                toHome();
-                            });
-                        } else {
-                            Log.e("LoginActivity", "Failed to get avatar");
-                        }
-                    })).start();
+                    setPersist(resp1.accessToken, resp1.refreshToken, resp1.accessTokenExpirationTime);
+                    toHome();
+//                    MoniGuardApi moniGuardApi = new MoniGuardApi();
+//                    moniGuardApi.setAccessToken(Objects.requireNonNull(resp1).accessToken);
+//                    moniGuardApi.getResidentsApi().getResident((resident, success) -> {
+//                        if (success) {
+//                            runOnUiThread(() -> {
+//                                Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
+//                                Log.i("LoginActivity", "Resident: " + resident);
+//                                toHome();
+//                            });
+//                        } else {
+//                            Log.e("LoginActivity", "Failed to get resident");
+//                        }
+//                    });
                 } else {
                     Log.e("LoginActivity", "Token exchange failed: " + Objects.requireNonNull(ex1).getMessage());
                 }

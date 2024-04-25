@@ -8,6 +8,7 @@ using MoniGuardAPI.Data;
 
 namespace MoniGuardAPI.Controllers
 {
+    [Authorize]
     [Route("[controller]/[action]")]
     [ApiController]
     public class ResidentsController(MoniGuardAPIContext context) : ControllerBase
@@ -19,9 +20,9 @@ namespace MoniGuardAPI.Controllers
         //public async Task<ActionResult<string>> GetUserId() => (await Task.FromResult(User.FindFirstValue(ClaimTypes.NameIdentifier)))!;
 
         // GET: /Residents/GetResident
-        [Authorize]
+        //[Authorize]
         [HttpGet]
-        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+        //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
         public async Task<ActionResult<Resident>> GetResident()
         {
             var resident = await GetAuthorizedResident();
@@ -64,9 +65,9 @@ namespace MoniGuardAPI.Controllers
         //}
 
         // PUT: /Residents/PutResident
-        [Authorize]
+        //[Authorize]
         [HttpPut]
-        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+        //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
         public async Task<IActionResult> PutResident(Resident resident)
         {
             var authorizedResident = await GetAuthorizedResident();
@@ -100,9 +101,9 @@ namespace MoniGuardAPI.Controllers
             return NoContent();
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
-        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+        //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
         public IActionResult GetAvatar() => Redirect("https://avatar.iran.liara.run/public");
 
         // POST: api/Residents
@@ -142,15 +143,16 @@ namespace MoniGuardAPI.Controllers
             var nameIdentifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (nameIdentifier == null)
             {
-                return null;
+
             }
 
-            //var all = context.Resident.Where(r => r.ResidentId == 1);
+            var all = context.Resident.Where(r => r.ResidentId == 1);
+            var claims = User.Claims;
 
             var resident = await context.Resident.FirstOrDefaultAsync(r => r.NameIdentifier == nameIdentifier);
             if (resident != null)
             {
-                return resident;
+                return await context.Resident.FirstOrDefaultAsync(r => r.NameIdentifier == nameIdentifier);
             }
             var email = User.FindFirstValue(ClaimTypes.Email);
             var nickname = User.FindFirstValue("preferred_username");

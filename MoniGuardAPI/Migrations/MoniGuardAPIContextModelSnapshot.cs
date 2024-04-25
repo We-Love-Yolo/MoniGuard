@@ -93,8 +93,7 @@ namespace MoniGuardAPI.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ResidentId")
                         .HasColumnType("int");

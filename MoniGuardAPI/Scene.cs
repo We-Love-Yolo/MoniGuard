@@ -14,8 +14,7 @@ public class Scene(int sceneId, string name, int residentId)
     public int SceneId { get; set; } = sceneId;
 
     [Required]
-    [MinLength(2)]
-    [MaxLength(50)]
+    [Length(2, 50)]
     public string Name { get; set; } = name;
 
     [Required]

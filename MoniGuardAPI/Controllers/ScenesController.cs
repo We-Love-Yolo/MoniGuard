@@ -9,14 +9,15 @@ using MoniGuardAPI.Data;
 
 namespace MoniGuardAPI.Controllers
 {
+    [Authorize]
     [Route("[controller]/[action]")]
     [ApiController]
     public class ScenesController(MoniGuardAPIContext context) : ControllerBase
     {
         // GET: /Scenes/GetScenes
-        [Authorize]
+        //[Authorize]
         [HttpGet]
-        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+        //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
         public async Task<ActionResult<List<Scene>>> GetScenes()
         {
             var nameIdentifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -25,9 +26,9 @@ namespace MoniGuardAPI.Controllers
         }
 
         // GET: /Scenes/GetCameras
-        [Authorize]
+        //[Authorize]
         [HttpGet("{sceneId:int}")]
-        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+        //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
         public async Task<ActionResult<List<Camera>>> GetCameras(int sceneId)
         {
             var residentId = await GetAuthorizedResidentId();
@@ -44,9 +45,9 @@ namespace MoniGuardAPI.Controllers
         }
 
         // POST /Scenes/PostScene
-        [Authorize]
+        //[Authorize]
         [HttpPost("{sceneName:length(2, 50)}")]
-        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+        //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
         public async Task<IActionResult> PostScene(string sceneName)
         {
             var residentId = await GetAuthorizedResidentId();
@@ -60,9 +61,9 @@ namespace MoniGuardAPI.Controllers
         }
 
         // POST /Scenes/PostCamera
-        [Authorize]
+        //[Authorize]
         [HttpPost("{sceneId:int}")]
-        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+        //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
         public async Task<IActionResult> PostCamera(int sceneId, [FromBody] Camera camera)
         {
             var residentId = await GetAuthorizedResidentId();
@@ -82,9 +83,9 @@ namespace MoniGuardAPI.Controllers
         }
 
         // DELETE /Scenes/DeleteScene
-        [Authorize]
+        //[Authorize]
         [HttpDelete("{sceneId:int}")]
-        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+        //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
         public async Task<IActionResult> DeleteScene(int sceneId)
         {
             var scene = context.Scene.FirstOrDefault(s => s.SceneId == sceneId);
@@ -102,9 +103,9 @@ namespace MoniGuardAPI.Controllers
         }
 
         // DELETE /Scenes/DeleteCamera
-        [Authorize]
+        //[Authorize]
         [HttpDelete("{cameraId:int}")]
-        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+        //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
         public async Task<IActionResult> DeleteCamera(int cameraId)
         {
             var camera = context.Camera.FirstOrDefault(c => c.CameraId == cameraId);

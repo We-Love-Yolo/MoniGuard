@@ -12,7 +12,7 @@ using MoniGuardAPI.Data;
 namespace MoniGuardAPI.Migrations
 {
     [DbContext(typeof(MoniGuardAPIContext))]
-    [Migration("20240410222904_InitialCreate")]
+    [Migration("20240410235418_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -96,8 +96,7 @@ namespace MoniGuardAPI.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ResidentId")
                         .HasColumnType("int");

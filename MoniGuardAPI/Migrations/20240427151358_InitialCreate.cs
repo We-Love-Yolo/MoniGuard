@@ -57,6 +57,22 @@ namespace MoniGuardAPI.Migrations
                 {
                     table.PrimaryKey("PK_Scene", x => x.SceneId);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Settings",
+                columns: table => new
+                {
+                    SettingsId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ResidentId = table.Column<int>(type: "int", nullable: false),
+                    ReceiveWarning = table.Column<bool>(type: "bit", nullable: false),
+                    ReceiveNewGuest = table.Column<bool>(type: "bit", nullable: false),
+                    HealthNotice = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Settings", x => x.SettingsId);
+                });
         }
 
         /// <inheritdoc />
@@ -70,6 +86,9 @@ namespace MoniGuardAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Scene");
+
+            migrationBuilder.DropTable(
+                name: "Settings");
         }
     }
 }

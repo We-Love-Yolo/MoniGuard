@@ -9,4 +9,6 @@ public class MoniGuardAPIContext(DbContextOptions<MoniGuardAPIContext> options) 
     public DbSet<Scene> Scene { get; set; } = default!;
 
     public DbSet<Camera> Camera { get; set; } = default!;
+
+    public DbSet<Settings> Settings { get; set; } = default!;
 }

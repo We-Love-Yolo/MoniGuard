@@ -12,7 +12,7 @@ using MoniGuardAPI.Data;
 namespace MoniGuardAPI.Migrations
 {
     [DbContext(typeof(MoniGuardAPIContext))]
-    [Migration("20240410235418_InitialCreate")]
+    [Migration("20240427151358_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -104,6 +104,31 @@ namespace MoniGuardAPI.Migrations
                     b.HasKey("SceneId");
 
                     b.ToTable("Scene");
+                });
+
+            modelBuilder.Entity("MoniGuardAPI.Settings", b =>
+                {
+                    b.Property<int>("SettingsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SettingsId"));
+
+                    b.Property<bool>("HealthNotice")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ReceiveNewGuest")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ReceiveWarning")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ResidentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SettingsId");
+
+                    b.ToTable("Settings");
                 });
 #pragma warning restore 612, 618
         }

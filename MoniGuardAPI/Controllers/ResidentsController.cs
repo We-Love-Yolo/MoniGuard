@@ -30,6 +30,16 @@ namespace MoniGuardAPI.Controllers
             {
                 return NotFound();
             }
+/*            var settings = await context.Settings
+                .FirstOrDefaultAsync(s => s.ResidentId == resident.ResidentId);
+
+            if (settings != null) return resident;
+
+            // Create a new Settings record
+            settings = new Settings(resident.ResidentId, false, false, false);
+            context.Settings.Add(settings);
+            await context.SaveChangesAsync();*/
+
             return resident;
         }
 
@@ -132,6 +142,57 @@ namespace MoniGuardAPI.Controllers
 
         //    return NoContent();
         //}
+
+        [HttpGet]
+        public async Task<ActionResult<Settings>> GetSettings()
+        {
+            var resident = await GetAuthorizedResident();
+            if (resident == null)
+            {
+                return NotFound();
+            }
+
+            var settings = await context.Settings.FirstOrDefaultAsync(s => s.ResidentId == resident.ResidentId);
+            if (settings == null)
+            {
+                settings = new Settings();
+                settings.ResidentId = resident.ResidentId;
+                await context.Settings.AddAsync(settings);
+                await context.SaveChangesAsync();
+            }
+
+            return settings;
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> PutSettings(Settings settings)
+        {
+            var resident = await GetAuthorizedResident();
+            if (resident == null)
+            {
+                return NotFound();
+            }
+
+            if (resident.ResidentId != settings.ResidentId)
+            {
+                return BadRequest();
+            }
+
+            context.Entry(settings).State = EntityState.Modified;
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ResidentExists(settings.ResidentId))
+                {
+                    return NotFound();
+                }
+            }
+
+            return NoContent();
+        }
 
         private bool ResidentExists(int id)
         {

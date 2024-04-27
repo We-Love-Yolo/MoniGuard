@@ -102,6 +102,31 @@ namespace MoniGuardAPI.Migrations
 
                     b.ToTable("Scene");
                 });
+
+            modelBuilder.Entity("MoniGuardAPI.Settings", b =>
+                {
+                    b.Property<int>("SettingsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SettingsId"));
+
+                    b.Property<bool>("HealthNotice")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ReceiveNewGuest")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ReceiveWarning")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ResidentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SettingsId");
+
+                    b.ToTable("Settings");
+                });
 #pragma warning restore 612, 618
         }
     }

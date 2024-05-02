@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,12 @@ import androidx.work.WorkerParameters;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.weloveyolo.moniguard.activity.LoginActivity;
+import com.weloveyolo.moniguard.api.Camera;
+import com.weloveyolo.moniguard.api.IMoniGuardApi;
+import com.weloveyolo.moniguard.api.IResidentsApi;
+import com.weloveyolo.moniguard.api.MoniGuardApi;
+import com.weloveyolo.moniguard.api.Resident;
+import com.weloveyolo.moniguard.api.Scene;
 import com.weloveyolo.moniguard.ui.DiscoverFragment;
 import com.weloveyolo.moniguard.ui.HomeFragment;
 import com.weloveyolo.moniguard.ui.MessageFragment;
@@ -31,16 +38,22 @@ import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
 import net.openid.appauth.TokenRequest;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
-    SharedPreferences user;
+    private SharedPreferences user;     // 持久化
 
     private HomeFragment homeFragment;  // 首页
     private DiscoverFragment discoverFragment;  // 发现
     private MessageFragment messageFragment;    // 消息
     private MyFragment myFragment;  // 我的
     private Fragment currentFragment; // 当前显示的Fragment
+
+    private IMoniGuardApi moniGuardApi;
+    public Resident resident = null;
+    public List<Scene> scenes = null;
+    public List<Camera> cameras = null;
 
     @Override
     public void onBackPressed() {
@@ -63,9 +76,9 @@ public class MainActivity extends AppCompatActivity {
         user = getSharedPreferences("user", MODE_PRIVATE);
         refreshToken();
 
-        // 在应用程序后台定时执行
+        // 在应用程序后台2小时定时执行
         PeriodicWorkRequest refreshWorkRequest =
-                new PeriodicWorkRequest.Builder(TokenRefreshWorker.class, 11, TimeUnit.HOURS).build();
+                new PeriodicWorkRequest.Builder(TokenRefreshWorker.class, 2, TimeUnit.HOURS).build();
         String uniqueWorkName = "tokenRefreshWork";
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
                 uniqueWorkName,
@@ -73,7 +86,13 @@ public class MainActivity extends AppCompatActivity {
                 refreshWorkRequest
         );
 
+        // MainActivity方式
+        moniGuardApi = new MoniGuardApi();
+        moniGuardApi.setAccessToken(user.getString("accessToken", ""));
+        // 其他方式
         HttpClient.setToken(user.getString("accessToken", ""));
+
+        prepareData();
 
         setContentView(R.layout.activity_main);
 
@@ -132,6 +151,38 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         });
+    }
+
+    private void prepareData(){
+        // 首页
+        new Thread(() -> moniGuardApi.getScenesApi().getScenes((scenes, success) -> {
+            if(success) {
+                this.scenes = scenes;
+                homeFragment.tryShow();
+                moniGuardApi.getScenesApi().getCameras(2, (cameras, success2) -> {
+                    if(success2) {
+                        this.cameras = cameras;
+                        homeFragment.tryShow();
+                    }
+                });
+            }
+        })).start();
+
+        // 我的
+        new Thread(() -> moniGuardApi.getResidentsApi().getResident((resident, success) -> {
+            if(success) {
+                this.resident = resident;
+                myFragment.tryShow();
+                if(this.resident.getAvatar() == null){
+                    moniGuardApi.getResidentsApi().getAvatar((avatar, success2) -> {
+                        if(success2) {
+                            resident.setAvatar(avatar);
+                            myFragment.tryShow();
+                        }
+                    });
+                }
+            }
+        })).start();
     }
 
     private void refreshToken(){

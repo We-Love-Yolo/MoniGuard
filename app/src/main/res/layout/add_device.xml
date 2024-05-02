@@ -229,6 +229,7 @@
 
         </LinearLayout>
         <Button
+            android:id="@+id/button_finish"
             android:text="完成"
             android:textColor="@color/white"
             android:background="@drawable/confirm"

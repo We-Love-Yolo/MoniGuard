@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
                 ResponseTypeValues.CODE, // the response_type value: we want a code
                 MY_REDIRECT_URI); // the redirect URI to which the auth response is sent
 
-        AuthorizationRequest authRequest = authRequestBuilder.setScope("api://6e7fcbc1-b51f-4111-ad44-2cf0baee8597/MoniGuard.Read")
+        AuthorizationRequest authRequest = authRequestBuilder.setScope("api://6e7fcbc1-b51f-4111-ad44-2cf0baee8597/MoniGuard.Read  offline_access")
 //                .setLoginHint("jdoe@user.example.com")
                 .build();
 
@@ -80,24 +80,10 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e("LoginActivity", "Authorization flow failed: " + ex.getMessage());
                 return;
             }
-//            IMoniGuardApi moniGuardApi = new MoniGuardApi();
             authService.performTokenRequest(Objects.requireNonNull(resp).createTokenExchangeRequest(), (resp1, ex1) -> {
                 if (resp1 != null) {
                     setPersist(resp1.accessToken, resp1.refreshToken, resp1.accessTokenExpirationTime);
                     toHome();
-//                    MoniGuardApi moniGuardApi = new MoniGuardApi();
-//                    moniGuardApi.setAccessToken(Objects.requireNonNull(resp1).accessToken);
-//                    moniGuardApi.getResidentsApi().getResident((resident, success) -> {
-//                        if (success) {
-//                            runOnUiThread(() -> {
-//                                Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-//                                Log.i("LoginActivity", "Resident: " + resident);
-//                                toHome();
-//                            });
-//                        } else {
-//                            Log.e("LoginActivity", "Failed to get resident");
-//                        }
-//                    });
                 } else {
                     Log.e("LoginActivity", "Token exchange failed: " + Objects.requireNonNull(ex1).getMessage());
                 }
@@ -114,10 +100,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @SuppressLint("ApplySharedPref")
-//    private void setPersist(HashMap<String, String> hash) {
-    private void setPersist(String accessToken, String token, Long accessTokenExpirationTime) {
+    private void setPersist(String accessToken, String refreshToken, Long accessTokenExpirationTime) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("token", token);
+        editor.putString("accessToken", accessToken);
+        editor.putString("refreshToken", refreshToken);
+        editor.putLong("expireTime", accessTokenExpirationTime);
         editor.putBoolean("isLogin", true);
         editor.commit();
     }

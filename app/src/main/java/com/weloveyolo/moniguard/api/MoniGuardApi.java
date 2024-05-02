@@ -2,6 +2,7 @@ package com.weloveyolo.moniguard.api;
 
 import lombok.Getter;
 import lombok.Setter;
+import okhttp3.OkHttpClient;
 
 @Getter
 public class MoniGuardApi implements IMoniGuardApi {
@@ -12,8 +13,14 @@ public class MoniGuardApi implements IMoniGuardApi {
 
     private final IResidentsApi residentsApi;
 
+    private final IScenesApi scenesApi;
+
+    private OkHttpClient httpClient;
+
     public MoniGuardApi() {
+        httpClient = new OkHttpClient();
         this.residentsApi = new ResidentsApi(this);
+        this.scenesApi = new ScenesApi(this);
     }
 
     @Override

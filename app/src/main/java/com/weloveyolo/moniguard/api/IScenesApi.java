@@ -24,7 +24,8 @@ public interface IScenesApi {
 
     IMoniGuardApi getMainApi();
 
-    void getScenes(ICallback<Scene> callback);
+//    void getScenes(ICallback<Scene> callback);
+    void getScenes(ICallback<List<Scene>> callback);
 
     void getCameras(int sceneId, ICallback<List<Camera>> callback);
 

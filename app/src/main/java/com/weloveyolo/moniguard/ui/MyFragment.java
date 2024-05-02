@@ -2,11 +2,15 @@ package com.weloveyolo.moniguard.ui;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.api.IMoniGuardApi;
 import com.weloveyolo.moniguard.api.MoniGuardApi;
@@ -33,22 +38,30 @@ public class MyFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initAccount();
+        tryShow();
     }
 
-    public void initAccount() {
-        IMoniGuardApi moniGuardApi = new MoniGuardApi();
-        new Thread(() -> {
-            moniGuardApi.getResidentsApi().getResident((resident, success) -> {
-                requireActivity().runOnUiThread(() -> {
-                    TextView nameView = requireActivity().findViewById(R.id.cname);
-                    if (success) {
-                        nameView.setText(resident.getNickname());
-                    } else {
-                        nameView.setText("未知");
+    public void tryShow() {
+        MainActivity mainActivity = ((MainActivity) getActivity());
+        if(mainActivity == null) return;
+        if (mainActivity.resident != null) {
+            requireActivity().runOnUiThread(() -> {
+                TextView nameView = requireActivity().findViewById(R.id.cname);
+                TextView phoneView = requireActivity().findViewById(R.id.phone_number);
+                ImageView avatarView = requireActivity().findViewById(R.id.touxiang);
+                    // 昵称
+                    nameView.setText(mainActivity.resident.getNickname());
+                    // 手机号
+                    phoneView.setText(mainActivity.resident.getPhone());
+                    // 头像
+                    if(mainActivity.resident.getAvatar() != null){
+                        byte[] avatarBuf = mainActivity.resident.getAvatar();
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(avatarBuf, 0, avatarBuf.length);
+                        avatarView.setImageBitmap(bitmap);
                     }
-                });
             });
-        }).start();
+        } else {
+
+        }
     }
 }

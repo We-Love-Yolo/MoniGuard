@@ -4,12 +4,15 @@ import com.google.gson.Gson;
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.api.Resident;
 
+import java.io.IOException;
+
 import okhttp3.Call;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class HttpClient {
 
@@ -40,41 +43,40 @@ public class HttpClient {
     }
 
     // Get请求
-    public static Call get(String path, String query) {
+    public static Response get(String path, String query) {
         try {
             path = query != null ? path + "/" + query : path;
-            return client.newCall(new Request.Builder().url(path).get().build());
+            return client.newCall(new Request.Builder().url(path).get().build()).execute();
         } catch (Exception ex) {
             return null;
         }
     }
 
-    public static Call delete(String path, String query) {
+    public static Response delete(String path, String query) {
         try {
             path = query != null ? path + "/" + query : path;
-            return client.newCall(new Request.Builder().url(path).delete().build());
+            return client.newCall(new Request.Builder().url(path).delete().build()).execute();
         } catch (Exception ex) {
             return null;
         }
     }
 
-    public static <T> Call put(String path, T object) {
+    public static <T> Response put(String path, T object) throws IOException {
         Gson gson = new Gson();
         String json = gson.toJson(object);
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder().url(path).put(body).build();
-        return client.newCall(request);
+        return client.newCall(request).execute();
     }
 
-    public static Call post(String path) {
-        try {
-            // 创建一个请求体（非 JSON 格式）
-            String requestBody = "param1=value1&param2=value2";
-            RequestBody body = RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), requestBody);
-            return client.newCall(new Request.Builder().url(String.valueOf(R.string.baseUrl) + path).post(body).build());
-        } catch (Exception ex) {
-            return null;
-        }
+    public static <T> Response post(String path, String query, T object) throws IOException {
+        path = query != null ? path + "/" + query : path;
+        Gson gson = new Gson();
+        String json = gson.toJson(object);
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(JSON, json);
+        Request request = new Request.Builder().url(path).post(body).build();
+        return client.newCall(request).execute();
     }
 }

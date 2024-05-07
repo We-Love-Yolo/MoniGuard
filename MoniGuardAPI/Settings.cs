@@ -6,7 +6,6 @@ namespace MoniGuardAPI
     public class Settings(int residentId, bool receiveWarning, bool receiveNewGuest, bool healthNotice)
     {
         [Key]
-
         public int SettingsId { get; set; }
 
         [Required]

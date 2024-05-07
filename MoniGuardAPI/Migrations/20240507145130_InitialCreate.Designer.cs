@@ -12,7 +12,7 @@ using MoniGuardAPI.Data;
 namespace MoniGuardAPI.Migrations
 {
     [DbContext(typeof(MoniGuardAPIContext))]
-    [Migration("20240427151358_InitialCreate")]
+    [Migration("20240507145130_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -14,38 +15,38 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:adjustViewBounds="true"
-            app:srcCompat="@drawable/goback3"
             android:clickable="true"
+            android:contentDescription="返回主页"
             android:onClick="gotoHomePage"
-            android:contentDescription="返回主页"/>
+            app:srcCompat="@drawable/goback3" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/monitor_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:text="门禁"
                 android:textColor="@android:color/black"
                 android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_gravity="center_horizontal"/>
+                android:textStyle="bold" />
         </LinearLayout>
     </Toolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="40dp"
-        android:orientation="vertical"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
 
         <LinearLayout
@@ -53,6 +54,7 @@
             android:layout_height="50dp"
             android:orientation="horizontal"
             app:layout_constraintTop_toTopOf="parent">
+
             <LinearLayout
                 android:layout_width="200dp"
                 android:layout_height="match_parent"
@@ -60,6 +62,7 @@
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
                 app:layout_constraintTop_toTopOf="parent">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -69,8 +72,7 @@
                     android:textColor="@android:color/black"
                     android:textSize="15dp"
                     android:textStyle="normal"
-                    tools:ignore="MissingConstraints"
-                    />
+                    tools:ignore="MissingConstraints" />
             </LinearLayout>
 
             <LinearLayout
@@ -85,9 +87,9 @@
                     android:id="@+id/switch_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="false"
                     android:layout_marginStart="0dp"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:checked="false" />
 
             </LinearLayout>
 
@@ -98,6 +100,7 @@
             android:layout_height="50dp"
             android:orientation="horizontal"
             app:layout_constraintTop_toTopOf="parent">
+
             <LinearLayout
                 android:layout_width="200dp"
                 android:layout_height="match_parent"
@@ -105,6 +108,7 @@
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
                 app:layout_constraintTop_toTopOf="parent">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -114,8 +118,7 @@
                     android:textColor="@android:color/black"
                     android:textSize="15dp"
                     android:textStyle="normal"
-                    tools:ignore="MissingConstraints"
-                    />
+                    tools:ignore="MissingConstraints" />
             </LinearLayout>
 
             <LinearLayout
@@ -130,9 +133,9 @@
                     android:id="@+id/switch_white"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="false"
                     android:layout_marginStart="0dp"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:checked="false" />
 
             </LinearLayout>
 

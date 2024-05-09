@@ -8,14 +8,13 @@ import okhttp3.OkHttpClient;
 public class MoniGuardApi implements IMoniGuardApi {
     private static final String BASE_URL = "https://mgapi.bitterorange.cn";
 
-    @Setter
     private String accessToken;
 
     private final IResidentsApi residentsApi;
 
     private final IScenesApi scenesApi;
 
-    private OkHttpClient httpClient;
+    private final OkHttpClient httpClient;
 
     public MoniGuardApi() {
         httpClient = new OkHttpClient();
@@ -26,5 +25,10 @@ public class MoniGuardApi implements IMoniGuardApi {
     @Override
     public String getBaseUrl() {
         return BASE_URL;
+    }
+
+    @Override
+    public synchronized void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 }

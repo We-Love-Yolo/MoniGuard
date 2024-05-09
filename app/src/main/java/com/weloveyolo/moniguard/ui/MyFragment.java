@@ -2,6 +2,7 @@ package com.weloveyolo.moniguard.ui;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +22,8 @@ import androidx.fragment.app.Fragment;
 
 import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
+import com.weloveyolo.moniguard.activity.AddDeviceActivity;
+import com.weloveyolo.moniguard.activity.MessageInfoActivity;
 import com.weloveyolo.moniguard.api.IMoniGuardApi;
 import com.weloveyolo.moniguard.api.MoniGuardApi;
 
@@ -37,7 +41,12 @@ public class MyFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+         //进入消息通知
+        ImageView addSceneButton=view.findViewById(R.id.messageInfo);
+        addSceneButton.setOnClickListener(view1 -> {
+            Intent intent=new Intent(getActivity(), MessageInfoActivity.class);
+            startActivity(intent);
+        });
         tryShow();
     }
 
@@ -47,12 +56,13 @@ public class MyFragment extends Fragment {
         if (mainActivity.resident != null) {
             requireActivity().runOnUiThread(() -> {
                 TextView nameView = requireActivity().findViewById(R.id.cname);
-                TextView phoneView = requireActivity().findViewById(R.id.phone_number);
+                //TextView phoneView = requireActivity().findViewById(R.id.phone_number);
                 ImageView avatarView = requireActivity().findViewById(R.id.touxiang);
                     // 昵称
                     nameView.setText(mainActivity.resident.getNickname());
                     // 手机号
-                    phoneView.setText(mainActivity.resident.getPhone());
+                //因为是get不到的东西，直接先注释掉了
+                   // phoneView.setText(mainActivity.resident.getPhone());
                     // 头像
                     if(mainActivity.resident.getAvatar() != null){
                         byte[] avatarBuf = mainActivity.resident.getAvatar();

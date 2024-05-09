@@ -108,6 +108,8 @@ public class MonitorActivity extends AppCompatActivity {
         }
     }
 
+
+
     // 返回上一页
     public void gotoHomePage(View view){
         onBackPressed();

@@ -19,14 +19,14 @@
 
             <ImageView
                 android:id="@+id/goback"
-                android:layout_width="20dp"
+                android:layout_width="12dp"
                 android:layout_height="20dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="35dp"
                 android:adjustViewBounds="true"
+                android:onClick="goBack"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:onClick="goBack"
                 app:srcCompat="@drawable/goback3" />
 
             <TextView

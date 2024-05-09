@@ -38,6 +38,8 @@ public class MonitorActivity extends AppCompatActivity {
         setContentView(R.layout.monitor);
 
         ArrayList<String> options = new ArrayList<>();
+
+
         // 添加LibVLC选项
 //        options.add("--no-drop-late-frames");
 //        options.add("--no-skip-frames");
@@ -110,5 +112,7 @@ public class MonitorActivity extends AppCompatActivity {
     public void gotoHomePage(View view){
         onBackPressed();
     }
+
+
 
 }

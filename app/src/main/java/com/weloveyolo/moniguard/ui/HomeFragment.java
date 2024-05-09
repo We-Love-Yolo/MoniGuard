@@ -9,11 +9,14 @@ import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.activity.AddDeviceActivity;
 import com.weloveyolo.moniguard.activity.MonitorActivity;
+import com.weloveyolo.moniguard.api.Camera;
 
 
 public class HomeFragment extends Fragment {
@@ -32,6 +35,7 @@ public class HomeFragment extends Fragment {
         ImageButton addSceneButton=view.findViewById(R.id.add_camera_button);
         addSceneButton.setOnClickListener(view1 -> {
             Intent intent=new Intent(getActivity(), AddDeviceActivity.class);
+            intent.putExtra("sceneId", 1);
             startActivity(intent);
         });
 
@@ -49,6 +53,34 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         });
 
+        tryShow();
+    }
 
+    public void tryShow() {
+        MainActivity mainActivity = ((MainActivity) getActivity());
+        if(mainActivity == null) return;
+        if(mainActivity.scenes != null) {
+            // 场景
+            if(mainActivity.cameras != null){
+                // 相机
+                requireActivity().runOnUiThread(() -> {
+
+                    /*
+                        测试用
+                     */
+                    AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                    builder.setTitle("相机"); // 设置对话框标题
+                    String res = "";
+                    for(Camera camera : mainActivity.cameras){
+                        res = res + camera.toString() + "\n";
+                    }
+                    builder.setMessage(res); // 设置对话框内容
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                });
+            }
+        } else {
+
+        }
     }
 }

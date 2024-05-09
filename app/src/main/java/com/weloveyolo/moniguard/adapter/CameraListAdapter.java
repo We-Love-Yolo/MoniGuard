@@ -1,7 +1,5 @@
 package com.weloveyolo.moniguard.adapter;
 
-import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -10,19 +8,43 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.weloveyolo.moniguard.R;
-import com.weloveyolo.moniguard.api.Camera;
-
 public class CameraListAdapter extends RecyclerView.Adapter<CameraListAdapter.MyHolder> {
+    @NonNull
+    @Override
+    public CameraListAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull CameraListAdapter.MyHolder holder, int position) {
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return 0;
+    }
+
+    static class MyHolder extends RecyclerView.ViewHolder {
+
+        ImageView title_pic;
+        TextView title_text;
+        TextView author_name;
+        TextView date;
+        public MyHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+    }
+
+    /*
 private List<Camera.ResultBean.DataBean> mDataBeanList = new ArrayList<>();
 private Context mContext;
 
 public CameraListAdapter(Context context) {
         this.mContext = context;
         }
-/**
- * 为adapter 设置数据源
- */
+
+//为adapter 设置数据源
 public void setListData(List<Camera.ResultBean.DataBean> list) {
         this.mDataBeanList = list;
         notifyDataSetChanged();
@@ -89,4 +111,6 @@ static class MyHolder extends RecyclerView.ViewHolder {
 public interface onItemClickListener{
     void onItemClick(Camera.ResultBean.DataBean dataBean,int position);
 }
+
+*/
 }

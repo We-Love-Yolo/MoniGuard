@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.activity.AddDeviceActivity;
+import com.weloveyolo.moniguard.activity.MonitorActivity;
 
 
 public class HomeFragment extends Fragment {
@@ -42,12 +43,12 @@ public class HomeFragment extends Fragment {
 //        });
 
         // 进入门禁
- /*       ImageButton cameraButton1 = view.findViewById(R.id.camera1_button);
+        ImageButton cameraButton1 = view.findViewById(R.id.camera1_button);
         cameraButton1.setOnClickListener(v -> {
             Intent intent=new Intent(getActivity(), MonitorActivity.class);
             startActivity(intent);
         });
-        */
+
 
     }
 }

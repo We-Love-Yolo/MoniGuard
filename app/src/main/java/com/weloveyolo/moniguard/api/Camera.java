@@ -11,9 +11,11 @@ public class Camera {
       private String createdAt;
       private String description;
       private int sceneId;
+      private Boolean connectState;
 
-      public Camera(String name) {
+      public Camera(String name,Boolean connectState) {
             this.name = name;
+            this.connectState=connectState;
       }
 
       public int getCameraId() {
@@ -31,6 +33,8 @@ public class Camera {
       public int getSceneId() {
             return sceneId;
       }
+
+      public Boolean isConnectState(){return connectState;}
 
       @Override
       public String toString() {

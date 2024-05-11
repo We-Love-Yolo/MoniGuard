@@ -11,20 +11,58 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.activity.AddDeviceActivity;
 import com.weloveyolo.moniguard.activity.MonitorActivity;
+import com.weloveyolo.moniguard.adapter.CameraListAdapter;
 import com.weloveyolo.moniguard.api.Camera;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class HomeFragment extends Fragment {
+    private RecyclerView mRecyclerView;
+    private CameraListAdapter mCameraListAdapter;
+    private List<Camera> cameras=new ArrayList<Camera>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view=inflater.inflate(R.layout.fragment_home, container, false);
+
+        initCameras();
+
+        //初始化控件
+        mRecyclerView = view.findViewById(R.id.monitor_list);
+        //初始化适配器
+        mCameraListAdapter = new CameraListAdapter(cameras);
+        //绑定适配器
+        mRecyclerView.setAdapter(mCameraListAdapter);
+
+        mCameraListAdapter.setOnItemClickListener(new CameraListAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent=new Intent(getActivity(), MonitorActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        return view;
+    }
+
+    private void initCameras() {
+        Camera c1=new Camera("camera1",true);
+        cameras.add(c1);
+        Camera c2=new Camera("camera2",false);
+        cameras.add(c2);
+        Camera c3=new Camera("camera3",true);
+        cameras.add(c3);
+
     }
 
     @Override

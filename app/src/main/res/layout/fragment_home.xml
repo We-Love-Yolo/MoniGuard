@@ -63,38 +63,42 @@
 
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/camera1_button"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:background="@null"
-            android:clickable="true"
-            android:onClick="onClick"
-            android:src="@drawable/img_camera_button"
-            tools:ignore="MissingConstraints" />
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/camera1_button"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:scaleType="fitCenter"
+                android:src="@drawable/img_camera_button" />
+            <ImageButton
+                android:id="@+id/add_camera_button"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:src="@drawable/add_camera"
+                android:scaleType="fitCenter"/>
+        </LinearLayout>
 
-        <!--摄像头列表-->
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:id="@+id/monitor_list"
-            tools:listitem="@layout/item_monitor"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2" />
 
-        <ImageButton
-            android:id="@+id/add_camera_button"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:background="@null"
-            android:clickable="true"
-            android:onClick="onClick"
-            android:src="@drawable/add_camera"
-            android:scaleType="fitCenter"/>
+
+                <!--摄像头列表-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="60dp"
+                    android:id="@+id/monitor_list"
+                    tools:listitem="@layout/item_monitor"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="2" />
 
     </LinearLayout>
 

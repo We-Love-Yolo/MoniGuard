@@ -1,5 +1,6 @@
 package com.weloveyolo.moniguard.adapter;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -8,98 +9,60 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.weloveyolo.moniguard.R;
+import com.weloveyolo.moniguard.api.Camera;
+
+import java.util.List;
+
 public class CameraListAdapter extends RecyclerView.Adapter<CameraListAdapter.MyHolder> {
+
+    private List<Camera> cameras;
+
+    public CameraListAdapter(List<Camera> cameras) {
+        this.cameras = cameras;
+    }
+
     @NonNull
     @Override
-    public CameraListAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+    public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_monitor, parent, false);
+        return new MyHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CameraListAdapter.MyHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+        Camera currentCamera = cameras.get(position);
+        holder.cameraName.setText(currentCamera.getName());
 
+        // 根据connectState值设置连接状态的ImageView和TextView
+        if (currentCamera.isConnectState()) {
+            // 连接状态为true，设置ImageView为绿色圆圈，TextView为"已连接"
+            holder.connectColor.setImageResource(R.drawable.green_circle);
+            holder.connectState.setText(R.string.connected);
+        } else {
+            // 连接状态为false，设置ImageView为红色圆圈，TextView为"未连接"
+            holder.connectColor.setImageResource(R.drawable.red_circle);
+            holder.connectState.setText(R.string.unconnected);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return cameras.size();
     }
 
-    static class MyHolder extends RecyclerView.ViewHolder {
+    public static class MyHolder extends RecyclerView.ViewHolder {
+        public ImageView connectColor;
+        TextView cameraName;
+        TextView connectState;
 
-        ImageView title_pic;
-        TextView title_text;
-        TextView author_name;
-        TextView date;
-        public MyHolder(@NonNull View itemView) {
+        public MyHolder(View itemView) {
             super(itemView);
+            cameraName = itemView.findViewById(R.id.camera_name);
+            connectState = itemView.findViewById(R.id.connect_state);
+            connectColor = itemView.findViewById(R.id.connect_color);
         }
     }
-
-    /*
-private List<Camera.ResultBean.DataBean> mDataBeanList = new ArrayList<>();
-private Context mContext;
-
-public CameraListAdapter(Context context) {
-        this.mContext = context;
-        }
-
-//为adapter 设置数据源
-public void setListData(List<Camera.ResultBean.DataBean> list) {
-        this.mDataBeanList = list;
-        notifyDataSetChanged();
-        }
-
-@NonNull
-@Override
-public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //加载布局文件
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_monitor, null);
-        return new MyHolder(view);
-        }
-
-@Override
-public void onBindViewHolder(@NonNull MyHolder holder, int position) {
-        Camera.ResultBean.DataBean dataBean = mDataBeanList.get(position);
-
-        //设置数据
-        holder.author_name.setText(dataBean.getAuthor_name());
-        holder.title_text.setText(dataBean.getTitle());
-        holder.date.setText(dataBean.getDate());
-        //加载图片
-        Glide.with(mContext).load(dataBean.getThumbnail_pic_s()).error(R.drawable.img_error).into(holder.title_pic);
-
-        holder.itemView.setOnClickListener(new View.OnClickListener(){
-@Override
-public void onClick(View v){
-        if(mOnItemClickListener!=null){
-        mOnItemClickListener.onItemClick(dataBean,position);
-        }
-        }
-        });
-        }
-
-@Override
-public int getItemCount() {
-        if(mDataBeanList!=null)
-        return mDataBeanList.size();
-        else return 0;
-        }
-
-static class MyHolder extends RecyclerView.ViewHolder {
-
-    ImageView title_pic;
-    TextView title_text;
-    TextView author_name;
-    TextView date;
-    public MyHolder(@NonNull View itemView) {
-        super(itemView);
-        title_pic = itemView.findViewById(R.id.title_pic);
-        title_text = itemView.findViewById(R.id.title_text);
-        author_name = itemView.findViewById(R.id.author_name);
-        date = itemView.findViewById(R.id.date);
-    }
-}
 
     private onItemClickListener mOnItemClickListener;
     public onItemClickListener getmOnItemClickListener() {
@@ -108,9 +71,7 @@ static class MyHolder extends RecyclerView.ViewHolder {
     public void setOnItemClickListener(onItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
     }
-public interface onItemClickListener{
-    void onItemClick(Camera.ResultBean.DataBean dataBean,int position);
-}
-
-*/
+    public interface onItemClickListener{
+        void onItemClick(int position);
+    }
 }

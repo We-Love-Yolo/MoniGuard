@@ -51,8 +51,10 @@ public class MyFragment extends Fragment {
                 ImageView avatarView = requireActivity().findViewById(R.id.touxiang);
                     // 昵称
                     nameView.setText(mainActivity.resident.getNickname());
+
+                    String phoneNumber = mainActivity.resident.getPhone();
                     // 手机号
-                    phoneView.setText(mainActivity.resident.getPhone());
+                    phoneView.setText(phoneNumber == null ? "未知" : phoneNumber);
                     // 头像
                     if(mainActivity.resident.getAvatar() != null){
                         byte[] avatarBuf = mainActivity.resident.getAvatar();

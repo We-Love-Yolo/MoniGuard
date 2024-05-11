@@ -71,15 +71,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        cameras = new HashMap<>();
-
-        if (!getSharedPreferences("user", MODE_PRIVATE).getBoolean("isLogin", false)) {
+        user = getSharedPreferences("user", MODE_PRIVATE);
+        if (!user.getBoolean("isLogin", false)
+                || System.currentTimeMillis() - user.getLong("expireTime", 0) > 36000000) {
+            SharedPreferences.Editor editor = user.edit();
+            editor.clear();
+            editor.apply();
             Intent intent = new Intent(this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             return;
         }
 
+        cameras = new HashMap<>();
+
+        // 检查刷新token
         user = getSharedPreferences("user", MODE_PRIVATE);
         refreshToken();
 
@@ -208,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.putString("accessToken", res.accessToken);
                 editor.putString("refreshToken", res.refreshToken);
                 editor.putLong("expireTime", res.accessTokenExpirationTime);
-                editor.commit();
+                editor.apply();
             } else {
                 if (ex != null) {
                     Log.e("TokenRefresh", "Refresh failed: " + ex.errorDescription);

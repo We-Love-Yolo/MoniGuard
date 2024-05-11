@@ -11,4 +11,5 @@
     <string name="camera2_name">客厅</string>
     <string name="connected">已连接</string>
     <string name="unconnected">未连接</string>
+    <string name="unknown">未知</string>
 </resources>

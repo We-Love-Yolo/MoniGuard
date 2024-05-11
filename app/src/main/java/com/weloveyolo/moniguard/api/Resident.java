@@ -14,22 +14,6 @@ public class Resident {
     private String phone;
     private String email;
 
-    public int getResidentId() {
-        return residentId;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public byte[] getAvatar() {
-        return avatar;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
     public void setAvatar(byte[] avatar) {
         this.avatar = avatar;
     }

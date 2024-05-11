@@ -1,58 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <Toolbar
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent">
-
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/goback"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/goback3"
+            android:clickable="true"
+            android:onClick="goBack"
+            android:contentDescription="返回主页"/>
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/goback"
-                android:layout_width="12dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="35dp"
-                android:adjustViewBounds="true"
-                android:onClick="goBack"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/goback3" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
 
             <TextView
+                android:id="@+id/monitor_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="120dp"
-                android:layout_marginTop="35dp"
                 android:text="添加设备"
                 android:textColor="@android:color/black"
                 android:textSize="20dp"
                 android:textStyle="bold"
-                tools:ignore="MissingConstraints"
-                />
+                android:layout_gravity="center_horizontal"/>
         </LinearLayout>
+
+    </Toolbar>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="110dp"
-            android:orientation="vertical"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="0dp"
                 android:text="设备名称"
                 android:textColor="@android:color/black"
                 android:textSize="20dp"
@@ -62,7 +55,7 @@
 
             <EditText
                 android:id="@+id/edit_scene_name"
-                android:layout_width="320dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:textSize="13sp"
@@ -72,26 +65,24 @@
                 android:paddingBottom="12dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
-                android:textColorLink="@color/edit_placeholder"
+                android:textColorLink="@color/light_gray"
                 android:textColor="@color/bar_text"
-                android:background="@drawable/edittext_circle_background"/>
+                android:background="@drawable/edittext_circle_background"
+                android:layout_marginTop="5dp"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:orientation="vertical"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="0dp"
                 android:text="快速命名"
                 android:textColor="@android:color/black"
                 android:textSize="20dp"
@@ -100,110 +91,121 @@
                 />
 
             <LinearLayout
-                android:layout_width="340dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_weight="1">
 
                 <Button
                     android:id="@+id/name1"
                     android:text="默认"
                     android:textColor="@color/main_tone"
                     android:background="@drawable/quick_name"
-                    android:layout_width="110dp"
-                    android:layout_height="30dp" />
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"/>
 
                 <Button
                     android:id="@+id/name2"
                     android:text="门禁"
                     android:textColor="@color/main_tone"
                     android:background="@drawable/quick_name"
-                    android:layout_width="110dp"
-                    android:layout_height="30dp" />
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"/>
                 <Button
                     android:id="@+id/name3"
                     android:text="客厅"
                     android:textColor="@color/main_tone"
                     android:background="@drawable/quick_name"
-                    android:layout_width="110dp"
+                    android:layout_width="0dp"
                     android:layout_height="30dp"
+                    android:layout_weight="1"
                     />
             </LinearLayout>
             <LinearLayout
-                android:layout_width="340dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_weight="1">
 
                 <Button
                     android:id="@+id/name4"
                     android:text="书房"
                     android:textColor="@color/main_tone"
                     android:background="@drawable/quick_name"
-                    android:layout_width="110dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="30dp" />
                 <Button
                     android:id="@+id/name5"
                     android:text="餐厅"
                     android:textColor="@color/main_tone"
                     android:background="@drawable/quick_name"
-                    android:layout_width="110dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="30dp" />
                 <Button
                     android:id="@+id/name6"
                     android:text="主卧"
                     android:textColor="@color/main_tone"
                     android:background="@drawable/quick_name"
-                    android:layout_width="110dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="30dp" />
             </LinearLayout>
+
             <LinearLayout
-                android:layout_width="340dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_weight="1">
 
                 <Button
                     android:id="@+id/name7"
                     android:text="办公室"
                     android:textColor="@color/main_tone"
                     android:background="@drawable/quick_name"
-                    android:layout_width="110dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="30dp" />
                 <Button
                     android:id="@+id/name8"
                     android:text="阳台"
                     android:textColor="@color/main_tone"
                     android:background="@drawable/quick_name"
-                    android:layout_width="110dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="30dp" />
                 <Button
                     android:id="@+id/name9"
                     android:text="客卧"
                     android:textColor="@color/main_tone"
                     android:background="@drawable/quick_name"
-                    android:layout_width="110dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="30dp" />
             </LinearLayout>
-
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
                 android:layout_marginTop="0dp"
                 android:text="选择设备类型"
                 android:textColor="@android:color/black"
@@ -215,35 +217,22 @@
                 android:id="@+id/choose_equipment"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginStart="200dp"
+                android:layout_gravity="center_vertical"
                 app:srcCompat="@drawable/right"
                 />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toTopOf="parent">
 
-        </LinearLayout>
         <Button
             android:id="@+id/button_finish"
             android:text="完成"
             android:textColor="@color/white"
             android:background="@drawable/confirm"
-            android:layout_width="260dp"
+            android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginStart="75dp"
-            android:layout_marginTop="0dp"
-            android:layout_gravity="bottom"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
             />
 
-    </LinearLayout>
-
-
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -33,7 +33,6 @@ public class CameraListAdapter extends RecyclerView.Adapter<CameraListAdapter.My
     public void onBindViewHolder(@NonNull CameraListAdapter.MyHolder holder, int position) {
         String device = deviceList.get(position);
         holder.deviceTextView.setText(device);
-        holder.deviceImageView.setImageResource(R.drawable.img_camera_button);
     }
 
     @Override
@@ -50,7 +49,7 @@ public class CameraListAdapter extends RecyclerView.Adapter<CameraListAdapter.My
 
     static class MyHolder extends RecyclerView.ViewHolder {
 
-        ImageView deviceImageView;
+
         TextView  deviceTextView;
         TextView author_name;
         TextView date;
@@ -58,7 +57,6 @@ public class CameraListAdapter extends RecyclerView.Adapter<CameraListAdapter.My
 
             super(itemView);
             deviceTextView = itemView.findViewById(R.id.camera_name);
-            deviceImageView=itemView.findViewById(R.id.camera1_button);
         }
     }
 

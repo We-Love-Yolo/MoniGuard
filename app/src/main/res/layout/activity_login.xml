@@ -69,7 +69,7 @@
                 android:paddingRight="8dp"
                 android:paddingBottom="12dp"
                 android:textColor="@color/bar_text"
-                android:textColorLink="@color/edit_placeholder"
+                android:textColorLink="@color/half_black"
                 android:textSize="13sp" />
 
             <EditText
@@ -89,7 +89,7 @@
                 android:paddingRight="8dp"
                 android:paddingBottom="12dp"
                 android:textColor="@color/bar_text"
-                android:textColorLink="@color/edit_placeholder"
+                android:textColorLink="@color/half_black"
                 android:textSize="13sp" />
 
         </LinearLayout>

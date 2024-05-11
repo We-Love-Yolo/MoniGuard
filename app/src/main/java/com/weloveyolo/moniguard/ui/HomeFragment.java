@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +27,9 @@ import com.weloveyolo.moniguard.activity.AddDeviceActivity;
 import com.weloveyolo.moniguard.activity.MonitorActivity;
 import com.weloveyolo.moniguard.adapter.CameraListAdapter;
 import com.weloveyolo.moniguard.adapter.ScenesAdapter;
+import com.weloveyolo.moniguard.api.Camera;
+
+import java.util.List;
 
 
 public class HomeFragment extends Fragment {
@@ -34,7 +38,7 @@ public class HomeFragment extends Fragment {
     private CameraListAdapter cameralistadpter;
     private String[] scenes = {"场景1", "场景2", "场景3"};//日后可以换成接口得到的字符串数组
     private String[][] devices = {
-            {"设备1-场景1", "设备2-场景1"},
+            {"设备1-场景1", "设备2-场景1","设备3-场景1"},
             {"设备1-场景2", "设备2-场景2"},
             {"设备1-场景3", "设备2-场景3"}
     };
@@ -46,7 +50,7 @@ public class HomeFragment extends Fragment {
     }
     private void updateDeviceList(int position) {
         // 创建 CameraListAdapter 的实例
-        cameralistadpter = new CameraListAdapter(getContext());
+//        cameralistadpter = new CameraListAdapter(getContext());
 
         // 清空适配器中的数据
         cameralistadpter.clear();
@@ -63,12 +67,12 @@ public class HomeFragment extends Fragment {
     public void tryShow() {
         MainActivity mainActivity = ((MainActivity) getActivity());
         if(mainActivity == null) return;
-        if (mainActivity.resident != null) {
+        if (true) {
             requireActivity().runOnUiThread(() -> {
                 //设置spinner选择场景
                 sceneSpinner = getView().findViewById(R.id.scene_spinner);
                 deviceRecyclerView = getView().findViewById(R.id.monitor_list);
-                updateDeviceList(0);
+
 
                 // 使用场景数组设置 Spinner 适配器
                 ScenesAdapter adapter = new ScenesAdapter(getContext(), android.R.layout.simple_spinner_item, scenes);
@@ -76,9 +80,12 @@ public class HomeFragment extends Fragment {
                 sceneSpinner.setAdapter(adapter);
 
                 // 初始化 RecyclerView 和适配器
-                deviceRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                CameraListAdapter cameralistadpter = new CameraListAdapter(requireContext());
+                // 初始化 RecyclerView 和适配器
+                deviceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2)); // 替换 numberOfColumns 为你想要的列数
+                cameralistadpter = new CameraListAdapter(getContext());
                 deviceRecyclerView.setAdapter(cameralistadpter);
+
+                updateDeviceList(0);
 
                 sceneSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override

@@ -70,7 +70,7 @@
             <TextView
                 android:layout_width="370dp"
                 android:layout_height="1dp"
-                android:background="@color/edit_placeholder"></TextView>
+                android:background="@color/half_black"></TextView>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -109,7 +109,7 @@
             <TextView
                 android:layout_width="370dp"
                 android:layout_height="1dp"
-                android:background="@color/edit_placeholder"></TextView>
+                android:background="@color/half_black"></TextView>
         </LinearLayout>
     </LinearLayout>
 

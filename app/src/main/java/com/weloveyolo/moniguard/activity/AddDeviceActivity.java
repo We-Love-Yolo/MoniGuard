@@ -40,14 +40,14 @@ public class AddDeviceActivity extends AppCompatActivity {
     }
 
     public void addDevice(String deviceName){
-        new Thread(() -> {
-            IMoniGuardApi moniGuardApi = new MoniGuardApi();
-            moniGuardApi.getScenesApi().postCamera(sceneId, new Camera(deviceName), ((result, success) -> {
-                CustomToast ct = new CustomToast(getApplicationContext());
-                if(success) {
-                    onBackPressed();
-                }
-            }));
-        }).start();
+//        new Thread(() -> {
+//            IMoniGuardApi moniGuardApi = new MoniGuardApi();
+//            moniGuardApi.getScenesApi().postCamera(sceneId, new Camera(), ((result, success) -> {
+//                CustomToast ct = new CustomToast(getApplicationContext());
+//                if(success) {
+//                    onBackPressed();
+//                }
+//            }));
+//        }).start();
     }
 }

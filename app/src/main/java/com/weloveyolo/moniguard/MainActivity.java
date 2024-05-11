@@ -10,7 +10,6 @@ import android.util.Log;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -42,6 +41,8 @@ import net.openid.appauth.TokenRequest;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.xml.transform.Result;
+
 public class MainActivity extends AppCompatActivity {
     private SharedPreferences user;     // 持久化
 
@@ -67,21 +68,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        user = getSharedPreferences("user", MODE_PRIVATE);
-
-        if(!user.getBoolean("isLogin", false)
-                || System.currentTimeMillis()-user.getLong("expireTime", 0)>36000000){
-            SharedPreferences.Editor editor = user.edit();
-            editor.clear();
-            editor.apply();
+       if(!getSharedPreferences("user", MODE_PRIVATE).getBoolean("isLogin", false)){
             Intent intent = new Intent(this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             return;
         }
 
-        // 检查刷新token
+        user = getSharedPreferences("user", MODE_PRIVATE);
         refreshToken();
+
+        // 在应用程序后台2小时定时执行
+        PeriodicWorkRequest refreshWorkRequest =
+                new PeriodicWorkRequest.Builder(TokenRefreshWorker.class, 2, TimeUnit.HOURS).build();
+        String uniqueWorkName = "tokenRefreshWork";
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+                uniqueWorkName,
+                ExistingPeriodicWorkPolicy.KEEP, // 如果已存在，则保持原有的工作
+                refreshWorkRequest
+        );
 
         // MainActivity方式
         moniGuardApi = new MoniGuardApi();
@@ -150,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // 预请求
     private void prepareData(){
         // 首页
         new Thread(() -> moniGuardApi.getScenesApi().getScenes((scenes, success) -> {
@@ -214,5 +218,18 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public class TokenRefreshWorker extends Worker {
+        public TokenRefreshWorker(
+                @NonNull Context context,
+                @NonNull WorkerParameters params) {
+            super(context, params);
+        }
+        @Override
+        public Result doWork() {
+            refreshToken();
+            return Result.success();
+        }
     }
 }

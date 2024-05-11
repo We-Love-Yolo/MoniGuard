@@ -105,19 +105,19 @@
 
 
     <!-- 导航栏 -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/bar_background"
-        app:elevation="0dp"
-        app:itemBackground="@drawable/navigation_item_background"
-        app:itemTextColor="@color/bar_text"
-        app:labelVisibilityMode="labeled"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_navigation_menu" />
+<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--        android:id="@+id/navigation"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="bottom"-->
+<!--        android:background="@color/bar_background"-->
+<!--        app:elevation="0dp"-->
+<!--        app:itemBackground="@drawable/navigation_item_background"-->
+<!--        app:itemTextColor="@color/bar_text"-->
+<!--        app:labelVisibilityMode="labeled"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:menu="@menu/bottom_navigation_menu" />-->
 
 
     <!--

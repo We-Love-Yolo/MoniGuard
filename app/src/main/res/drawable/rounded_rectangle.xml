@@ -2,6 +2,8 @@
     android:shape="rectangle">
 
     <solid android:color="#FFFFFF" />
-    <corners android:radius="10dp" /> <!-- 圆角半径 -->
-
+    <corners>
+        <corners android:topLeftRadius="10dp" />
+        <corners android:topRightRadius="10dp" />
+    </corners>
 </shape>

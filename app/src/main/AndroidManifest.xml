@@ -16,6 +16,12 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
+            android:name=".activity.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MessageInfoActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
@@ -25,9 +31,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity> <!-- activity都要写在这 -->
-
         <activity
             android:name="net.openid.appauth.RedirectUriReceiverActivity"
             android:exported="true"
@@ -39,28 +43,25 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="com.weloveyolo.moniguard" />
-<!--                <data android:scheme="https"-->
-<!--                    android:host="com.weloveyolo.moniguard"-->
-<!--                    android:path="/oauth/redirect"/>-->
+                <!-- <data android:scheme="https" -->
+                <!-- android:host="com.weloveyolo.moniguard" -->
+                <!-- android:path="/oauth/redirect"/> -->
             </intent-filter>
         </activity>
-
         <activity android:name=".activity.InfoActivity" />
         <activity android:name=".activity.SigninActivity" />
         <activity
             android:name=".activity.LoginActivity"
             android:exported="true"
             android:launchMode="standard"
-            android:screenOrientation="portrait" />
-        <!--        <activity-->
-        <!--            android:name=".activitys.HomeActivity"-->
-        <!--            android:exported="true"-->
-        <!--            />-->
-
+            android:screenOrientation="portrait" /> <!-- <activity -->
+        <!-- android:name=".activitys.HomeActivity" -->
+        <!-- android:exported="true" -->
+        <!-- /> -->
         <activity android:name=".activity.MonitorActivity" />
-        <activity android:name=".activity.AlbumActivity"></activity>
-        <activity android:name=".activity.AddDeviceActivity"></activity>
-        <activity android:name=".activity.Health_monitoring"></activity>
-
+        <activity android:name=".activity.AlbumActivity" />
+        <activity android:name=".activity.AddDeviceActivity" />
+        <activity android:name=".activity.Health_monitoring" />
     </application>
+
 </manifest>

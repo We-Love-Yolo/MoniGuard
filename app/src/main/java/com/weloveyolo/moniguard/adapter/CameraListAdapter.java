@@ -1,5 +1,7 @@
 package com.weloveyolo.moniguard.adapter;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -8,31 +10,55 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.weloveyolo.moniguard.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class CameraListAdapter extends RecyclerView.Adapter<CameraListAdapter.MyHolder> {
+    private List<String> deviceList;
+    private LayoutInflater inflater;
+    public CameraListAdapter(Context context) {
+        inflater = LayoutInflater.from(context);
+        deviceList = new ArrayList<>();
+    }
     @NonNull
     @Override
     public CameraListAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View itemView = inflater.inflate(R.layout.item_monitor, parent, false);
+        return new CameraListAdapter.MyHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CameraListAdapter.MyHolder holder, int position) {
-
+        String device = deviceList.get(position);
+        holder.deviceTextView.setText(device);
+        holder.deviceImageView.setImageResource(R.drawable.img_camera_button);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return deviceList.size();
     }
+    public void addDevice(String device) {
+        deviceList.add(device);
+    }
+    public void clear() {
+        deviceList.clear();
+    }
+
 
     static class MyHolder extends RecyclerView.ViewHolder {
 
-        ImageView title_pic;
-        TextView title_text;
+        ImageView deviceImageView;
+        TextView  deviceTextView;
         TextView author_name;
         TextView date;
         public MyHolder(@NonNull View itemView) {
+
             super(itemView);
+            deviceTextView = itemView.findViewById(R.id.camera_name);
+            deviceImageView=itemView.findViewById(R.id.camera1_button);
         }
     }
 

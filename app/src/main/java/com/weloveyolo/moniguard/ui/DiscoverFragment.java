@@ -43,7 +43,7 @@ public class DiscoverFragment extends Fragment {
         });
         //进入趣味运动
         ImageButton button3 = view.findViewById(R.id.happy_sport);
-        button2.setOnClickListener(view1 -> {
+        button3.setOnClickListener(view1 -> {
             Intent intent = new Intent(getActivity(), Sports.class);
             startActivity(intent);
         });

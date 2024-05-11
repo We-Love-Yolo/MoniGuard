@@ -38,7 +38,10 @@ import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
 import net.openid.appauth.TokenRequest;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.xml.transform.Result;
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private IMoniGuardApi moniGuardApi;
     public Resident resident = null;
     public List<Scene> scenes = null;
-    public List<Camera> cameras = null;
+    public Map<Integer, List<Camera>> cameras = null;
 
     @Override
     public void onBackPressed() {
@@ -68,25 +71,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-      /* if(!getSharedPreferences("user", MODE_PRIVATE).getBoolean("isLogin", false)){
+        cameras = new HashMap<>();
+
+        if (!getSharedPreferences("user", MODE_PRIVATE).getBoolean("isLogin", false)) {
             Intent intent = new Intent(this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             return;
         }
-*/
+
         user = getSharedPreferences("user", MODE_PRIVATE);
         refreshToken();
-
-        // 在应用程序后台2小时定时执行
-        PeriodicWorkRequest refreshWorkRequest =
-                new PeriodicWorkRequest.Builder(TokenRefreshWorker.class, 2, TimeUnit.HOURS).build();
-        String uniqueWorkName = "tokenRefreshWork";
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-                uniqueWorkName,
-                ExistingPeriodicWorkPolicy.KEEP, // 如果已存在，则保持原有的工作
-                refreshWorkRequest
-        );
 
         // MainActivity方式
         moniGuardApi = new MoniGuardApi();
@@ -155,29 +150,31 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void prepareData(){
+    private void prepareData() {
         // 首页
         new Thread(() -> moniGuardApi.getScenesApi().getScenes((scenes, success) -> {
-            if(success) {
-                this.scenes = scenes;
-                homeFragment.tryShow();
-                moniGuardApi.getScenesApi().getCameras(2, (cameras, success2) -> {
-                    if(success2) {
-                        this.cameras = cameras;
-                        homeFragment.tryShow();
-                    }
-                });
+            if (success) {
+                this.scenes = new ArrayList<>(scenes);
+                this.cameras.clear();
+                new Thread(() -> {
+                    this.scenes.forEach(scene -> {
+                        moniGuardApi.getScenesApi().getCameras(scene.getSceneId(), (c, s) -> {
+                            this.cameras.put(scene.getSceneId(), new ArrayList<>(c));
+                        });
+                    });
+                    runOnUiThread(homeFragment::tryShow);
+                }).start();
             }
         })).start();
 
         // 我的
         new Thread(() -> moniGuardApi.getResidentsApi().getResident((resident, success) -> {
-            if(success) {
+            if (success) {
                 this.resident = resident;
                 myFragment.tryShow();
-                if(this.resident.getAvatar() == null){
+                if (this.resident.getAvatar() == null) {
                     moniGuardApi.getResidentsApi().getAvatar((avatar, success2) -> {
-                        if(success2) {
+                        if (success2) {
                             resident.setAvatar(avatar);
                             myFragment.tryShow();
                         }
@@ -187,8 +184,8 @@ public class MainActivity extends AppCompatActivity {
         })).start();
     }
 
-    private void refreshToken(){
-        if(user.getLong("expireTime", 0) - System.currentTimeMillis() > 1800000) return;
+    private void refreshToken() {
+        if (user.getLong("expireTime", 0) - System.currentTimeMillis() > 1800000) return;
 
         final String MY_CLIENT_ID = "6e7fcbc1-b51f-4111-ad44-2cf0baee8597";
 
@@ -218,18 +215,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    public class TokenRefreshWorker extends Worker {
-        public TokenRefreshWorker(
-                @NonNull Context context,
-                @NonNull WorkerParameters params) {
-            super(context, params);
-        }
-        @Override
-        public Result doWork() {
-            refreshToken();
-            return Result.success();
-        }
     }
 }

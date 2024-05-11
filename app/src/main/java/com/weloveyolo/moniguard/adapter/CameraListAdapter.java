@@ -11,12 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.weloveyolo.moniguard.R;
+import com.weloveyolo.moniguard.api.Camera;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CameraListAdapter extends RecyclerView.Adapter<CameraListAdapter.MyHolder> {
-    private List<String> deviceList;
+    private List<Camera> deviceList;
     private LayoutInflater inflater;
     public CameraListAdapter(Context context) {
         inflater = LayoutInflater.from(context);
@@ -31,17 +32,19 @@ public class CameraListAdapter extends RecyclerView.Adapter<CameraListAdapter.My
 
     @Override
     public void onBindViewHolder(@NonNull CameraListAdapter.MyHolder holder, int position) {
-        String device = deviceList.get(position);
-        holder.deviceTextView.setText(device);
+        Camera device = deviceList.get(position);
+        holder.deviceTextView.setText(device.getName());
     }
 
     @Override
     public int getItemCount() {
         return deviceList.size();
     }
-    public void addDevice(String device) {
-        deviceList.add(device);
+
+    public void addDevice(String cameraName) {
+        deviceList.add(new Camera(-1, cameraName, "", "", -1, false));
     }
+
     public void clear() {
         deviceList.clear();
     }

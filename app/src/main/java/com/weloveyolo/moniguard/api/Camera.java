@@ -13,10 +13,14 @@ public class Camera {
       private int sceneId;
       private Boolean connectState;
 
-      public Camera(String name,Boolean connectState) {
-            this.name = name;
-            this.connectState=connectState;
-      }
+//      public Camera(String name,Boolean connectState) {
+//            this.name = name;
+//            this.connectState=connectState;
+//      }
+//      public Camera()
+//      {
+//
+//      }
 
       public int getCameraId() {
             return cameraId;

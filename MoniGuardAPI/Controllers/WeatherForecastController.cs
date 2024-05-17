@@ -33,5 +33,13 @@ namespace MoniGuardAPI.Controllers
             })
             .ToArray();
         }
+
+
+/*        [HttpGet]
+        [Route("{id:int}", Name = "GetWeatherForecastById")]
+        public Message Get(int id)
+        {
+            return new Message();
+        }*/
     }
 }

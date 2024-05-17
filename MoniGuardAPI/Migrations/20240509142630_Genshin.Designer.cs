@@ -12,8 +12,8 @@ using MoniGuardAPI.Data;
 namespace MoniGuardAPI.Migrations
 {
     [DbContext(typeof(MoniGuardAPIContext))]
-    [Migration("20240507145130_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240509142630_Genshin")]
+    partial class Genshin
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,6 +50,62 @@ namespace MoniGuardAPI.Migrations
                     b.HasKey("CameraId");
 
                     b.ToTable("Camera");
+                });
+
+            modelBuilder.Entity("MoniGuardAPI.Guest", b =>
+                {
+                    b.Property<int>("GuestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GuestId"));
+
+                    b.Property<string>("Avatar")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SceneId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GuestId");
+
+                    b.ToTable("Guests");
+                });
+
+            modelBuilder.Entity("MoniGuardAPI.Photo", b =>
+                {
+                    b.Property<int>("PhotoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PhotoId"));
+
+                    b.Property<int>("CameraId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PhotoId");
+
+                    b.ToTable("Photos");
                 });
 
             modelBuilder.Entity("MoniGuardAPI.Resident", b =>

@@ -12,6 +12,13 @@ builder.Services.AddDbContext<MoniGuardAPIContext>(options =>
                          throw new InvalidOperationException("Connection string 'MoniGuardAPIContext' not found."));
     options.EnableSensitiveDataLogging();
 });
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+
+    options.InstanceName = "Redis_";
+});
+//builder.Services.AddMemoryCache();
 
 var azureAdConfigurationSection = builder.Configuration.GetSection("AzureAd");
 // Add services to the container.
@@ -69,6 +76,8 @@ if (!builder.Environment.IsDevelopment())
 {
     builder.Services.AddLettuceEncrypt();
 }
+
+
 
 var app = builder.Build();
 

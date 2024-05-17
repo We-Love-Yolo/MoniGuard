@@ -6,6 +6,10 @@
     "mssql1": {
       "type": "mssql",
       "connectionId": "ConnectionStrings:MoniGuardAPIContext"
+    },
+    "redis1": {
+      "type": "redis",
+      "connectionId": "testRedis"
     }
   }
 }

@@ -18,7 +18,7 @@ builder.Services.AddStackExchangeRedisCache(options =>
 
     options.InstanceName = "Redis_";
 });
-//builder.Services.AddMemoryCache();
+builder.Services.AddMemoryCache();
 
 var azureAdConfigurationSection = builder.Configuration.GetSection("AzureAd");
 // Add services to the container.

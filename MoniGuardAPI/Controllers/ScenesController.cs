@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Identity.Web.Resource;
 using MoniGuardAPI.Data;
 
@@ -12,7 +13,7 @@ namespace MoniGuardAPI.Controllers
     [Authorize]
     [Route("[controller]/[action]")]
     [ApiController]
-    public class ScenesController(MoniGuardAPIContext context) : ControllerBase
+    public class ScenesController(MoniGuardAPIContext context, IMemoryCache cache) : ControllerBase
     {
         // GET: /Scenes/GetScenes
         //[Authorize]
@@ -122,6 +123,51 @@ namespace MoniGuardAPI.Controllers
             await context.SaveChangesAsync();
             return NoContent();
         }
+
+        [HttpPost]
+        public async Task<ActionResult<Dictionary<string, int>>> RequestAddCamera(string connectString)
+        {
+            var residentId = await GetAuthorizedResidentId();
+            if (residentId == null)
+            {
+                return NotFound();
+            }
+            var random = new Random();
+            var randomNumber = random.Next(100000, 1000000);
+
+            var key = residentId.ToString() + randomNumber.ToString();
+            cache.Set(key, connectString, new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(5)));
+            var dictionary = new Dictionary<string, int>
+            {
+                {"key", randomNumber}
+            };
+            
+            return dictionary;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<string>> TestGetCameraConnectString(int key, string name, int sceneId, string? description)
+        {
+            var residentId = await GetAuthorizedResidentId();
+            if (residentId == null)
+            {
+                return NotFound();
+            }
+            var connectString = cache.Get<string>(residentId.ToString() + key);
+            if (connectString == null)
+            {
+                return NotFound();
+            }
+            cache.Remove(residentId.ToString() + key);
+            var camera = new Camera(name, DateTime.Now, sceneId, description)
+            {
+                ConnectString = connectString
+            };
+            await context.Camera.AddAsync(camera);
+            await context.SaveChangesAsync();
+            return connectString;
+        }
+
 
         private async Task<int?> GetAuthorizedResidentId()
         {

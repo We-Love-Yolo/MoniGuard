@@ -18,12 +18,12 @@ namespace MoniGuardAPI.Controllers
     //this controller is used to test the redis cache
     [Authorize]
     [ApiController]
-    [Route("api/[controller]")]
-    public class RedisTestController(IDistributedCache distributedCache, MoniGuardAPIContext context) : ControllerBase
+    [Route("[controller]/[action]")]
+    public class AnalyzeController(IDistributedCache distributedCache, MoniGuardAPIContext context) : ControllerBase
     {
         private readonly IDistributedCache _distributedCache = distributedCache;
 
-        [HttpPost("UpdateMessages")]
+        [HttpPost]
         public async Task<IActionResult> UpdateMessages(Message message)
         {
             var authorizedResident = await GetAuthorizedResident();
@@ -53,7 +53,7 @@ namespace MoniGuardAPI.Controllers
         }
 
 
-        [HttpGet("GetMessages")]
+        [HttpGet]
         public async Task<ActionResult<List<Message>>> GetMessages()
         {
             var resident = await GetAuthorizedResident();

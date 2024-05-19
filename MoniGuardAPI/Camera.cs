@@ -31,4 +31,7 @@ public class Camera(int cameraId, string name, DateTime createdAt, int sceneId, 
 
     [Required]
     public int SceneId { get; set; } = sceneId;
+
+    [Required] 
+    public string ConnectString { get; set; }
 }

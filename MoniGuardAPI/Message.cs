@@ -8,5 +8,4 @@ public class Message
 
     public int Type { get; set; }
 
-    public int ResidentId { get; set; }
 }

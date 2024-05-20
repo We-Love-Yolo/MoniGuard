@@ -1,30 +1,20 @@
 package com.weloveyolo.moniguard;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
-import androidx.work.Worker;
-import androidx.work.WorkerParameters;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.weloveyolo.moniguard.activity.LoginActivity;
 import com.weloveyolo.moniguard.api.Camera;
 import com.weloveyolo.moniguard.api.IMoniGuardApi;
-import com.weloveyolo.moniguard.api.IResidentsApi;
 import com.weloveyolo.moniguard.api.MoniGuardApi;
 import com.weloveyolo.moniguard.api.Resident;
 import com.weloveyolo.moniguard.api.Scene;
@@ -32,6 +22,7 @@ import com.weloveyolo.moniguard.ui.DiscoverFragment;
 import com.weloveyolo.moniguard.ui.HomeFragment;
 import com.weloveyolo.moniguard.ui.MessageFragment;
 import com.weloveyolo.moniguard.ui.MyFragment;
+import com.weloveyolo.moniguard.util.CustomToast;
 import com.weloveyolo.moniguard.util.HttpClient;
 
 import net.openid.appauth.AuthorizationService;
@@ -42,9 +33,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import javax.xml.transform.Result;
 
 public class MainActivity extends AppCompatActivity {
     private SharedPreferences user;     // 持久化
@@ -59,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     public Resident resident = null;
     public List<Scene> scenes = null;
     public Map<Integer, List<Camera>> cameras = null;
+
+    public static CustomToast ct = null;   // 轻提示
 
     @Override
     public void onBackPressed() {
@@ -83,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        ct = new CustomToast(getApplicationContext());
+
         cameras = new HashMap<>();
 
         // 检查刷新token
@@ -95,7 +87,9 @@ public class MainActivity extends AppCompatActivity {
         // 其他方式
         HttpClient.setToken(user.getString("accessToken", ""));
 
-        prepareData();
+        getHomeData();
+        getMessageData();
+        getMyData();
 
         setContentView(R.layout.activity_main);
 
@@ -156,8 +150,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void prepareData() {
-        // 首页
+    // 首页
+    public void getHomeData() {
         new Thread(() -> moniGuardApi.getScenesApi().getScenes((scenes, success) -> {
             if (success) {
                 this.scenes = new ArrayList<>(scenes);
@@ -165,15 +159,31 @@ public class MainActivity extends AppCompatActivity {
                 new Thread(() -> {
                     this.scenes.forEach(scene -> {
                         moniGuardApi.getScenesApi().getCameras(scene.getSceneId(), (c, s) -> {
-                            this.cameras.put(scene.getSceneId(), new ArrayList<>(c));
+                            cameras.put(scene.getSceneId(), new ArrayList<>(c));
                         });
                     });
                     runOnUiThread(homeFragment::tryShow);
                 }).start();
             }
         })).start();
+    }
 
-        // 我的
+    public void getCamerasOfSingleScene(int id){
+        new Thread(() -> {
+            moniGuardApi.getScenesApi().getCameras(id, (c, s) -> {
+                cameras.put(id, new ArrayList<>(c));
+            });
+            runOnUiThread(homeFragment::tryShow);
+        }).start();
+    }
+
+    // 发现
+    public void getMessageData(){
+
+    }
+
+    // 我的
+    public void getMyData(){
         new Thread(() -> moniGuardApi.getResidentsApi().getResident((resident, success) -> {
             if (success) {
                 this.resident = resident;

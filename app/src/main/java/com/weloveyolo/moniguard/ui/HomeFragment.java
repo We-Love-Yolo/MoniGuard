@@ -1,37 +1,29 @@
 package com.weloveyolo.moniguard.ui;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.activity.AddDeviceActivity;
+import com.weloveyolo.moniguard.activity.AddSceneActivity;
 import com.weloveyolo.moniguard.activity.MonitorActivity;
 import com.weloveyolo.moniguard.adapter.CameraListAdapter;
 import com.weloveyolo.moniguard.adapter.ScenesAdapter;
-import com.weloveyolo.moniguard.api.Camera;
-import com.weloveyolo.moniguard.api.Scene;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -39,12 +31,10 @@ public class HomeFragment extends Fragment {
     private Spinner sceneSpinner;
     private RecyclerView deviceRecyclerView;
     private CameraListAdapter cameralistadpter;
-//    private Scene[] scenes = {"场景1", "场景2", "场景3"};//日后可以换成接口得到的字符串数组
-//    private String[][] devices = {
-//            {"设备1-场景1", "设备2-场景1","设备3-场景1"},
-//            {"设备1-场景2", "设备2-场景2"},
-//            {"设备1-场景3", "设备2-场景3"}
-//    };
+
+    private int chosenSceneId = 0;
+    private final int CREATE_SCENE_CODE = 101;
+    private final int ADD_CAMERA_CODE = 102;
 
     @Nullable
     @Override
@@ -67,6 +57,8 @@ public class HomeFragment extends Fragment {
             });
         }
 
+        chosenSceneId = sceneId;
+
         // 通知适配器数据已更改
         cameralistadpter.notifyDataSetChanged();
     }
@@ -84,7 +76,6 @@ public class HomeFragment extends Fragment {
             sceneSpinner = getView().findViewById(R.id.scene_spinner);
             deviceRecyclerView = getView().findViewById(R.id.monitor_list);
 
-
             // 使用场景数组设置 Spinner 适配器
             String[] sceneNames = new String[mainActivity.scenes.size()];
             for (int i = 0; i < sceneNames.length; ++i) {
@@ -94,7 +85,6 @@ public class HomeFragment extends Fragment {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             sceneSpinner.setAdapter(adapter);
 
-            // 初始化 RecyclerView 和适配器
             // 初始化 RecyclerView 和适配器
             deviceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2)); // 替换 numberOfColumns 为你想要的列数
             cameralistadpter = new CameraListAdapter(getContext());
@@ -126,15 +116,16 @@ public class HomeFragment extends Fragment {
         ImageButton addSceneButton = view.findViewById(R.id.add_camera_button);
         addSceneButton.setOnClickListener(view1 -> {
             Intent intent = new Intent(getActivity(), AddDeviceActivity.class);
-            startActivity(intent);
+            intent.putExtra("sceneId", chosenSceneId);  // 传入场景id
+            startActivityForResult(intent, ADD_CAMERA_CODE);
         });
 
-        // 进入添加场景
+        // 进入创建场景
         ImageButton addCameraButton = view.findViewById(R.id.add_scene);
-        //       addCameraButton.setOnClickListener(v -> {
-//            Intent intent=new Intent(getActivity(), );
-//            startActivity(intent);
-//        });
+        addCameraButton.setOnClickListener(v -> {
+            Intent intent=new Intent(getActivity(), AddSceneActivity.class);
+            startActivityForResult(intent, CREATE_SCENE_CODE);
+        });
 
         // 进入门禁
         ImageButton cameraButton1 = view.findViewById(R.id.camera1_button);
@@ -142,6 +133,20 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(getActivity(), MonitorActivity.class);
             startActivity(intent);
         });
+    }
 
+    // 处理添加返回结果
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode != Activity.RESULT_OK) return;
+
+        if(requestCode == CREATE_SCENE_CODE){
+            ((MainActivity) requireActivity()).getHomeData();
+        }
+        else if(requestCode == ADD_CAMERA_CODE){
+            ((MainActivity) requireActivity()).getCamerasOfSingleScene(chosenSceneId);
+        }
     }
 }

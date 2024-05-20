@@ -105,18 +105,26 @@ public class ScenesApi implements IScenesApi {
 
     @Override
     public void postScene(String sceneName, ICallback<?> callback) {
-        Gson gson = new Gson();
-        String json = gson.toJson(sceneName);
-        okhttp3.RequestBody body = okhttp3.RequestBody.create(json, okhttp3.MediaType.parse("application/json"));
-        Request request = new Request.Builder()
-                .url(getApiUrl() + "/PostScene/" + sceneName)
-                .header("Authorization", "Bearer " + getAccessToken())
-                .post(body)
-                .build();
-        try (Response response = mainApi.getHttpClient().newCall(request).execute()) {
+//        Gson gson = new Gson();
+//        String json = gson.toJson(sceneName);
+//        okhttp3.RequestBody body = okhttp3.RequestBody.create(json, okhttp3.MediaType.parse("application/json"));
+//        Request request = new Request.Builder()
+//                .url(getApiUrl() + "/PostScene/" + sceneName)
+//                .header("Authorization", "Bearer " + getAccessToken())
+//                .post(body)
+//                .build();
+//        try (Response response = mainApi.getHttpClient().newCall(request).execute()) {
+//            if (!response.isSuccessful()) {
+//                callback.onCallback(null, false);
+//                return;
+//            }
+//            callback.onCallback(null, true);
+//        } catch (IOException e) {
+//            callback.onCallback(null, false);
+//        }
+        try (Response response = HttpClient.post(getApiUrl() + "/PostScene", sceneName, null)) {
             if (!response.isSuccessful()) {
-                callback.onCallback(null, false);
-                return;
+                throw new IOException("Failed to post scene: " + response);
             }
             callback.onCallback(null, true);
         } catch (IOException e) {

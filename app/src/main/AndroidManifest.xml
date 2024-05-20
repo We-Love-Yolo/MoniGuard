@@ -62,6 +62,8 @@
         <activity android:name=".activity.AlbumActivity" />
         <activity android:name=".activity.AddDeviceActivity" />
         <activity android:name=".activity.Health_monitoring" />
+        <activity android:name=".activity.AddSceneActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

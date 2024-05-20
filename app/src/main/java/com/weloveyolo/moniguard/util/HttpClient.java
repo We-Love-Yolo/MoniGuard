@@ -73,7 +73,9 @@ public class HttpClient {
     public static <T> Response post(String path, String query, T object) throws IOException {
         path = query != null ? path + "/" + query : path;
         Gson gson = new Gson();
-        String json = gson.toJson(object);
+        String json;
+        if(object == null) json = gson.toJson("");
+        else json = gson.toJson(object);
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder().url(path).post(body).build();

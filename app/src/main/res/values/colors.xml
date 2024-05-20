@@ -15,4 +15,6 @@
     <color name="half_black">#80000000</color>
     <color name="green">#A0EE00</color>
     <color name="red">#FE0302</color>
+    <color name="hint">#888888</color>
+    <color name="share">#C8AFA9A9</color>
 </resources>

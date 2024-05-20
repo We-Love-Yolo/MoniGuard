@@ -17,10 +17,9 @@ public class Camera {
 //            this.name = name;
 //            this.connectState=connectState;
 //      }
-//      public Camera()
-//      {
-//
-//      }
+      public Camera(String name) {
+            this.name = name;
+      }
 
       public int getCameraId() {
             return cameraId;

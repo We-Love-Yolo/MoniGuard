@@ -19,6 +19,7 @@ public class Photo
 
     [Required]
     public string Url { get; set; }
+    // {server ip}/xxx/{sceneId}/{md5}.jpg
 
     [MaxLength(255)]
     [Required]

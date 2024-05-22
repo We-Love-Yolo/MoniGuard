@@ -15,4 +15,6 @@ public class MoniGuardAPIContext(DbContextOptions<MoniGuardAPIContext> options) 
     public DbSet<Guest> Guests { get; set; } = default!;
 
     public DbSet<Photo> Photos { get; set; } = default!;
+
+    public DbSet<CapturedPhoto> CapturedPhoto { get; set; } = default!;
 }

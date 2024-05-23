@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,8 +52,11 @@ public class AddDeviceActivity extends AppCompatActivity {
         new Thread(() -> {
             IMoniGuardApi moniGuardApi = new MoniGuardApi();
             moniGuardApi.getScenesApi().postCamera(sceneId, new Camera(deviceName), ((result, success) -> {
+                Log.i("AddDeviceActivity", deviceName);
                 if(success) {
                     runOnUiThread(() -> {
+
+                        Log.i("AddDeviceActivity", "^^^^^^^^^^^^^");
                         MainActivity.ct.showSuccessToast("设备已添加", 1000);
                         setResult(Activity.RESULT_OK, new Intent());
                         finish();

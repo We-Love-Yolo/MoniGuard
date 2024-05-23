@@ -1,5 +1,7 @@
 package com.weloveyolo.moniguard.api;
 
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -11,7 +13,7 @@ public class Camera {
       private String createdAt;
       private String description;
       private int sceneId;
-      private Boolean connectState;
+      private String connectString;
 
 //      public Camera(String name,Boolean connectState) {
 //            this.name = name;
@@ -19,6 +21,8 @@ public class Camera {
 //      }
       public Camera(String name) {
             this.name = name;
+            this.connectString = "114514";
+            this.createdAt = "2024-05-23T12:21:57.685Z";
       }
 
       public int getCameraId() {
@@ -37,7 +41,7 @@ public class Camera {
             return sceneId;
       }
 
-      public Boolean isConnectState(){return connectState;}
+      public String isConnectState(){return connectString;}
 
       @Override
       public String toString() {

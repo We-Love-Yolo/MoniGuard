@@ -42,7 +42,7 @@ public class CameraListAdapter extends RecyclerView.Adapter<CameraListAdapter.My
     }
 
     public void addDevice(String cameraName) {
-        deviceList.add(new Camera(-1, cameraName, "", "", -1, false));
+        deviceList.add(new Camera(-1, cameraName, "", "", -1, ""));
     }
 
     public void clear() {

@@ -157,6 +157,7 @@ public class ScenesApi implements IScenesApi {
             }
             callback.onCallback(null, true);
         } catch (IOException e) {
+            Log.w("SceneApi", sceneId+"");
             callback.onCallback(null, false);
         }
     }

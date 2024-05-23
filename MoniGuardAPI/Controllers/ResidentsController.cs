@@ -204,7 +204,7 @@ namespace MoniGuardAPI.Controllers
             var nameIdentifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (nameIdentifier == null)
             {
-
+                return null;
             }
 
             var all = context.Resident.Where(r => r.ResidentId == 1);

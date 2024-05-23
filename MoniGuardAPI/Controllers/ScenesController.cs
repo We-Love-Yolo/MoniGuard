@@ -168,6 +168,23 @@ namespace MoniGuardAPI.Controllers
             return connectString;
         }
 
+        [HttpGet("{sceneId:int}")]
+        public async Task<ActionResult<List<Guest>>> GetGuest(int sceneId)
+        {
+            var residentId = await GetAuthorizedResidentId();
+            if (residentId == null)
+            {
+                return NotFound();
+            }
+            var scene = await context.Scene.FirstOrDefaultAsync(s => s.SceneId == sceneId);
+            if (scene == null || scene.ResidentId != residentId)
+            {
+                return Unauthorized();
+            }
+
+            return await context.Guests.Where(g => g.SceneId == sceneId).ToListAsync();
+        }
+
 
         private async Task<int?> GetAuthorizedResidentId()
         {

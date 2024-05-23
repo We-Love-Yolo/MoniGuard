@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MoniGuardAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class Genshin : Migration
+    public partial class StarRail : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,11 +20,29 @@ namespace MoniGuardAPI.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    SceneId = table.Column<int>(type: "int", nullable: false)
+                    SceneId = table.Column<int>(type: "int", nullable: false),
+                    ConnectString = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Camera", x => x.CameraId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Faces",
+                columns: table => new
+                {
+                    FaceId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GuestId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CapturedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Hash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    Content = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Faces", x => x.FaceId);
                 });
 
             migrationBuilder.CreateTable(
@@ -112,6 +130,9 @@ namespace MoniGuardAPI.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Camera");
+
+            migrationBuilder.DropTable(
+                name: "Faces");
 
             migrationBuilder.DropTable(
                 name: "Guests");

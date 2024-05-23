@@ -30,6 +30,10 @@ namespace MoniGuardAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CameraId"));
 
+                    b.Property<string>("ConnectString")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -47,6 +51,34 @@ namespace MoniGuardAPI.Migrations
                     b.HasKey("CameraId");
 
                     b.ToTable("Camera");
+                });
+
+            modelBuilder.Entity("MoniGuardAPI.Face", b =>
+                {
+                    b.Property<int>("FaceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FaceId"));
+
+                    b.Property<DateTime>("CapturedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("Content")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("GuestId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("Hash")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FaceId");
+
+                    b.ToTable("Faces");
                 });
 
             modelBuilder.Entity("MoniGuardAPI.Guest", b =>

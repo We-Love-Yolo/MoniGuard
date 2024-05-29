@@ -146,7 +146,7 @@ namespace MoniGuardAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<string>> TestGetCameraConnectString(int key, string name, int sceneId, string? description)
+        public async Task<ActionResult<string>> GetCameraConnectString(int key, string name, int sceneId, string? description)
         {
             var residentId = await GetAuthorizedResidentId();
             if (residentId == null)
@@ -185,6 +185,44 @@ namespace MoniGuardAPI.Controllers
             return await context.Guests.Where(g => g.SceneId == sceneId).ToListAsync();
         }
 
+        [HttpPost("{guestId:int}")]
+        public async Task<IActionResult> PostGuest(int guestId, [FromBody] Guest guest)
+        {
+            var residentId = await GetAuthorizedResidentId();
+            if (residentId == null)
+            {
+                return NotFound();
+            }
+            
+            context.Entry(guest).State = EntityState.Modified;
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return BadRequest();
+            }
+            return NoContent();
+        }
+
+        [HttpDelete("{guestId:int}")]
+        public async Task<IActionResult> DeleteGuest(int guestId)
+        {
+            var guest = context.Guests.FirstOrDefault(g => g.GuestId == guestId);
+            if (guest == null)
+            {
+                return NotFound();
+            }
+            var scene = await context.Scene.FirstOrDefaultAsync(s => s.SceneId == guest.SceneId);
+            if (scene == null || scene.ResidentId != await GetAuthorizedResidentId())
+            {
+                return Unauthorized();
+            }
+            context.Guests.Remove(guest);
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
 
         private async Task<int?> GetAuthorizedResidentId()
         {

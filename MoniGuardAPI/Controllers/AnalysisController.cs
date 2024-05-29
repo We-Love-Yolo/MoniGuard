@@ -35,21 +35,21 @@ namespace MoniGuardAPI.Controllers
                 return NotFound();
             }
             var id = authorizedResident.ResidentId;
-            byte[]? messagesStr = await _distributedCache.GetAsync($"{id}_test");
+            byte[]? messagesStr = await _distributedCache.GetAsync($"{id}_message");
             var cacheEntryOptions = new DistributedCacheEntryOptions()
                 .SetSlidingExpiration(TimeSpan.FromDays(2));
             if (messagesStr == null)
             {
                 List<Message> messages = [message];
                 var json = JsonSerializer.Serialize(messages);
-                await _distributedCache.SetStringAsync($"{id}_test", json, cacheEntryOptions);
+                await _distributedCache.SetStringAsync($"{id}_message", json, cacheEntryOptions);
             }
             else
             {
                 var messages = JsonSerializer.Deserialize<List<Message>>(Encoding.UTF8.GetString(messagesStr))!;
                 messages.Add(message);
                 var json = JsonSerializer.Serialize(messages);
-                await _distributedCache.SetStringAsync($"{id}_test", json, cacheEntryOptions);
+                await _distributedCache.SetStringAsync($"{id}_message", json, cacheEntryOptions);
             }
             //todo: add the message to the database
             return Ok();
@@ -65,7 +65,7 @@ namespace MoniGuardAPI.Controllers
                 return NotFound();
             }
             var id = resident.ResidentId;
-            byte[]? messagesStr = await _distributedCache.GetAsync($"{id}_test");
+            byte[]? messagesStr = await _distributedCache.GetAsync($"{id}_message");
             List<Message> res;
             if (messagesStr == null)
             {
@@ -75,7 +75,7 @@ namespace MoniGuardAPI.Controllers
             else
             {
                 res = JsonSerializer.Deserialize<List<Message>>(Encoding.UTF8.GetString(messagesStr));
-                await _distributedCache.RemoveAsync($"{id}_test");
+                await _distributedCache.RemoveAsync($"{id}_message");
                 return Ok(res);
             }
            
@@ -160,7 +160,7 @@ namespace MoniGuardAPI.Controllers
         }
 
         [HttpPut("{faceId:int}")]
-        public async Task<IActionResult> PsotFaceImage(int faceId,[FromBody] IFormFile imageFile)
+        public async Task<IActionResult> PostFaceImage(int faceId,[FromBody] IFormFile imageFile)
         {
             if (faceId <= 0)
             {
@@ -202,6 +202,33 @@ namespace MoniGuardAPI.Controllers
         }
 
 
+        [HttpPost("{sceneId:int}")]
+        public async Task<IActionResult> NewAGuest(int sceneId)
+        {
+            if (sceneId <= 0)
+            {
+                return BadRequest();
+            }
+            var resident = await GetAuthorizedResident();
+            if (resident == null)
+            {
+                return Unauthorized();
+            }
+            var scene = await context.Scene.FirstAsync(s => s.SceneId == sceneId);
+            if (scene == null)
+            {
+                return NotFound();
+            }
+
+            if (scene.ResidentId != resident.ResidentId)
+            {
+                return BadRequest();
+            }
+            var guest = new Guest(sceneId);
+            await context.Guests.AddAsync(guest);
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
 
         private async Task<Resident?> GetAuthorizedResident()
         {

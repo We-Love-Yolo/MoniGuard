@@ -19,6 +19,7 @@ import org.videolan.libvlc.MediaPlayer;
 import org.videolan.libvlc.util.VLCVideoLayout;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class MonitorActivity extends AppCompatActivity {
@@ -32,6 +33,8 @@ public class MonitorActivity extends AppCompatActivity {
     private VLCVideoLayout vlcVideoLayout;
     private CustomToast ct;
 
+    private int cameraId;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +42,7 @@ public class MonitorActivity extends AppCompatActivity {
 
         ArrayList<String> options = new ArrayList<>();
 
+        cameraId = Objects.requireNonNull(savedInstanceState).getInt("cameraId");
 
         // 添加LibVLC选项
 //        options.add("--no-drop-late-frames");

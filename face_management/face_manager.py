@@ -13,7 +13,7 @@ class FaceManager:
     def __init__(self, server_url, scene_id: int):
         self._server_url = server_url
         self._scene_id = scene_id
-        self._faces: dict[int, set[Face]] = {}
+        self._faces: dict[int, set[Face]] = {} # guest_id -> set[Face]
         self._faces_lock = threading.Lock()
         self._face_path = f'faces/{scene_id}'
         self._api = MoniGuardApi()
@@ -82,7 +82,7 @@ class FaceManager:
             logging.info(f'Face image file saved: {face_image_file_name}')
 
     def add_face(self, face: Face, save_function: typing.Callable[[str], bool]) -> None:
-        if any(f.hash == face.hash for f in _faces[self._faces.guest_id]):
+        if any(f.hash == face.hash for f in self._faces[face.guest_id]):
             return
         face_image_file_name = f'{self._face_path}/{face.guest_id}/{face.hash}'
         if not save_function(face_image_file_name):
@@ -106,7 +106,7 @@ class FaceManager:
         self._faces_lock.acquire()
         for faces in self._faces.values():
             for face in faces:
-                result.append(f'faces/{scene_id}/{face.name}')
+                result.append(f'faces/{self._scene_id}/{face.name}')
         self._faces_lock.release()
         return result
 

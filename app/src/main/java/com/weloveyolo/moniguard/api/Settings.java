@@ -1,8 +1,10 @@
 package com.weloveyolo.moniguard.api;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class Settings {
 
     private int settingsId;
@@ -14,6 +16,8 @@ public class Settings {
     private boolean receiveNewGuest;
 
     private boolean healthNotice;
+
+
 
     public Settings(int residentId, boolean receiveWarning, boolean receiveNewGuest, boolean healthNotice) {
         this.residentId = residentId;

@@ -56,7 +56,7 @@ public class MonitorActivity extends AppCompatActivity {
         vlcVideoLayout = findViewById(R.id.view);
 
         // 设置媒体资源
-        Media media = new Media(libVLC, Uri.parse("rtsp://192.168.137.146:554/ch01.264"));
+        Media media = new Media(libVLC, Uri.parse("rtsp://admin:WUsan53408@192.168.239.109"));
         mediaPlayer.setMedia(media);
 
         ct = new CustomToast(this);

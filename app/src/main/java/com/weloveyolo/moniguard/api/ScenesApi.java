@@ -178,6 +178,6 @@ public class ScenesApi implements IScenesApi {
     }
 
     public void getGuest(int sceneId, ICallback<List<String>> callback) {
-        // 待补充
+        // 待补充1
     }
 }

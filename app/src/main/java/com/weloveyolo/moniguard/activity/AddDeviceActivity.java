@@ -28,7 +28,6 @@ public class AddDeviceActivity extends AppCompatActivity {
         setContentView(R.layout.add_device);
 
         sceneId = getIntent().getIntExtra("sceneId", 0);
-
         EditText et = findViewById(R.id.edit_scene_name);
 
         Button finish_button = findViewById(R.id.button_finish);
@@ -50,9 +49,11 @@ public class AddDeviceActivity extends AppCompatActivity {
     public void addDevice(String deviceName){
         new Thread(() -> {
             IMoniGuardApi moniGuardApi = new MoniGuardApi();
+            MainActivity.ct.showLoading("加载中");
             moniGuardApi.getScenesApi().postCamera(sceneId, new Camera(deviceName), ((result, success) -> {
                 if(success) {
                     runOnUiThread(() -> {
+                        MainActivity.ct.cancelLoading();
                         MainActivity.ct.showSuccessToast("设备已添加", 1000);
                         setResult(Activity.RESULT_OK, new Intent());
                         finish();

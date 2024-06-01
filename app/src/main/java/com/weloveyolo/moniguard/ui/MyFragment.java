@@ -54,7 +54,7 @@ public class MyFragment extends Fragment {
 
                     String phoneNumber = mainActivity.resident.getPhone();
                     // 手机号
-                    phoneView.setText(phoneNumber == null ? "未知" : phoneNumber);
+                    phoneView.setText(phoneNumber == null ? "个人信息" : phoneNumber);
                     // 头像
                     if(mainActivity.resident.getAvatar() != null){
                         byte[] avatarBuf = mainActivity.resident.getAvatar();

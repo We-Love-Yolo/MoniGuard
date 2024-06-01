@@ -8,6 +8,8 @@ import lombok.Getter;
 public class Scene {
 
     private int sceneId;
+
     private String name;
+
     private int residentId;
 }

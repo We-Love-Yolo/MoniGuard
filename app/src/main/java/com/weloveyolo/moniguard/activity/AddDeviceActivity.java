@@ -18,6 +18,8 @@ import com.weloveyolo.moniguard.api.MoniGuardApi;
 import com.weloveyolo.moniguard.util.CustomToast;
 import com.weloveyolo.moniguard.util.HttpClient;
 
+import java.util.Date;
+
 public class AddDeviceActivity extends AppCompatActivity {
 
     private int sceneId;    // 场景id
@@ -50,7 +52,7 @@ public class AddDeviceActivity extends AppCompatActivity {
     public void addDevice(String deviceName){
         new Thread(() -> {
             IMoniGuardApi moniGuardApi = new MoniGuardApi();
-            moniGuardApi.getScenesApi().postCamera(sceneId, new Camera(deviceName), ((result, success) -> {
+            moniGuardApi.getScenesApi().postCamera(sceneId, new Camera(deviceName, new Date()), ((result, success) -> {
                 if(success) {
                     runOnUiThread(() -> {
                         MainActivity.ct.showSuccessToast("设备已添加", 1000);

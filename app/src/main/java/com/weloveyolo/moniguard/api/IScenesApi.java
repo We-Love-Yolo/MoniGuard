@@ -36,4 +36,6 @@ public interface IScenesApi {
     void deleteScene(int sceneId, ICallback<?> callback);
 
     void deleteCamera(int cameraId, ICallback<?> callback);
+
+    void getGuest(int sceneId, ICallback<List<String>> callback);
 }

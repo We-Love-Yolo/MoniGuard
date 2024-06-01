@@ -1,7 +1,5 @@
 package com.weloveyolo.moniguard.api;
 
-import androidx.annotation.NonNull;
-
 import com.google.gson.Gson;
 import com.weloveyolo.moniguard.util.HttpClient;
 
@@ -92,14 +90,28 @@ public class ResidentsApi implements IResidentsApi {
         }
     }
 
-//    public void putResident(Resident resident, ICallback<?> callback) {
-//        try (Response response = HttpClient.put(getApiUrl() + "/PutResident", resident)) {
-//            if (!response.isSuccessful()) {
-//                throw new IOException("Failed to put resident: " + response);
-//            }
-//            callback.onCallback(null, true);
-//        } catch (IOException e) {
-//            callback.onCallback(null, false);
-//        }
-//    }
+    public void getSettings(ICallback<Settings> callback) {
+        try (Response response = HttpClient.get(getApiUrl() + "/GetSettings", null)) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Failed to get settings: " + response);
+            }
+            Gson gson = new Gson();
+            Settings settings = gson.fromJson(Objects.requireNonNull(response.body()).string(), Settings.class);
+            callback.onCallback(settings, true);
+        } catch (IOException e) {
+            callback.onCallback(null, false);
+        }
+    }
+
+    public void putSettings(Settings settings, ICallback<?> callback) {
+        try (Response response = HttpClient.put(getApiUrl() + "/PutSettings", settings)) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Failed to put settings: " + response);
+            }
+            callback.onCallback(null, true);
+        } catch (IOException e) {
+            callback.onCallback(null, false);
+        }
+    }
+
 }

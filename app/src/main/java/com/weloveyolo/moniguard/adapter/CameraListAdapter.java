@@ -14,6 +14,7 @@ import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.api.Camera;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CameraListAdapter extends RecyclerView.Adapter<CameraListAdapter.MyHolder> {
@@ -42,7 +43,7 @@ public class CameraListAdapter extends RecyclerView.Adapter<CameraListAdapter.My
     }
 
     public void addDevice(String cameraName) {
-        deviceList.add(new Camera(-1, cameraName, "", "", -1, false));
+        deviceList.add(new Camera(cameraName, new Date()));
     }
 
     public void clear() {

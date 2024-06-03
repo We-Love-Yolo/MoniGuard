@@ -45,13 +45,22 @@ public class MessageInfoActivity extends AppCompatActivity {
 
         getSetting(residentId);
 
-
     }
     public void toBack(View view){
-        settings.setReceiveWarning(warningSwitch.isChecked());
-        settings.setReceiveNewGuest(newGuest.isChecked());
-        settings.setHealthNotice(healthNotice.isChecked());
-        putSetting();
+        boolean diff = false;
+        if (settings.isReceiveWarning() != warningSwitch.isChecked()) {
+            settings.setReceiveWarning(warningSwitch.isChecked());
+            diff = true;
+        }
+        if (settings.isReceiveNewGuest() != newGuest.isChecked()) {
+            settings.setReceiveNewGuest(newGuest.isChecked());
+            diff = true;
+        }
+        if (settings.isHealthNotice() != healthNotice.isChecked()) {
+            settings.setHealthNotice(healthNotice.isChecked());
+            diff = true;
+        }
+        if (diff) putSetting();
         finish();
     }
 
@@ -73,7 +82,6 @@ public class MessageInfoActivity extends AppCompatActivity {
     }
 
     public void putSetting(){
-
         new Thread(() -> {
             IMoniGuardApi moniGuardApi = new MoniGuardApi();
             moniGuardApi.getResidentsApi().putSettings( settings,(result , success) -> {
@@ -87,8 +95,5 @@ public class MessageInfoActivity extends AppCompatActivity {
 
         }).start();
     }
-
-
-
 
 }

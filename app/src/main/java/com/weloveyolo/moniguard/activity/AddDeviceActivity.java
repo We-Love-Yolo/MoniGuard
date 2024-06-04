@@ -1,6 +1,5 @@
 package com.weloveyolo.moniguard.activity;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -50,13 +49,16 @@ public class AddDeviceActivity extends AppCompatActivity {
     public void addDevice(String deviceName){
         new Thread(() -> {
             IMoniGuardApi moniGuardApi = new MoniGuardApi();
-            moniGuardApi.getScenesApi().postCamera(sceneId, new Camera(deviceName), ((result, success) -> {
+            MainActivity.ct.showLoadingToast("加载中");
+            moniGuardApi.getScenesApi().postCamera(sceneId, new Camera(deviceName, new Date()), ((result, success) -> {
                 if(success) {
-                    runOnUiThread(() -> {
-                        MainActivity.ct.showSuccessToast("设备已添加", 1000);
-                        setResult(Activity.RESULT_OK, new Intent());
-                        finish();
+                    runOnUiThread(()->{
+                        MainActivity.ct.hideLoadingToast(()->{
+                            MainActivity.ct.showSuccessToast("设备已添加", 1000);
+                        }, 100);
                     });
+                    setResult(Activity.RESULT_OK, new Intent());
+                    finish();
                 }
             }));
         }).start();

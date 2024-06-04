@@ -12,4 +12,8 @@ public interface IResidentsApi {
     void putResident(Resident resident, ICallback<?> callback);
 
     void getAvatar(ICallback<byte[]> callback);
+
+    void getSettings(ICallback<Settings> callback);
+
+    void putSettings(Settings settings, ICallback<?> callback);
 }

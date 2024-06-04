@@ -21,7 +21,6 @@ import okhttp3.Response;
  * @noinspection unchecked
  */
 @Getter
-//@AllArgsConstructor
 public class ScenesApi implements IScenesApi {
     private final IMoniGuardApi mainApi;
 
@@ -44,25 +43,6 @@ public class ScenesApi implements IScenesApi {
         return mainApi;
     }
 
-    //    @Override
-//    public void getScenes(ICallback<Scene> callback) {
-//        OkHttpClient client = new OkHttpClient();
-//        Request request = new Request.Builder()
-//                .url(getApiUrl() + "/GetScenes")
-//                .header("Authorization", "Bearer " + getAccessToken())
-//                .build();
-//        try (Response response = client.newCall(request).execute()) {
-//            if (!response.isSuccessful()) {
-//                callback.onCallback(null, false);
-//                return;
-//            }
-//            Gson gson = new Gson();
-//            Scene scene = gson.fromJson(Objects.requireNonNull(response.body()).string(), Scene.class);
-//            callback.onCallback(scene, true);
-//        } catch (IOException e) {
-//            callback.onCallback(null, false);
-//        }
-//    }
     @Override
     public void getScenes(ICallback<List<Scene>> callback) {
         Request request = new Request.Builder()
@@ -196,5 +176,9 @@ public class ScenesApi implements IScenesApi {
         } catch (IOException e) {
             callback.onCallback(null, false);
         }
+    }
+
+    public void getGuest(int sceneId, ICallback<List<String>> callback) {
+        // 待补充1
     }
 }

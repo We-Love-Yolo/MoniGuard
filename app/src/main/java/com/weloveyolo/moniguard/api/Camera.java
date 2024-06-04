@@ -1,6 +1,8 @@
 package com.weloveyolo.moniguard.api;
 
-import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,14 +17,13 @@ public class Camera {
       private int sceneId;
       private String connectString;
 
-//      public Camera(String name,Boolean connectState) {
-//            this.name = name;
-//            this.connectState=connectState;
-//      }
-      public Camera(String name) {
+
+      public Camera(String name, Date cur) {
             this.name = name;
-            this.connectString = "114514";
-            this.createdAt = "2024-05-23T12:21:57.685Z";
+            connectString = "connected";
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault());
+            String timeString = dateFormat.format(cur);
+            createdAt = timeString.replace(" ", "T").concat("Z");
       }
 
       public int getCameraId() {
@@ -41,7 +42,7 @@ public class Camera {
             return sceneId;
       }
 
-      public String isConnectState(){return connectString;}
+      public String getConnectState(){return connectString;}
 
       @Override
       public String toString() {

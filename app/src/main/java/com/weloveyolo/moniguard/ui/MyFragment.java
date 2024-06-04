@@ -2,6 +2,7 @@ package com.weloveyolo.moniguard.ui;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,8 @@ import androidx.fragment.app.Fragment;
 
 import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
+import com.weloveyolo.moniguard.activity.AddDeviceActivity;
+import com.weloveyolo.moniguard.activity.MessageInfoActivity;
 import com.weloveyolo.moniguard.api.IMoniGuardApi;
 import com.weloveyolo.moniguard.api.MoniGuardApi;
 
@@ -39,6 +43,13 @@ public class MyFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         tryShow();
+        LinearLayout message = requireActivity().findViewById(R.id.message);
+        int residentId = ((MainActivity)requireActivity()).resident.getResidentId();
+        message.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), MessageInfoActivity.class);
+            intent.putExtra("residentId", residentId);  // 传入场景id
+            startActivity(intent);
+        });
     }
 
     public void tryShow() {
@@ -54,7 +65,7 @@ public class MyFragment extends Fragment {
 
                     String phoneNumber = mainActivity.resident.getPhone();
                     // 手机号
-                    phoneView.setText(phoneNumber == null ? "未知" : phoneNumber);
+                    phoneView.setText(phoneNumber == null ? "个人信息" : phoneNumber);
                     // 头像
                     if(mainActivity.resident.getAvatar() != null){
                         byte[] avatarBuf = mainActivity.resident.getAvatar();
@@ -66,4 +77,5 @@ public class MyFragment extends Fragment {
 
         }
     }
+
 }

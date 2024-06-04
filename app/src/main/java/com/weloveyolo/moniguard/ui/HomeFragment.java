@@ -90,7 +90,9 @@ public class HomeFragment extends Fragment {
             cameralistadpter = new CameraListAdapter(getContext());
             deviceRecyclerView.setAdapter(cameralistadpter);
 
-            updateDeviceList(0);
+            if(!mainActivity.scenes.isEmpty()) {
+                updateDeviceList(0);
+            }
 
             sceneSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override

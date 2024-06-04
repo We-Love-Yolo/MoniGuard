@@ -16,6 +16,9 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
+            android:name=".activity.UserInfoUpdateActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.MessageInfoActivity"
             android:exported="false" />
         <activity
@@ -59,8 +62,9 @@
         <activity android:name=".activity.AlbumActivity" />
         <activity android:name=".activity.AddDeviceActivity" />
         <activity android:name=".activity.Health_monitoring" />
-        <activity android:name=".activity.AddSceneActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.AddSceneActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

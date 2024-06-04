@@ -16,9 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-
-            >
+            android:orientation="horizontal">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraint"
                 android:layout_width="match_parent"
@@ -46,7 +44,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="新建场景"
+                    android:text="消息通知"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/bar_text"

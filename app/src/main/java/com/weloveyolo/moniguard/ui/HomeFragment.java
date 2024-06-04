@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -123,7 +124,7 @@ public class HomeFragment extends Fragment {
         });
 
         // 进入创建场景
-        ImageButton addCameraButton = view.findViewById(R.id.add_scene);
+        TextView addCameraButton = view.findViewById(R.id.add_scene);
         addCameraButton.setOnClickListener(v -> {
             Intent intent=new Intent(getActivity(), AddSceneActivity.class);
             startActivityForResult(intent, CREATE_SCENE_CODE);

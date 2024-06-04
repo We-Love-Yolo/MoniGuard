@@ -130,11 +130,7 @@ public class HomeFragment extends Fragment {
         });
 
         // 进入门禁
-        ImageButton cameraButton1 = view.findViewById(R.id.camera1_button);
-        cameraButton1.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), MonitorActivity.class);
-            startActivity(intent);
-        });
+
     }
 
     // 处理添加返回结果

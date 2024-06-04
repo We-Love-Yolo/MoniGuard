@@ -61,20 +61,13 @@
                 android:textStyle="bold"
                 tools:ignore="MissingConstraints" />
 
-        </LinearLayout>
 
+        </LinearLayout>
+                <!--摄像头列表-->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <ImageButton
-                android:id="@+id/camera1_button"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@null"
-                android:clickable="true"
-                android:onClick="onClick"
-                android:scaleType="fitCenter"
-                android:src="@drawable/img_camera_button" />
+
             <ImageButton
                 android:id="@+id/add_camera_button"
                 android:layout_width="100dp"
@@ -85,10 +78,11 @@
                 android:src="@drawable/add_camera"
                 android:scaleType="fitCenter"/>
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-
-
-                <!--摄像头列表-->
+        </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/monitor_list"
             android:layout_width="match_parent"
@@ -99,6 +93,7 @@
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"
             tools:listitem="@layout/item_monitor" />
+
 
     </LinearLayout>
 

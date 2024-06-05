@@ -35,21 +35,21 @@ namespace MoniGuardAPI.Controllers
                 return NotFound();
             }
             var id = authorizedResident.ResidentId;
-            byte[]? messagesStr = await _distributedCache.GetAsync($"{id}_test");
+            byte[]? messagesStr = await _distributedCache.GetAsync($"{id}_message");
             var cacheEntryOptions = new DistributedCacheEntryOptions()
                 .SetSlidingExpiration(TimeSpan.FromDays(2));
             if (messagesStr == null)
             {
                 List<Message> messages = [message];
                 var json = JsonSerializer.Serialize(messages);
-                await _distributedCache.SetStringAsync($"{id}_test", json, cacheEntryOptions);
+                await _distributedCache.SetStringAsync($"{id}_message", json, cacheEntryOptions);
             }
             else
             {
                 var messages = JsonSerializer.Deserialize<List<Message>>(Encoding.UTF8.GetString(messagesStr))!;
                 messages.Add(message);
                 var json = JsonSerializer.Serialize(messages);
-                await _distributedCache.SetStringAsync($"{id}_test", json, cacheEntryOptions);
+                await _distributedCache.SetStringAsync($"{id}_message", json, cacheEntryOptions);
             }
             //todo: add the message to the database
             return Ok();
@@ -65,7 +65,7 @@ namespace MoniGuardAPI.Controllers
                 return NotFound();
             }
             var id = resident.ResidentId;
-            byte[]? messagesStr = await _distributedCache.GetAsync($"{id}_test");
+            byte[]? messagesStr = await _distributedCache.GetAsync($"{id}_message");
             List<Message> res;
             if (messagesStr == null)
             {
@@ -75,7 +75,7 @@ namespace MoniGuardAPI.Controllers
             else
             {
                 res = JsonSerializer.Deserialize<List<Message>>(Encoding.UTF8.GetString(messagesStr));
-                await _distributedCache.RemoveAsync($"{id}_test");
+                await _distributedCache.RemoveAsync($"{id}_message");
                 return Ok(res);
             }
            
@@ -104,6 +104,31 @@ namespace MoniGuardAPI.Controllers
 
             return faces;
         }
+
+        [HttpGet("{guestId:int}")]
+        public async Task<ActionResult<List<Face>>> GetFacesByGuestId(int guestId)
+        {
+            if (guestId <= 0)
+            {
+                return BadRequest();
+            }
+
+            var resident = await GetAuthorizedResident();
+            if (resident == null)
+            {
+                return BadRequest();
+            }
+
+            // 使用 Join 操作连接Guests 和 Faces 表
+            var faces = await (
+                from g in context.Guests
+                join f in context.Faces on g.GuestId equals f.GuestId
+                where g.GuestId == guestId
+                select new Face(f.FaceId, f.GuestId, f.Name, f.CapturedAt, f.Hash)).ToListAsync();
+
+            return faces;
+        }
+
 
         [HttpGet("{faceId:int}")]
         public async Task<IActionResult> GetFaceImage(int faceId)
@@ -145,9 +170,7 @@ namespace MoniGuardAPI.Controllers
             var guest = await context.Guests.FirstAsync(g => g.GuestId == face.GuestId);
             if (guest == null)
             {
-                guest = new Guest(sceneId);
-                await context.Guests.AddAsync(guest);
-                await context.SaveChangesAsync();
+                return NotFound();
             }
             if (guest.SceneId != sceneId) 
             {
@@ -159,8 +182,8 @@ namespace MoniGuardAPI.Controllers
             return face;
         }
 
-        [HttpPut("{faceId:int}")]
-        public async Task<IActionResult> PsotFaceImage(int faceId,[FromBody] IFormFile imageFile)
+        [HttpPost("{faceId:int}")]
+        public async Task<IActionResult> PostFaceImage(int faceId,[FromBody] string base64Image)
         {
             if (faceId <= 0)
             {
@@ -190,18 +213,71 @@ namespace MoniGuardAPI.Controllers
             {
                 return BadRequest();
             }
-            byte[] imageData;
-            using (var memoryStream = new MemoryStream())
-            {
-                await imageFile.CopyToAsync(memoryStream);
-                imageData = memoryStream.ToArray();
-            }
+            var imageData = Convert.FromBase64String(base64Image);
+            
             face.Content = imageData;
             await context.SaveChangesAsync();
             return NoContent();
         }
 
 
+        [HttpPost("{sceneId:int}")]
+        public async Task<IActionResult> NewAGuest(int sceneId, string faceEncodingDataBase64)
+        {
+            if (sceneId <= 0)
+            {
+                return BadRequest();
+            }
+            var resident = await GetAuthorizedResident();
+            if (resident == null)
+            {
+                return Unauthorized();
+            }
+            var scene = await context.Scene.FirstAsync(s => s.SceneId == sceneId);
+            if (scene == null)
+            {
+                return NotFound();
+            }
+
+            if (scene.ResidentId != resident.ResidentId)
+            {
+                return BadRequest();
+            }
+            var data = Convert.FromBase64String(faceEncodingDataBase64);
+            var guest = new Guest(sceneId, data);
+            await context.Guests.AddAsync(guest);
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
+
+
+        [HttpGet("{guestId:int}")]
+        public async Task<ActionResult> GetSampleFaceData(int guestId)
+        {
+            if (guestId <= 0)
+            {
+                return BadRequest();
+            }
+            var guest = context.Guests.FirstOrDefault(g => g.GuestId == guestId);
+            if (guest == null)
+            {
+                return NotFound();
+            }
+            var scene = await context.Scene.FirstOrDefaultAsync(s => s.SceneId == guest.SceneId);
+            if (scene == null)
+            {
+                return NotFound();
+            }
+            var resident = await GetAuthorizedResident();
+            if (resident == null || resident.ResidentId != scene.ResidentId)
+            {
+                return Unauthorized();
+            }
+
+            var fileName = $"guest{guest.GuestId}_face_data.npy";
+            var faceData = guest.FaceEncodingDataBytes;
+            return File(faceData, "application/octet-stream", fileName);
+        }
 
         private async Task<Resident?> GetAuthorizedResident()
         {

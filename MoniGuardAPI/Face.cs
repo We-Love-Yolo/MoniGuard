@@ -23,6 +23,7 @@ namespace MoniGuardAPI
         public int GuestId { get; set; } = guestId;
         public string? Name { get; set; } = name;
         public DateTime CapturedAt { get; set; } = capturedAt;
+        [JsonIgnore]
         public byte[]? Hash { get; set; } = hash;
 
         [JsonIgnore]

@@ -92,6 +92,10 @@ namespace MoniGuardAPI.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<byte[]>("FaceEncodingDataBytes")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<bool>("IsAllowed")
                         .HasColumnType("bit");
 

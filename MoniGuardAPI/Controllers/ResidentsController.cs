@@ -165,7 +165,7 @@ namespace MoniGuardAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutSettings(Settings settings)
+        public async Task<IActionResult> PutSettings([FromBody]Settings settings)
         {
             var resident = await GetAuthorizedResident();
             if (resident == null)

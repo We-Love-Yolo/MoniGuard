@@ -23,7 +23,15 @@ namespace MoniGuardAPI.Controllers
         {
             var nameIdentifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var residentId = await GetAuthorizedResidentId();
-            return await context.Scene.Where(s => s.ResidentId == residentId).ToListAsync();
+            var scenes = await context.Scene.Where(s => s.ResidentId == residentId).ToListAsync();
+            if (scenes.Count == 0)
+            {
+                var scene = new Scene("Defualt", (int)residentId);
+                await context.Scene.AddAsync(scene);
+                await context.SaveChangesAsync();
+            }
+            scenes = await context.Scene.Where(s => s.ResidentId == residentId).ToListAsync();
+            return scenes;
         }
 
         // GET: /Scenes/GetCameras

@@ -6,9 +6,9 @@ using System.Data;
 
 namespace MoniGuardAPI;
 
-public class Guest(int guestId, int sceneId, string name, DateTime createdAt, bool isAllowed)
+public class Guest(int guestId, int sceneId, string name, DateTime createdAt, bool isAllowed, byte[] faceEncodingDataBytes)
 {
-    public Guest(int sceneId ) :this(-1, sceneId, "Amber", DateTime.Now, false) { }
+    public Guest(int sceneId, byte[] faceEncodingDataBytes) :this(0, sceneId, "Amber", DateTime.Now, false, faceEncodingDataBytes) { }
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -26,5 +26,9 @@ public class Guest(int guestId, int sceneId, string name, DateTime createdAt, bo
 
     [Required]
     public bool IsAllowed { get; set; } = isAllowed;
+
+    [JsonIgnore]
+    [Required]
+    public byte[] FaceEncodingDataBytes { get; set; } = faceEncodingDataBytes;
 
 }

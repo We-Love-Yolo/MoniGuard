@@ -54,7 +54,8 @@ namespace MoniGuardAPI.Migrations
                     SceneId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Avatar = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
+                    IsAllowed = table.Column<bool>(type: "bit", nullable: false),
+                    FaceEncodingDataBytes = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
                 },
                 constraints: table =>
                 {

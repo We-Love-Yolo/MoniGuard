@@ -12,7 +12,7 @@ using MoniGuardAPI.Data;
 namespace MoniGuardAPI.Migrations
 {
     [DbContext(typeof(MoniGuardAPIContext))]
-    [Migration("20240523094249_StarRail")]
+    [Migration("20240605084053_StarRail")]
     partial class StarRail
     {
         /// <inheritdoc />
@@ -92,13 +92,15 @@ namespace MoniGuardAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GuestId"));
 
-                    b.Property<string>("Avatar")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("FaceEncodingDataBytes")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<bool>("IsAllowed")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()

@@ -215,7 +215,7 @@ namespace MoniGuardAPI.Controllers
         }
 
         [HttpDelete("{guestId:int}")]
-        public async Task<IActionResult> DeleteGuestTest(int guestId)
+        public async Task<IActionResult> DeleteGuest(int guestId)
         {
             var guest = context.Guests.FirstOrDefault(g => g.GuestId == guestId);
             if (guest == null)

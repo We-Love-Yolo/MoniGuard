@@ -182,8 +182,8 @@ namespace MoniGuardAPI.Controllers
             return face;
         }
 
-        [HttpPost("{faceId:int}")]
-        public async Task<IActionResult> PostFaceImage(int faceId,[FromBody] string base64Image)
+        [HttpPut("{faceId:int}")]
+        public async Task<IActionResult> PutFaceImage(int faceId,[FromBody] string base64Image)
         {
             if (faceId <= 0)
             {
@@ -222,7 +222,7 @@ namespace MoniGuardAPI.Controllers
 
 
         [HttpPost("{sceneId:int}")]
-        public async Task<IActionResult> NewAGuest(int sceneId, string faceEncodingDataBase64)
+        public async Task<IActionResult> NewAGuest(int sceneId,[FromBody] string faceEncodingDataBase64)
         {
             if (sceneId <= 0)
             {
@@ -247,7 +247,7 @@ namespace MoniGuardAPI.Controllers
             var guest = new Guest(sceneId, data);
             await context.Guests.AddAsync(guest);
             await context.SaveChangesAsync();
-            return NoContent();
+            return Ok(guest);
         }
 
 
@@ -277,6 +277,208 @@ namespace MoniGuardAPI.Controllers
             var fileName = $"guest{guest.GuestId}_face_data.npy";
             var faceData = guest.FaceEncodingDataBytes;
             return File(faceData, "application/octet-stream", fileName);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostGuestToPhoto(int guestId, int photoId)
+        {
+            if (guestId <= 0 || photoId <= 0)
+            {
+                return BadRequest();
+            }
+            var resident = await GetAuthorizedResident();
+            if (resident == null)
+            {
+                return Unauthorized();
+            }
+            var guest = await context.Guests.FirstOrDefaultAsync(g => g.GuestId == guestId);
+            if (guest == null)
+            {
+                return NotFound();
+            }
+            var photo = await context.Photos.FirstOrDefaultAsync(p => p.PhotoId == photoId);
+            if (photo == null)
+            {
+                return NotFound();
+            }
+            var scene = await context.Scene.FirstOrDefaultAsync(s => s.SceneId == guest.SceneId);
+            if (scene == null || scene.ResidentId != resident.ResidentId)
+            {
+                return BadRequest();
+            }
+            var guestToPhoto = new GuestToPhotos(guestId, photoId);
+            await context.GuestToPhotos.AddAsync(guestToPhoto);
+            await context.SaveChangesAsync();
+            return NoContent();
+
+        }
+
+        [HttpGet("{guestId:int}")]
+        public async Task<ActionResult<List<Photo>>> GetPhotos(int guestId)
+        {
+            if (guestId <= 0)
+            {
+                return BadRequest();
+            }
+            var resident = await GetAuthorizedResident();
+            if (resident == null)
+            {
+                return Unauthorized();
+            }
+            var guest = await context.Guests.FirstOrDefaultAsync(g => g.GuestId == guestId);
+            if (guest == null)
+            {
+                return NotFound();
+            }
+            var scene = await context.Scene.FirstOrDefaultAsync(s => s.SceneId == guest.SceneId);
+            if (scene == null || scene.ResidentId != resident.ResidentId)
+            {
+                return BadRequest();
+            }
+            var photos = await (from p in context.Photos
+                join g in context.GuestToPhotos on p.PhotoId equals g.PhotoId
+                where g.GuestId == guestId
+                select p).ToListAsync();
+            return photos;
+        }
+
+
+        [HttpGet("{photoId:int}")]
+        public async Task<ActionResult> GetPhoto(int photoId)
+        {
+            var resident = await GetAuthorizedResident();
+            if (resident == null)
+            {
+                return Unauthorized();
+            }
+            
+            // join Photo, Scene and Camera to get ResidentId
+            var residentId = 
+                await (from p in context.Photos
+                        join c in context.Camera on p.CameraId equals c.CameraId
+                        join s in context.Scene on c.SceneId equals s.SceneId
+                        where p.PhotoId == photoId
+                            select s.ResidentId).FirstAsync();
+            if (residentId != resident.ResidentId)
+            {
+                return Forbid();
+            }
+            var photo = await context.Photos.FirstOrDefaultAsync(p => p.PhotoId == photoId);
+            if (photo == null)
+            {
+                return NotFound();
+            }
+
+            return File(photo.Content, "image/*");
+        }
+
+        [HttpPut("{cameraId:int}")]
+        public async Task<ActionResult<Photo>> PutPhoto(int cameraId, string name, [FromBody] string base64Image)
+        {
+            if (cameraId <= 0 || base64Image == "")
+            {
+                return BadRequest();
+            }
+
+            var resident = await GetAuthorizedResident();
+            if (resident == null)
+            {
+                return Unauthorized();
+            }
+            // join Camera and Scene to get ResidentId
+            var residentId = await (from c in context.Camera
+                    join s in context.Scene on c.SceneId equals s.SceneId
+                    where c.CameraId == cameraId
+                    select s.ResidentId).FirstAsync();
+            if (residentId != resident.ResidentId)
+            {
+                return Forbid();
+            }
+            byte[] content = Convert.FromBase64String(base64Image);
+            var photo = new Photo(cameraId, content, name);
+            await context.Photos.AddAsync(photo);
+            await context.SaveChangesAsync();
+            return Ok(photo);
+        }
+
+        [HttpPost("{photoId:int}")]
+        public async Task<IActionResult> PostPhoto(int photoId, [FromBody] string name)
+        {
+            if (name == "" || photoId <= 0)
+            {
+                return BadRequest();
+            }
+            var resident = await GetAuthorizedResident();
+            if (resident == null)
+            {
+                return Unauthorized();
+            }
+
+            var residentId =
+                await (from p in context.Photos
+                    join c in context.Camera on p.CameraId equals c.CameraId
+                    join s in context.Scene on c.SceneId equals s.SceneId
+                    where p.PhotoId == photoId
+                    select s.ResidentId).FirstAsync();
+            if (residentId != resident.ResidentId)
+            {
+                return Forbid();
+            }
+            var photo = await context.Photos.FirstOrDefaultAsync(p => p.PhotoId == photoId);
+            if (photo == null)
+            {
+                return NotFound();
+            }
+            photo.Name = name;
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        
+        [HttpDelete("{photoId:int}")]
+        public async Task<IActionResult> DeletePhotoTest(int photoId, int guestId)
+        {
+            if (photoId <= 0 || guestId <= 0)
+            {
+                return BadRequest();
+            }
+            var resident = await GetAuthorizedResident();
+            if (resident == null)
+            {
+                return Unauthorized();
+            }
+
+            var residentId =
+                await (from p in context.Photos
+                    join c in context.Camera on p.CameraId equals c.CameraId
+                    join s in context.Scene on c.SceneId equals s.SceneId
+                    where p.PhotoId == photoId
+                    select s.ResidentId).FirstAsync();
+            if (residentId != resident.ResidentId)
+            {
+                return Forbid();
+            }
+            // remove the photo from context.Photo and context.GuestToPhotos
+
+            var photo = await context.Photos.FirstOrDefaultAsync(p => p.PhotoId == photoId);
+            if (photo == null)
+            {
+                return NotFound();
+            }
+            var guest = context.Guests.FirstOrDefault(g => g.GuestId == guestId);
+            if (guest == null)
+            {
+                return NotFound();
+            }
+            var guestToPhoto = context.GuestToPhotos.FirstOrDefault(g => g.PhotoId == photoId && g.GuestId == guestId);
+            if (guestToPhoto == null)
+            {
+                return NotFound();
+            }
+            
+            context.GuestToPhotos.Remove(guestToPhoto);
+            await context.SaveChangesAsync();
+            return NoContent();
         }
 
         private async Task<Resident?> GetAuthorizedResident()

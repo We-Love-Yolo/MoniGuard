@@ -215,7 +215,7 @@ namespace MoniGuardAPI.Controllers
         }
 
         [HttpDelete("{guestId:int}")]
-        public async Task<IActionResult> DeleteGuest(int guestId)
+        public async Task<IActionResult> DeleteGuestTest(int guestId)
         {
             var guest = context.Guests.FirstOrDefault(g => g.GuestId == guestId);
             if (guest == null)
@@ -228,6 +228,8 @@ namespace MoniGuardAPI.Controllers
                 return Unauthorized();
             }
             context.Guests.Remove(guest);
+            var guestToPhotos = context.GuestToPhotos.Where(g => g.GuestId == guestId).ToList();
+            context.GuestToPhotos.RemoveRange(guestToPhotos);
             await context.SaveChangesAsync();
             return NoContent();
         }

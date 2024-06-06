@@ -8,7 +8,9 @@ import com.weloveyolo.moniguard.util.HttpClient;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import lombok.AllArgsConstructor;
@@ -179,5 +181,18 @@ public class ScenesApi implements IScenesApi {
 
     public void getGuest(int sceneId, ICallback<List<String>> callback) {
         // 待补充1
+    }
+
+    @Override
+    public void getCameraConnectString(int key, String name, int sceneId, String description, ICallback<String> callback) {
+        try (Response response = HttpClient.queryGet(getApiUrl() + "/GetCameraConnectString",
+                "key", key, "name", name, "sceneId", sceneId, "description", description)) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Failed to get CameraConnectString: " + response);
+            }
+            callback.onCallback(response.body().string(), true);
+        } catch (IOException e) {
+            callback.onCallback(null, false);
+        }
     }
 }

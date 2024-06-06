@@ -1,9 +1,14 @@
 package com.weloveyolo.moniguard.api;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+
 @Getter
+@AllArgsConstructor
 public class Message {
+
+    private int residentId;
 
     private String content;
 
@@ -11,4 +16,13 @@ public class Message {
 
     private int type;
 
+    @Override
+    public String toString() {
+        return "Message{" +
+                "residentId=" + residentId +
+                ", content='" + content + '\'' +
+                ", createdAt='" + createdAt + '\'' +
+                ", type=" + type +
+                '}';
+    }
 }

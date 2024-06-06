@@ -38,4 +38,6 @@ public interface IScenesApi {
     void deleteCamera(int cameraId, ICallback<?> callback);
 
     void getGuest(int sceneId, ICallback<List<String>> callback);
+
+    void getCameraConnectString(int key, String name, int sceneId, String description, ICallback<String> callback);
 }

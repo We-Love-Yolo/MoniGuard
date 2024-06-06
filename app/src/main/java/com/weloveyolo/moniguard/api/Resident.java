@@ -6,6 +6,7 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @Getter
+@Setter
 public class Resident {
     private int residentId;
     private String nameIdentifier;

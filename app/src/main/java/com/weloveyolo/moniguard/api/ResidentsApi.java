@@ -54,6 +54,20 @@ public class ResidentsApi implements IResidentsApi {
         }
     }
 
+    public void getResident2(ICallback<Resident> callback) {
+        try (Response response = HttpClient.get(getApiUrl() + "/GetResident", null)) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Failed to get resident: " + response);
+            }
+            Gson gson = new Gson();
+            Resident resident = gson.fromJson(Objects.requireNonNull(response.body()).string(), Resident.class);
+            callback.onCallback(resident, true);
+        } catch (IOException e) {
+            callback.onCallback(null, false);
+        }
+    }
+
+
     @Override
     public void getAvatar(ICallback<byte[]> callback) {
         Request request = new Request.Builder()
@@ -72,15 +86,7 @@ public class ResidentsApi implements IResidentsApi {
 
     @Override
     public void putResident(Resident resident, ICallback<?> callback) {
-        Gson gson = new Gson();
-        String json = gson.toJson(resident);
-        RequestBody body = RequestBody.create(json, okhttp3.MediaType.parse("application/json"));
-        Request request = new Request.Builder()
-                .url(getApiUrl() + "/PutResident")
-                .header("Authorization", "Bearer " + getAccessToken())
-                .put(body)
-                .build();
-        try (Response response = mainApi.getHttpClient().newCall(request).execute()) {
+        try (Response response = HttpClient.put(getApiUrl() + "/PutResident", resident)) {
             if (!response.isSuccessful()) {
                 throw new IOException("Failed to put resident: " + response);
             }

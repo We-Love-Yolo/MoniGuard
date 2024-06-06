@@ -9,6 +9,8 @@ public interface IResidentsApi {
 
     void getResident(ICallback<Resident> callback);
 
+    void getResident2(ICallback<Resident> callback);
+
     void putResident(Resident resident, ICallback<?> callback);
 
     void getAvatar(ICallback<byte[]> callback);

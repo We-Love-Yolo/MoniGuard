@@ -39,7 +39,7 @@ public class UserInfoUpdateActivity extends AppCompatActivity {
         nickname = findViewById(R.id.editText_nickname);
         phone = findViewById(R.id.editText_phone);
 
-        tryShow();
+        getResident(residentId);
 
     }
 
@@ -48,10 +48,10 @@ public class UserInfoUpdateActivity extends AppCompatActivity {
         finish();
     }
 
-    public void tryShow() {
+    public void getResident(int residentId) {
         new Thread(() -> {
             IMoniGuardApi moniGuardApi = new MoniGuardApi();
-            moniGuardApi.getResidentsApi().getResident( (resident, success) -> {
+            moniGuardApi.getResidentsApi().getResident2( (resident, success) -> {
                 if(success){
                     this.resident = resident;
                     runOnUiThread(() ->{
@@ -60,7 +60,6 @@ public class UserInfoUpdateActivity extends AppCompatActivity {
                     });
                 }
             });
-
         }).start();
     }
     public void saveGoBack(View view){
@@ -72,11 +71,14 @@ public class UserInfoUpdateActivity extends AppCompatActivity {
             MainActivity.ct.showErrorToast("电话未修改", 1000);
             return;
         }
+        resident.setNickname(String.valueOf(nickname.getText()));
+        resident.setPhone(String.valueOf(phone.getText()));
         putResident();
-        toBack(view);
+        finish();
     }
 
     public void putResident(){
+
         new Thread(() -> {
             IMoniGuardApi moniGuardApi = new MoniGuardApi();
             moniGuardApi.getResidentsApi().putResident(resident, (result , success) -> {

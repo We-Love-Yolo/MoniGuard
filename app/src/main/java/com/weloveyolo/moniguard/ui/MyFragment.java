@@ -23,7 +23,9 @@ import androidx.fragment.app.Fragment;
 import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.activity.AddDeviceActivity;
+import com.weloveyolo.moniguard.activity.AddSceneActivity;
 import com.weloveyolo.moniguard.activity.MessageInfoActivity;
+import com.weloveyolo.moniguard.activity.UserInfoUpdateActivity;
 import com.weloveyolo.moniguard.api.IMoniGuardApi;
 import com.weloveyolo.moniguard.api.MoniGuardApi;
 
@@ -45,9 +47,18 @@ public class MyFragment extends Fragment {
         tryShow();
         LinearLayout message = requireActivity().findViewById(R.id.message);
         int residentId = ((MainActivity)requireActivity()).resident.getResidentId();
+        //跳转消息通知
         message.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), MessageInfoActivity.class);
-            intent.putExtra("residentId", residentId);  // 传入场景id
+            intent.putExtra("residentId", residentId);  // 传入用户id
+            startActivity(intent);
+        });
+
+        //跳转个人信息修改
+        LinearLayout info= view.findViewById(R.id.info);
+        info.setOnClickListener(v -> {
+            Intent intent=new Intent(getActivity(), UserInfoUpdateActivity.class);
+            intent.putExtra("residentId", residentId);  // 传入用户id
             startActivity(intent);
         });
     }

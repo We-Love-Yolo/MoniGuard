@@ -140,7 +140,8 @@
                     android:textColor="#FFFFFF"
                     android:textSize="18sp"
                     android:gravity="center"
-                    android:layout_centerInParent="true" />
+                    android:layout_centerInParent="true"
+                    android:onClick="saveGoBack"/>
 
             </RelativeLayout>
 

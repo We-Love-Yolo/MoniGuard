@@ -1,10 +1,17 @@
 package com.weloveyolo.moniguard.util;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.api.Resident;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Interceptor;
@@ -46,6 +53,21 @@ public class HttpClient {
     public static Response get(String path, String query) {
         try {
             path = query != null ? path + "/" + query : path;
+            return client.newCall(new Request.Builder().url(path).get().build()).execute();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public static Response queryGet(String path, Object ...objects){
+        try {
+            if (objects.length <= 0 || objects.length % 2 != 0) return null;
+            ArrayList<String> queries = new ArrayList<>();
+            for (int i = 0; i < objects.length; i+=2) {
+                queries.add((String)objects[i] + "=" + (String)objects[i+1]);
+            }
+            String[] queryArr = queries.toArray(new String[queries.size()]);
+            path = path + "?" + String.join("&", queryArr);
             return client.newCall(new Request.Builder().url(path).get().build()).execute();
         } catch (Exception ex) {
             return null;

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -73,8 +74,8 @@ public class HomeFragment extends Fragment {
         }
         requireActivity().runOnUiThread(() -> {
             //设置spinner选择场景
-            sceneSpinner = getView().findViewById(R.id.scene_spinner);
-            deviceRecyclerView = getView().findViewById(R.id.monitor_list);
+            sceneSpinner = requireView().findViewById(R.id.scene_spinner);
+            deviceRecyclerView = requireView().findViewById(R.id.monitor_list);
 
             // 使用场景数组设置 Spinner 适配器
             String[] sceneNames = new String[mainActivity.scenes.size()];
@@ -123,18 +124,18 @@ public class HomeFragment extends Fragment {
         });
 
         // 进入创建场景
-        ImageButton addCameraButton = view.findViewById(R.id.add_scene);
+        TextView addCameraButton = view.findViewById(R.id.add_scene);
         addCameraButton.setOnClickListener(v -> {
             Intent intent=new Intent(getActivity(), AddSceneActivity.class);
             startActivityForResult(intent, CREATE_SCENE_CODE);
         });
 
         // 进入门禁
-        ImageButton cameraButton1 = view.findViewById(R.id.camera1_button);
-        cameraButton1.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), MonitorActivity.class);
-            startActivity(intent);
-        });
+//        ImageButton cameraButton1 = view.findViewById(R.id.camera1_button);
+//        cameraButton1.setOnClickListener(v -> {
+//            Intent intent = new Intent(getActivity(), MonitorActivity.class);
+//            startActivity(intent);
+//        });
     }
 
     // 处理添加返回结果

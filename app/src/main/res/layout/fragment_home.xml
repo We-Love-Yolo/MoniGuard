@@ -34,13 +34,13 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
-            <ImageButton
+            <TextView
                 android:id="@+id/add_scene"
-                android:layout_width="30dp"
+                android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/add_scene"
+                android:text="添加场景"
                 android:gravity="right" />
 
         </LinearLayout>
@@ -66,15 +66,15 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <ImageButton
-                android:id="@+id/camera1_button"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@null"
-                android:clickable="true"
-                android:onClick="onClick"
-                android:scaleType="fitCenter"
-                android:src="@drawable/img_camera_button" />
+<!--            <ImageButton-->
+<!--                android:id="@+id/camera1_button"-->
+<!--                android:layout_width="100dp"-->
+<!--                android:layout_height="100dp"-->
+<!--                android:background="@null"-->
+<!--                android:clickable="true"-->
+<!--                android:onClick="onClick"-->
+<!--                android:scaleType="fitCenter"-->
+<!--                android:src="@drawable/img_camera_button" />-->
             <ImageButton
                 android:id="@+id/add_camera_button"
                 android:layout_width="100dp"

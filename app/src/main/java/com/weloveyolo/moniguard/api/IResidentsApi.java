@@ -13,7 +13,7 @@ public interface IResidentsApi {
 
     void putResident(Resident resident, ICallback<?> callback);
 
-    void getAvatar(ICallback<byte[]> callback);
+    void getAvatar(ICallback<String> callback);
 
     void getSettings(ICallback<Settings> callback);
 

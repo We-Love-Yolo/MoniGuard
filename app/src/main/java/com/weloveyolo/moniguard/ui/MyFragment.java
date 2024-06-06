@@ -78,11 +78,11 @@ public class MyFragment extends Fragment {
                     // 手机号
                     phoneView.setText(phoneNumber == null ? "个人信息" : phoneNumber);
                     // 头像
-                    if(mainActivity.resident.getAvatar() != null){
-                        byte[] avatarBuf = mainActivity.resident.getAvatar();
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(avatarBuf, 0, avatarBuf.length);
-                        avatarView.setImageBitmap(bitmap);
-                    }
+//                    if(mainActivity.resident.getAvatar() != null){
+//                        byte[] avatarBuf = mainActivity.resident.getAvatar();
+//                        Bitmap bitmap = BitmapFactory.decodeByteArray(avatarBuf, 0, avatarBuf.length);
+//                        avatarView.setImageBitmap(bitmap);
+//                    }
             });
         } else {
 

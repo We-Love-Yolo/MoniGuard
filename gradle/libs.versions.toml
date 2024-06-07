@@ -13,11 +13,12 @@ navigationUi = "2.7.7"
 activity = "1.8.2"
 volley = "1.2.1"
 okhttp = "4.9.0"
-libvlc = "3.3.0"
+#libvlc = "3.3.0"
 appauth = "0.11.1"
 lombok = "1.18.32"
 gson = "2.10.1"
 worker = "2.7.0"
+annotation = "1.0.2"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -33,11 +34,12 @@ navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
-libvlc = { group = "org.videolan.android", name = "libvlc-all", version.ref = "libvlc" }
+#libvlc = { group = "org.videolan.android", name = "libvlc-all", version.ref = "libvlc" }
 appauth = { group = "net.openid", name = "appauth", version.ref = "appauth" }
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 worker = { group = "androidx.work", name = "work-runtime", version.ref = "worker" }
+annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

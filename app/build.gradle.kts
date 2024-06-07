@@ -49,11 +49,14 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.volley)
     implementation(libs.okhttp)
-    implementation(libs.libvlc)
+//    implementation(libs.libvlc)
+    implementation(files("libs/libvlc-release-3.aar"))
     implementation(libs.activity)
     implementation(libs.appauth)
     implementation(libs.gson)
     implementation(libs.worker)
+    implementation (libs.annotation)
+
 
     compileOnly(libs.lombok)
 

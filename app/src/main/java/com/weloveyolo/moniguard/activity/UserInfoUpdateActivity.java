@@ -74,7 +74,7 @@ public class UserInfoUpdateActivity extends AppCompatActivity {
         resident.setNickname(String.valueOf(nickname.getText()));
         resident.setPhone(String.valueOf(phone.getText()));
         putResident();
-        finish();
+//        finish();
     }
 
     public void putResident(){
@@ -85,8 +85,9 @@ public class UserInfoUpdateActivity extends AppCompatActivity {
                 if(success){
                     runOnUiThread(() -> {
                         MainActivity.ct.showSuccessToast("个人信息已修改", 1000);
-
                     });
+                    setResult(Activity.RESULT_OK, new Intent());
+                    finish();
                 }
             });
 

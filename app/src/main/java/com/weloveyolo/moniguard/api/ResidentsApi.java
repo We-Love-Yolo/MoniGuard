@@ -69,7 +69,7 @@ public class ResidentsApi implements IResidentsApi {
 
 
     @Override
-    public void getAvatar(ICallback<String> callback) {
+    public void getAvatar(ICallback<byte[]> callback) {
         Request request = new Request.Builder()
                 .url(getApiUrl() + "/GetAvatar")
                 .header("Authorization", "Bearer " + getAccessToken())
@@ -78,7 +78,7 @@ public class ResidentsApi implements IResidentsApi {
             if (!response.isSuccessful()) {
                 throw new IOException("Failed to get avatar: " + response);
             }
-            callback.onCallback(response.body().string(), true);
+            callback.onCallback(response.body().bytes(), true);
         } catch (IOException e) {
             callback.onCallback(null, false);
         }

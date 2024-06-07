@@ -2,6 +2,7 @@ package com.weloveyolo.moniguard.ui;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -34,6 +35,9 @@ import java.util.Objects;
 import lombok.Getter;
 
 public class MyFragment extends Fragment {
+
+    private int EDIT_RESIDENT_CODE = 103;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,9 +61,9 @@ public class MyFragment extends Fragment {
         //跳转个人信息修改
         LinearLayout info= view.findViewById(R.id.info);
         info.setOnClickListener(v -> {
-            Intent intent=new Intent(getActivity(), UserInfoUpdateActivity.class);
+            Intent intent = new Intent(getActivity(), UserInfoUpdateActivity.class);
             intent.putExtra("residentId", residentId);  // 传入用户id
-            startActivity(intent);
+            startActivityForResult(intent, EDIT_RESIDENT_CODE);
         });
     }
 
@@ -78,14 +82,24 @@ public class MyFragment extends Fragment {
                     // 手机号
                     phoneView.setText(phoneNumber == null ? "个人信息" : phoneNumber);
                     // 头像
-//                    if(mainActivity.resident.getAvatar() != null){
-//                        byte[] avatarBuf = mainActivity.resident.getAvatar();
-//                        Bitmap bitmap = BitmapFactory.decodeByteArray(avatarBuf, 0, avatarBuf.length);
-//                        avatarView.setImageBitmap(bitmap);
-//                    }
+                    if(mainActivity.resident.getRealAvatar() != null){
+                        byte[] avatarBuf = mainActivity.resident.getRealAvatar();
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(avatarBuf, 0, avatarBuf.length);
+                        avatarView.setImageBitmap(bitmap);
+                    }
             });
         } else {
 
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode != Activity.RESULT_OK) return;
+        if(requestCode == EDIT_RESIDENT_CODE){
+            ((MainActivity) requireActivity()).getMyData();
         }
     }
 

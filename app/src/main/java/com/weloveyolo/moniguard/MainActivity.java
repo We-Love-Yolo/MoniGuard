@@ -4,7 +4,10 @@ package com.weloveyolo.moniguard;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -71,6 +74,14 @@ public class MainActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             return;
+        }
+
+        // 存储权限
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (!Environment.isExternalStorageManager()) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivity(intent);
+            }
         }
 
         ct = new CustomToast(getApplicationContext());
@@ -188,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
             if (success) {
                 this.resident = resident;
                 myFragment.tryShow();
-                if (this.resident.getAvatar() == null) {
+                if (this.resident.getRealAvatar() == null) {
                     moniGuardApi.getResidentsApi().getAvatar((avatar, success2) -> {
                         if (success2) {
                             resident.setAvatar(avatar);

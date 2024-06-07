@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29" />
 
     <application
         android:allowBackup="true"
@@ -31,7 +33,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- activity都要写在这 -->
+        </activity>
         <activity
             android:name="net.openid.appauth.RedirectUriReceiverActivity"
             android:exported="true"
@@ -54,11 +56,11 @@
             android:name=".activity.LoginActivity"
             android:exported="true"
             android:launchMode="standard"
-            android:screenOrientation="portrait" /> <!-- <activity -->
-        <!-- android:name=".activitys.HomeActivity" -->
-        <!-- android:exported="true" -->
-        <!-- /> -->
-        <activity android:name=".activity.MonitorActivity" />
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".activity.MonitorActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait" />
         <activity android:name=".activity.AlbumActivity" />
         <activity android:name=".activity.AddDeviceActivity" />
         <activity android:name=".activity.Health_monitoring" />

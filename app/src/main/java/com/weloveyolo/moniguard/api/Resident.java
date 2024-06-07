@@ -15,7 +15,9 @@ public class Resident {
     private String phone;
     private String email;
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    private byte[] realAvatar;
+
+    public void setAvatar(byte[] avatar) {
+        this.realAvatar = avatar;
     }
 }

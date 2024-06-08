@@ -11,7 +11,6 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -37,6 +36,9 @@ public class MonitorActivity extends AppCompatActivity {
     private LibVLC libVLC;
     private MediaPlayer mediaPlayer;
     private VLCVideoLayout vlcVideoLayout;
+    private RecyclerView recyclerView;
+    private ScreenshotListAdapter screenshotListAdapter;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -226,6 +228,16 @@ public class MonitorActivity extends AppCompatActivity {
         Intent intent =new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         intent.setData(Uri.fromFile(new File(storagePath)));
         sendBroadcast(intent);
+
+        //新增截图
+        screenshotListAdapter.addScreenshot(storagePath);
+        screenshotListAdapter.notifyDataSetChanged();
+
     }
+    public void clearALL(View v){
+        String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/DCIM/Screenshots/Moniguard";
+        screenshotListAdapter.clearAllScreenshots(storagePath);
+    }
+
 
 }

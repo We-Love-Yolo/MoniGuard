@@ -46,7 +46,7 @@ public class MonitorActivity extends AppCompatActivity {
         // 配置硬件解码器
 //        ArrayList<String> options = new ArrayList<>();
 //        options.add("--avcodec-hw=any");
-//        libVLC = new LibVLC(this, options);
+//        libVLC = new LibVLC(this, options);11
 
         vlcVideoLayout = findViewById(R.id.view);
 

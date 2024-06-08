@@ -49,7 +49,7 @@ public class MonitorActivity extends AppCompatActivity {
         //设置网状布局行列数
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(layoutManager);
-        //行间距
+        //行间距1
         int spacing = getResources().getDimensionPixelSize(R.dimen.spacing); // 从资源中获取间隙尺寸
         boolean includeEdge = false; // 如果你想在网格的边缘也有间隔的话
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, spacing, includeEdge));

@@ -2,6 +2,7 @@ package com.weloveyolo.moniguard.api;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.weloveyolo.moniguard.util.HttpClient;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -50,6 +51,36 @@ public class AnalysisApi implements IAnalysisApi{
             Type sceneListType = new TypeToken<List<Message>>(){}.getType();
             List<Message> messageList = gson.fromJson(Objects.requireNonNull(response.body()).string(), sceneListType);
             callback.onCallback(messageList, true);
+        } catch (IOException e) {
+            callback.onCallback(null, false);
+        }
+    }
+
+    @Override
+    public void getFaces(ICallback<List<Face>> callback, int sceneId) {
+        try (Response response = HttpClient.get(getApiUrl() + "/GetFaces", String.valueOf(sceneId))) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Failed to get faces: " + response);
+            }
+            Gson gson = new Gson();
+            Type faceListType = new TypeToken<List<Face>>(){}.getType();
+            List<Face> faceList = gson.fromJson(Objects.requireNonNull(response.body()).string(), faceListType);
+            callback.onCallback(faceList, true);
+        } catch (IOException e) {
+            callback.onCallback(null, false);
+        }
+    }
+
+    @Override
+    public void getFacesByGuestId(ICallback<List<Face>> callback, int guestId) {
+        try (Response response = HttpClient.get(getApiUrl() + "/GetFacesByGuestId", String.valueOf(guestId))) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Failed to get faces: " + response);
+            }
+            Gson gson = new Gson();
+            Type faceListType = new TypeToken<List<Face>>(){}.getType();
+            List<Face> faceList = gson.fromJson(Objects.requireNonNull(response.body()).string(), faceListType);
+            callback.onCallback(faceList, true);
         } catch (IOException e) {
             callback.onCallback(null, false);
         }

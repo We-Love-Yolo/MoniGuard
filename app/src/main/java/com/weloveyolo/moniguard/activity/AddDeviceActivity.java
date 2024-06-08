@@ -91,4 +91,10 @@ public class AddDeviceActivity extends AppCompatActivity {
             }));
         }).start();
     }
+
+    public void quickName(View view){
+        String quick_name = (String) ((Button)view).getText();
+        name.setText(quick_name);
+
+    }
 }

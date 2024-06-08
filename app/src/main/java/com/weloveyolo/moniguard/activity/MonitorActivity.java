@@ -54,8 +54,13 @@ public class MonitorActivity extends AppCompatActivity {
         boolean includeEdge = false; // 如果你想在网格的边缘也有间隔的话
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, spacing, includeEdge));
         recyclerView.setTop(-300);
+// 实例化适配器并设置给RecyclerView
+        screenshotListAdapter = new ScreenshotListAdapter(this);
+        recyclerView.setAdapter(screenshotListAdapter);
 
-        // 配置硬件解码器
+        String screenshotDirectoryPath = "/storage/emulated/0/DCIM/Screenshots/Moniguard";
+        screenshotListAdapter.loadAllScreenshots(screenshotDirectoryPath);
+        // 配置硬件解码器1
 //        ArrayList<String> options = new ArrayList<>();
 //        options.add("--avcodec-hw=any");
 //        libVLC = new LibVLC(this, options);11

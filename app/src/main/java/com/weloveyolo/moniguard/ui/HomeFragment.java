@@ -62,6 +62,7 @@ public class HomeFragment extends Fragment {
 
         // 通知适配器数据已更改
         cameralistadpter.notifyDataSetChanged();
+        cameralistadpter.setSceneName(mainActivity.scenes.get(position).getName());
     }
 
     public void tryShow() {

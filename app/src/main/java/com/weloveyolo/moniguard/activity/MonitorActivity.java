@@ -44,7 +44,7 @@ public class MonitorActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.monitor);
-        //在截图相册显示
+        //在截图相册显示1
         recyclerView = findViewById(R.id.screeshot_album);
         //设置网状布局行列数
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
@@ -55,16 +55,10 @@ public class MonitorActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, spacing, includeEdge));
         recyclerView.setTop(-300);
 
-        // 实例化适配器并设置给RecyclerView
-        screenshotListAdapter = new ScreenshotListAdapter(this);
-        recyclerView.setAdapter(screenshotListAdapter);
-
-        String screenshotDirectoryPath = "/storage/emulated/0/DCIM/Screenshots/Moniguard";
-        screenshotListAdapter.loadAllScreenshots(screenshotDirectoryPath);
         // 配置硬件解码器
 //        ArrayList<String> options = new ArrayList<>();
 //        options.add("--avcodec-hw=any");
-//        libVLC = new LibVLC(this, options);
+//        libVLC = new LibVLC(this, options);11
 
         vlcVideoLayout = findViewById(R.id.view);
 

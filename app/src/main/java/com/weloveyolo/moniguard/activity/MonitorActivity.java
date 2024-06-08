@@ -44,7 +44,7 @@ public class MonitorActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.monitor);
-        //在截图相册显示
+        //在截图相册显示1
         recyclerView = findViewById(R.id.screeshot_album);
         //设置网状布局行列数
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3);

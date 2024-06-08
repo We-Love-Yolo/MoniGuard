@@ -15,9 +15,13 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
+import com.weloveyolo.moniguard.adapter.GridSpacingItemDecoration;
+import com.weloveyolo.moniguard.adapter.ScreenshotListAdapter;
 
 import org.videolan.libvlc.LibVLC;
 import org.videolan.libvlc.Media;
@@ -32,12 +36,31 @@ public class MonitorActivity extends AppCompatActivity {
     private LibVLC libVLC;
     private MediaPlayer mediaPlayer;
     private VLCVideoLayout vlcVideoLayout;
+    private RecyclerView recyclerView;
+    private ScreenshotListAdapter screenshotListAdapter;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.monitor);
+        //在截图相册显示
+        recyclerView = findViewById(R.id.screeshot_album);
+        //设置网状布局行列数
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
+        recyclerView.setLayoutManager(layoutManager);
+        //行间距
+        int spacing = getResources().getDimensionPixelSize(R.dimen.spacing); // 从资源中获取间隙尺寸
+        boolean includeEdge = false; // 如果你想在网格的边缘也有间隔的话
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, spacing, includeEdge));
+        recyclerView.setTop(-300);
 
+        // 实例化适配器并设置给RecyclerView
+        screenshotListAdapter = new ScreenshotListAdapter(this);
+        recyclerView.setAdapter(screenshotListAdapter);
+
+        String screenshotDirectoryPath = "/storage/emulated/0/DCIM/Screenshots/Moniguard";
+        screenshotListAdapter.loadAllScreenshots(screenshotDirectoryPath);
         // 配置硬件解码器
 //        ArrayList<String> options = new ArrayList<>();
 //        options.add("--avcodec-hw=any");
@@ -211,6 +234,16 @@ public class MonitorActivity extends AppCompatActivity {
         Intent intent =new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         intent.setData(Uri.fromFile(new File(storagePath)));
         sendBroadcast(intent);
+
+        //新增截图
+        screenshotListAdapter.addScreenshot(storagePath);
+        screenshotListAdapter.notifyDataSetChanged();
+
     }
+    public void clearALL(View v){
+        String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/DCIM/Screenshots/Moniguard";
+        screenshotListAdapter.clearAllScreenshots(storagePath);
+    }
+
 
 }

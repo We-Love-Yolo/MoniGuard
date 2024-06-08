@@ -149,12 +149,17 @@
 
 
 <!--截图相册-->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp">
-        <TextView
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -169,10 +174,18 @@
             android:id="@+id/imageView4"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            app:srcCompat="@drawable/right"
-            android:layout_gravity="right"
             android:clickable="true"
-            android:onClick="goto_album" />
+            android:onClick="goto_album"
+            app:srcCompat="@drawable/right" />
+</LinearLayout>
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:clickable="true"
+            android:layout_marginRight="20dp"
+            android:onClick="clearALL"
+            app:srcCompat="@drawable/clearall" />
     </LinearLayout>
 
     <LinearLayout
@@ -183,9 +196,12 @@
         android:layout_marginRight="20dp">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
+            android:id="@+id/screeshot_album"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="3"
+            tools:listitem="@layout/item_screenshot"/>
 
     </LinearLayout>
 

@@ -26,24 +26,6 @@ public class Camera {
             createdAt = timeString.replace(" ", "T").concat("Z");
       }
 
-      public int getCameraId() {
-            return cameraId;
-      }
-
-      public String getName() {
-            return name;
-      }
-
-      public String getDescription() {
-            return description;
-      }
-
-      public int getSceneId() {
-            return sceneId;
-      }
-
-      public String getConnectState(){return connectString;}
-
       @Override
       public String toString() {
             return "Camera{" +

@@ -1,5 +1,6 @@
 package com.weloveyolo.moniguard.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +21,14 @@ import java.util.Date;
 public class AddDeviceActivity extends AppCompatActivity {
 
     private int sceneId;    // 场景id
+    private EditText name;
+    private EditText key;
+    private EditText description;
+    String links;
 
+
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,15 +36,27 @@ public class AddDeviceActivity extends AppCompatActivity {
 
         sceneId = getIntent().getIntExtra("sceneId", 0);
 
-        EditText et = findViewById(R.id.edit_scene_name);
+        name = findViewById(R.id.edit_scene_name);
+        key = findViewById(R.id.edit_key);
+        description = findViewById(R.id.edit_description);
+
 
         Button finish_button = findViewById(R.id.button_finish);
         finish_button.setOnClickListener(v -> {
-            String content = et.getText().toString().trim();
-            et.setText("");
-            et.clearFocus();
-            if(content.isEmpty() || sceneId <= 0) return;
-            addDevice(content);
+
+            if(name.getText().toString().trim().equals("")) {
+                MainActivity.ct.showErrorToast("设备名为空", 1000);
+                return;
+            }
+
+            if(key.getText().toString().trim().equals("")) {
+                MainActivity.ct.showErrorToast("摄像头key为空", 1000);
+                return;
+            }
+            String name_content = name.getText().toString().trim();
+            int key_content =Integer.parseInt(key.getText().toString().trim());
+            String description_content = description.getText().toString().trim();
+            addDevice(name_content,key_content,description_content);
         });
     }
 
@@ -46,12 +66,13 @@ public class AddDeviceActivity extends AppCompatActivity {
         finish();
     }
 
-    public void addDevice(String deviceName){
+    public void addDevice(String deviceName,int deviceKey,String deviceDescription){
         new Thread(() -> {
             IMoniGuardApi moniGuardApi = new MoniGuardApi();
             MainActivity.ct.showLoadingToast("加载中");
-            moniGuardApi.getScenesApi().postCamera(sceneId, new Camera(deviceName, new Date()), ((result, success) -> {
+            moniGuardApi.getScenesApi().getCameraConnectString(deviceKey,deviceName,sceneId,deviceDescription, ((result, success) -> {
                 if(success) {
+                    links = result;
                     runOnUiThread(()->{
                         MainActivity.ct.hideLoadingToast(()->{
                             MainActivity.ct.showSuccessToast("设备已添加", 1000);
@@ -60,7 +81,20 @@ public class AddDeviceActivity extends AppCompatActivity {
                     setResult(Activity.RESULT_OK, new Intent());
                     finish();
                 }
+                else{
+                    runOnUiThread(()->{
+                        MainActivity.ct.hideLoadingToast(()->{
+                            MainActivity.ct.showErrorToast("设备添加失败", 1000);
+                        }, 100);
+                    });
+                }
             }));
         }).start();
+    }
+
+    public void quickName(View view){
+        String quick_name = (String) ((Button)view).getText();
+        name.setText(quick_name);
+
     }
 }

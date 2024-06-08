@@ -64,7 +64,7 @@ public class HttpClient {
             if (objects.length <= 0 || objects.length % 2 != 0) return null;
             ArrayList<String> queries = new ArrayList<>();
             for (int i = 0; i < objects.length; i+=2) {
-                queries.add((String)objects[i] + "=" + (String)objects[i+1]);
+                queries.add(objects[i].toString() + "=" + objects[i+1].toString());
             }
             String[] queryArr = queries.toArray(new String[queries.size()]);
             path = path + "?" + String.join("&", queryArr);

@@ -41,6 +41,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
                 android:text="添加场景"
+                android:textColor="@color/black"
                 android:gravity="right" />
 
         </LinearLayout>
@@ -60,31 +61,21 @@
                 android:textSize="25dp"
                 android:textStyle="bold"
                 tools:ignore="MissingConstraints" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-<!--            <ImageButton-->
-<!--                android:id="@+id/camera1_button"-->
-<!--                android:layout_width="100dp"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:background="@null"-->
-<!--                android:clickable="true"-->
-<!--                android:onClick="onClick"-->
-<!--                android:scaleType="fitCenter"-->
-<!--                android:src="@drawable/img_camera_button" />-->
             <ImageButton
                 android:id="@+id/add_camera_button"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:background="@null"
                 android:clickable="true"
                 android:onClick="onClick"
-                android:src="@drawable/add_camera"
-                android:scaleType="fitCenter"/>
+                android:src="@drawable/add_scene"
+                android:scaleType="fitCenter"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="10dp"/>
+
         </LinearLayout>
+
+
 
 
 

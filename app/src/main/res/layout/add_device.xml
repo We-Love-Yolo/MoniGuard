@@ -42,7 +42,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="个人信息"
+                    android:text="添加设备"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/bar_text"

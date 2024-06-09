@@ -73,13 +73,13 @@ public class MessageFragment extends Fragment {
     }
 
     // 查询消息
-    public void selectAllMessages(int userId){
-        SQLiteDatabase db = new DBHelper(getActivity()).getWritableDatabase();
+    public List<Message> selectAllMessages(int userId){
         List<Message> messages = new ArrayList<>();
+        SQLiteDatabase db = new DBHelper(getActivity()).getWritableDatabase();
         Cursor cursor = db.query("message",
                 new String[]{"mid", "residentId", "content", "createdAt", "type"},
                 "residentId = ?", new String[]{String.valueOf(userId)}, null, null, null);
-
+        db.close();
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 int mid = cursor.getInt(cursor.getColumnIndexOrThrow("mid"));
@@ -94,19 +94,19 @@ public class MessageFragment extends Fragment {
         if (cursor != null) {
             cursor.close();
         }
-
-        db.close();
+        return messages;
     }
 
     // 插入消息
     public void insertMessage(Message message){
         if (message == null) return;
-        SQLiteDatabase db = new DBHelper(getActivity()).getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("residentId", message.getResidentId());
         values.put("content", message.getContent());
         values.put("createdAt", message.getCreatedAt());
         values.put("type", message.getType());
+        SQLiteDatabase db = new DBHelper(getActivity()).getWritableDatabase();
         db.insert("message", null, values);
+        db.close();
     }
 }

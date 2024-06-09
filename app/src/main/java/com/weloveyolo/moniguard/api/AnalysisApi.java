@@ -85,4 +85,33 @@ public class AnalysisApi implements IAnalysisApi{
             callback.onCallback(null, false);
         }
     }
+
+    @Override
+    public void getPhotos(ICallback<List<Photo>> callback, int guestId) {
+        try (Response response = HttpClient.get(getApiUrl() + "/GetPhotos", String.valueOf(guestId))) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Failed to get photos: " + response);
+            }
+            Gson gson = new Gson();
+            Type photoListType = new TypeToken<List<Photo>>(){}.getType();
+            List<Photo> photoList = gson.fromJson(Objects.requireNonNull(response.body()).string(), photoListType);
+            callback.onCallback(photoList, true);
+        } catch (IOException e) {
+            callback.onCallback(null, false);
+        }
+    }
+
+    @Override
+    public void getPhoto(ICallback<Photo> callback, int photoId) {
+        try (Response response = HttpClient.get(getApiUrl() + "/GetPhoto", String.valueOf(photoId))) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Failed to get photo: " + response);
+            }
+            Gson gson = new Gson();
+            Photo photo = gson.fromJson(Objects.requireNonNull(response.body()).string(), Photo.class);
+            callback.onCallback(photo, true);
+        } catch (IOException e) {
+            callback.onCallback(null, false);
+        }
+    }
 }

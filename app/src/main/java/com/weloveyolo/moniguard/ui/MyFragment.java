@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.activity.MessageInfoActivity;
+import com.weloveyolo.moniguard.activity.PhotoDetailActivity;
 import com.weloveyolo.moniguard.activity.UserInfoUpdateActivity;
 
 public class MyFragment extends Fragment {
@@ -67,6 +68,12 @@ public class MyFragment extends Fragment {
             } catch (Exception e) {
                 MainActivity.ct.showErrorToast("无法拨号", 500);
             }
+        });
+
+        //关于
+        LinearLayout about = view.findViewById(R.id.about);
+        about.setOnClickListener(v -> {
+
         });
     }
 

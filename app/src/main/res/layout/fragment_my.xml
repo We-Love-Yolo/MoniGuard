@@ -188,6 +188,7 @@
                     android:background="#CCCCCC" />
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/about"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal"

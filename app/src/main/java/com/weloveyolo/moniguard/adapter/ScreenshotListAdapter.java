@@ -104,5 +104,16 @@ public class ScreenshotListAdapter extends RecyclerView.Adapter<ScreenshotListAd
             imageView = itemView.findViewById(R.id.screenshotitem);
         }
     }
+    public void reloadAllScreenshots(String directoryPath) {
+        // 清空原有的列表
+        clearScreenshots();
+
+        // 加载整个目录的截图
+        loadAllScreenshots(directoryPath);
+        notifyDataSetChanged();
+    }
+    public void clearScreenshots() {
+        screenshotPaths.clear();
+    }
 
 }

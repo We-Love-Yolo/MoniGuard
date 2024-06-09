@@ -4,25 +4,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <!--  页面标签 -->
-    <!-- 示例中使用 androidx.appcompat.widget.Toolbar -->
-
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="645dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="40dp" >
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            app:navigationIcon="?attr/homeAsUpIndicator"
-            app:title="智能相册"
-            app:titleTextColor="@android:color/black"
-            tools:ignore="MissingConstraints" />
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/goback"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                app:srcCompat="@drawable/goback3"
+                android:clickable="true"
+                android:onClick="gotoDiscoverPage"
+                android:contentDescription="返回主页"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="智能相册"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:textSize="25dp">
+
+            </TextView>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,31 +62,16 @@
                 tools:layout_editor_absoluteY="90dp" />
         </LinearLayout>
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:id="@+id/fake_whitelist1"
-            android:src="@drawable/fake_whitelist1"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"></ImageView>
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:id="@+id/fake_whitelist2"
-            android:src="@drawable/fake_whitelist2"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"></ImageView>
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:id="@+id/fake_whitelist3"
-            android:src="@drawable/fake_whitelist3"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"></ImageView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/white_album"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="4"
+            tools:listitem="@layout/item_whitelist"/>
     </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -92,93 +90,17 @@
 
         </LinearLayout>
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="30dp"
-                android:src="@drawable/fake_blacklist1"></ImageView>
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/fake_blacklist1"></ImageView>
-            <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/fake_blacklist1"></ImageView>
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/fake_blacklist1"></ImageView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/black_album"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="4"
+                tools:listitem="@layout/item_blacklist"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="30dp"
-                android:src="@drawable/fake_blacklist1"></ImageView>
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/fake_blacklist1"></ImageView>
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/fake_blacklist1"></ImageView>
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/fake_blacklist1"></ImageView>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="30dp"
-                android:src="@drawable/fake_blacklist1"></ImageView>
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/fake_blacklist1"></ImageView>
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/fake_blacklist1"></ImageView>
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/fake_blacklist1"></ImageView>
-        </LinearLayout>
-
     </LinearLayout>
 
 

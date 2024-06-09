@@ -1,24 +1,25 @@
 package com.weloveyolo.moniguard.activity;
 import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import com.weloveyolo.moniguard.R;
+import com.weloveyolo.moniguard.adapter.ScreenshotListAdapter;
+
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class AlbumActivity extends AppCompatActivity {
-    
+
+    private RecyclerView recyclerView1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.smart_album1);
-            Toolbar toolbar = findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
 
-            // 启用返回按钮
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-            // 返回按钮点击事件
-            toolbar.setNavigationOnClickListener(v -> onBackPressed());
-
+    }
+    public void gotoDiscoverPage(View view){
+        finish();
     }
 
 }

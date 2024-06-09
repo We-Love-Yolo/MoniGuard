@@ -16,24 +16,24 @@ import com.weloveyolo.moniguard.api.Message;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
 
-public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.MyHolder>{
+public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.MyHolder> {
     private List<Message> messageList;
     private LayoutInflater inflater;
+
     public MessageListAdapter(Context context, List<Message> messages) {
         inflater = LayoutInflater.from(context);
-        messageList = new ArrayList<>();
+        messageList = messages;  // 使用传入的 messages 列表
     }
 
     @Override
     @NotNull
     public MessageListAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = inflater.inflate(R.layout.item_monitor, parent, false);
+        View itemView = inflater.inflate(R.layout.message, parent, false);  // Ensure the correct layout is inflated
         return new MessageListAdapter.MyHolder(itemView);
     }
 
@@ -41,32 +41,30 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
     public void onBindViewHolder(@NonNull MessageListAdapter.MyHolder holder, int position) {
         Message message = messageList.get(position);
         String time = message.getCreatedAt();
-        // 解析时间字符串
-        ZonedDateTime zonedDateTime = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            zonedDateTime = ZonedDateTime.parse(time);
-        }
-        int month = 12;
-        int day = 31;
-        int hour = 0;
-        int minute = 0;
+        ZonedDateTime zonedDateTime = parseZonedDateTime(time);
 
-        // 提取月、日和时间
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            month = zonedDateTime.getMonthValue();
+        //解析时间需要手机的安卓版本26以上
+        if (zonedDateTime != null && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int month = zonedDateTime.getMonthValue();
+            int day = zonedDateTime.getDayOfMonth();
+            int hour = zonedDateTime.getHour();
+            int minute = zonedDateTime.getMinute();
+            holder.message_time.setText(month + "月" + day + "日 " + hour + ":" + minute);
+            holder.picture_time.setText(hour + ":" + minute);
         }
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            day = zonedDateTime.getDayOfMonth();
-        }
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            hour = zonedDateTime.getHour();
-        }
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            minute = zonedDateTime.getMinute();
-        }
-        holder.message_time.setText(String.valueOf(month)+"月"+String.valueOf(day)+"日"+" "+String.valueOf(hour)+":"+String.valueOf(minute));
-        holder.picture_time.setText(String.valueOf(hour)+":"+String.valueOf(minute));
 
+        // 设置图像资源，假设 message.getType() 返回图像资源 ID
+//        holder.photo.setImageResource(message.getType());
+
+        holder.scene.setText(message.getContent());
+        holder.camera.setText(message.getContent()); // 修改为根据 message 数据设置合适的值
+    }
+
+    private ZonedDateTime parseZonedDateTime(String time) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            return ZonedDateTime.parse(time);
+        }
+        return null;
     }
 
     @Override
@@ -74,41 +72,22 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         return messageList.size();
     }
 
-
-
-
-
-@Getter
-@Setter
+    @Getter
+    @Setter
     static class MyHolder extends RecyclerView.ViewHolder {
-
         TextView message_time;
         ImageView photo;
         TextView scene;
         TextView camera;
         TextView picture_time;
 
-
         public MyHolder(@NonNull View itemView) {
-
             super(itemView);
             message_time = itemView.findViewById(R.id.message_time);
             photo = itemView.findViewById(R.id.photo);
             scene = itemView.findViewById(R.id.scene);
             camera = itemView.findViewById(R.id.camera);
             picture_time = itemView.findViewById(R.id.picture_time);
-//            cameraImageButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    // 在这里执行点击跳转操作，例如跳转到另一个 Activity
-//                    Context context = itemView.getContext();
-//                    Intent intent = new Intent(context, MonitorActivity.class); // 替换 YourActivity 为目标 Activity 的类名
-//                    context.startActivity(intent);
-//                }
-//            });
         }
+    }
 }
-
-}
-
-

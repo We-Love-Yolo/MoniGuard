@@ -10,6 +10,8 @@ public class MoniGuardApi implements IMoniGuardApi {
 
     private String accessToken;
 
+    private final IAnalysisApi analysisApi;
+
     private final IResidentsApi residentsApi;
 
     private final IScenesApi scenesApi;
@@ -18,6 +20,7 @@ public class MoniGuardApi implements IMoniGuardApi {
 
     public MoniGuardApi() {
         httpClient = new OkHttpClient();
+        this.analysisApi = new AnalysisApi(this);
         this.residentsApi = new ResidentsApi(this);
         this.scenesApi = new ScenesApi(this);
     }

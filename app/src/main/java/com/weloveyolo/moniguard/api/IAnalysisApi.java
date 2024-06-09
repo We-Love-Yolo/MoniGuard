@@ -10,7 +10,7 @@ public interface IAnalysisApi {
 
     IMoniGuardApi getMainApi();
 
-    void getMessage(ICallback<List<Message>> callback);
+    void getMessages(ICallback<List<Message>> callback);
 
     void getFaces(ICallback<List<Face>> callback, int sceneId);
 

@@ -240,6 +240,7 @@ public class MonitorActivity extends AppCompatActivity {
             MainActivity.ct.showSuccessToast("截图失败", 500);
         }
 
+
         // 通知系統相冊刷新
         Intent intent =new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         intent.setData(Uri.fromFile(new File(storagePath)));
@@ -247,8 +248,7 @@ public class MonitorActivity extends AppCompatActivity {
 
         //新增截图
         screenshotListAdapter.addScreenshot(storagePath);
-        screenshotListAdapter.notifyDataSetChanged();
-
+        screenshotListAdapter.reloadAllScreenshots(storagePath);
     }
     public void clearALL(View v){
         String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/DCIM/Screenshots/Moniguard";

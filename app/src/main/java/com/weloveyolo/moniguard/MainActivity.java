@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private MyFragment myFragment;  // 我的
     private Fragment currentFragment; // 当前显示的Fragment
 
-    private IMoniGuardApi moniGuardApi;
+    public IMoniGuardApi moniGuardApi;
     public Resident resident = null;
     public List<Scene> scenes = null;
     public Map<Integer, List<Camera>> cameras = null;
@@ -98,9 +98,9 @@ public class MainActivity extends AppCompatActivity {
         // 其他方式
         HttpClient.setToken(user.getString("accessToken", ""));
 
-        getHomeData();
-        getMessageData();
         getMyData();
+        getHomeData();
+
 
         setContentView(R.layout.activity_main);
 
@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
     // 首页
     public void getHomeData() {
-        new Thread(() -> moniGuardApi.getScenesApi().getScenes((scenes, success) -> {
+            new Thread(() -> moniGuardApi.getScenesApi().getScenes((scenes, success) -> {
             if (success) {
                 this.scenes = new ArrayList<>(scenes);
                 this.cameras.clear();
@@ -243,4 +243,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }

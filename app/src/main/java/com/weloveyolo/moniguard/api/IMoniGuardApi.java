@@ -7,6 +7,8 @@ public interface IMoniGuardApi {
 
     String getBaseUrl();
 
+    IAnalysisApi getAnalysisApi();
+
     IResidentsApi getResidentsApi();
 
     IScenesApi getScenesApi();

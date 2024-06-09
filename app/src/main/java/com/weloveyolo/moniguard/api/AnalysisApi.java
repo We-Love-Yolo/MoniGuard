@@ -37,7 +37,7 @@ public class AnalysisApi implements IAnalysisApi{
     }
 
     @Override
-    public void getMessage(ICallback<List<Message>> callback) {
+    public void getMessages(ICallback<List<Message>> callback) {
         Request request = new Request.Builder()
                 .url(getApiUrl() + "/GetMessages")
                 .header("Authorization", "Bearer " + getAccessToken())

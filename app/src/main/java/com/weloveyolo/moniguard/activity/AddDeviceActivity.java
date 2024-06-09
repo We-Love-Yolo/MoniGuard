@@ -61,7 +61,7 @@ public class AddDeviceActivity extends AppCompatActivity {
     }
 
     // 返回上一页
-    public void goBack(View view){
+    public void toBack(View view){
         setResult(Activity.RESULT_CANCELED, new Intent());
         finish();
     }

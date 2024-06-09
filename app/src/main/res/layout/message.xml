@@ -69,7 +69,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
 
-            android:src="@drawable/photo" />
+            android:src="@drawable/picture" />
 
     </LinearLayout>
     <LinearLayout

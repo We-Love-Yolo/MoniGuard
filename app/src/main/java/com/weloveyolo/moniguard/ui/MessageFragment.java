@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.adapter.MessageListAdapter;
 import com.weloveyolo.moniguard.api.Message;
@@ -34,48 +35,43 @@ public class MessageFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_message, container, false);
-//        View view = inflater.inflate(R.layout.fragment_message, container, false);
-//
-//        messageList = view.findViewById(R.id.message_list);
-//        messageList.setLayoutManager(new GridLayoutManager(getContext(), 1));
-//
-//        messages = new ArrayList<>();
-//        MessageListAdapter messageAdapter = new MessageListAdapter(getContext(), messages);
-//        messageList.setAdapter(messageAdapter);
-//
-//        // Mock data for testing
-//        loadMessages();
-//
-//        return view;
+//        return inflater.inflate(R.layout.fragment_message, container, false);
+        View view = inflater.inflate(R.layout.fragment_message, container, false);
+        getData();
+        messageList = view.findViewById(R.id.message_list);
+        messageList.setLayoutManager(new GridLayoutManager(getContext(), 1));
 
+        messageListAdapter = new MessageListAdapter(getContext(), messages);
+        messageList.setAdapter(messageListAdapter);
 
-
-
-
+        return view;
 
     }
 
-//    private void loadMessages() {
-//        // Simulating network or database call
-//        messages.add(new Message("2024-06-08 15:23", R.drawable.photo, "室内", "摄像头1", "2024-06-08 15:23"));
-//        messages.add(new Message("2024-06-08 15:24", R.drawable.photo, "室外", "摄像头2", "2024-06-08 15:24"));
-//        messageListAdapter.updateMessages(messages);
-//
-//    }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-////        insertMessage(new Message(3, "你好", "00:00", 1));
-//        selectAllMessages(3);
+    }
+
+    private void getData() {
+        int userId = ((MainActivity)requireActivity()).resident.getResidentId();
+        new Thread(() -> ((MainActivity)getActivity()).moniGuardApi.getAnalysisApi().getMessages((messages, success) -> {
+            if (success) {
+                messages.forEach(message->{
+                    insertMessage(message, userId);
+                });
+            }
+        })).start();
+        selectAllMessages(userId);
     }
 
     // 查询消息
     public void selectAllMessages(int userId){
-        SQLiteDatabase db = new DBHelper(getActivity()).getWritableDatabase();
         List<Message> messages = new ArrayList<>();
+        SQLiteDatabase db = new DBHelper(getActivity()).getWritableDatabase();
         Cursor cursor = db.query("message",
                 new String[]{"mid", "residentId", "content", "createdAt", "type"},
                 "residentId = ?", new String[]{String.valueOf(userId)}, null, null, null);
@@ -94,19 +90,21 @@ public class MessageFragment extends Fragment {
         if (cursor != null) {
             cursor.close();
         }
-
         db.close();
+        this.messages = messages;
     }
 
     // 插入消息
-    public void insertMessage(Message message){
+    public void insertMessage(Message message, int userId){
         if (message == null) return;
-        SQLiteDatabase db = new DBHelper(getActivity()).getWritableDatabase();
+        messages.add(message);
         ContentValues values = new ContentValues();
-        values.put("residentId", message.getResidentId());
+        values.put("residentId", userId);
         values.put("content", message.getContent());
         values.put("createdAt", message.getCreatedAt());
         values.put("type", message.getType());
+        SQLiteDatabase db = new DBHelper(getActivity()).getWritableDatabase();
         db.insert("message", null, values);
+        db.close();
     }
 }

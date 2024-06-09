@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -44,6 +45,12 @@ public class MonitorActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.monitor);
+
+        TextView address = findViewById(R.id.address);
+        address.setText(getIntent().getStringExtra("sceneName"));
+        TextView monitorName = findViewById(R.id.monitor_name);
+        monitorName.setText(getIntent().getStringExtra("cameraName"));
+
         //在截图相册显示1
         recyclerView = findViewById(R.id.screeshot_album);
         //设置网状布局行列数
@@ -73,6 +80,8 @@ public class MonitorActivity extends AppCompatActivity {
 
         // 设置媒体资源
 //        Media media = new Media(libVLC, Uri.parse("rtsp://admin:WUsan53408@192.168.239.109"));
+//        Media media = new Media(libVLC, Uri.parse(getIntent().getStringExtra("connectString")));
+
         Media media = new Media(libVLC, Uri.parse("rtmp://liteavapp.qcloud.com/live/liteavdemoplayerstreamid"));
 
         // 降低延迟
@@ -114,8 +123,10 @@ public class MonitorActivity extends AppCompatActivity {
             int cur = mediaPlayer.getVolume();
             if (cur == 0) {
                 cur = 100;
+                voice.setImageResource(R.drawable.voice);
             } else {
                 cur = 0;
+                voice.setImageResource(R.drawable.silence);
             }
             mediaPlayer.setVolume(cur);
         });

@@ -436,7 +436,7 @@ namespace MoniGuardAPI.Controllers
 
         
         [HttpDelete("{photoId:int}")]
-        public async Task<IActionResult> DeletePhotoTest(int photoId, int guestId)
+        public async Task<IActionResult> DeletePhoto(int photoId, int guestId)
         {
             if (photoId <= 0 || guestId <= 0)
             {

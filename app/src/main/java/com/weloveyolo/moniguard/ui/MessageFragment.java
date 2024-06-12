@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import com.weloveyolo.moniguard.api.Message;
 import com.weloveyolo.moniguard.util.DBHelper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -37,7 +35,9 @@ public class MessageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        return inflater.inflate(R.layout.fragment_message, container, false);
         View view = inflater.inflate(R.layout.fragment_message, container, false);
-        getData();
+
+        getMessage();
+
         messageList = view.findViewById(R.id.message_list);
         messageList.setLayoutManager(new GridLayoutManager(getContext(), 1));
 
@@ -45,10 +45,7 @@ public class MessageFragment extends Fragment {
         messageList.setAdapter(messageListAdapter);
 
         return view;
-
     }
-
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -56,16 +53,18 @@ public class MessageFragment extends Fragment {
 
     }
 
-    private void getData() {
+    private void getMessage() {
         int userId = ((MainActivity)requireActivity()).resident.getResidentId();
+        selectAllMessages(userId);
         new Thread(() -> ((MainActivity)getActivity()).moniGuardApi.getAnalysisApi().getMessages((messages, success) -> {
             if (success) {
                 messages.forEach(message->{
-                    insertMessage(message, userId);
+                    getActivity().runOnUiThread(()->{
+                        insertMessage(message, userId);
+                    });
                 });
             }
         })).start();
-        selectAllMessages(userId);
     }
 
     // 查询消息
@@ -98,6 +97,7 @@ public class MessageFragment extends Fragment {
     public void insertMessage(Message message, int userId){
         if (message == null) return;
         messages.add(message);
+        messageList.getAdapter().notifyItemInserted(messages.size() - 1);
         ContentValues values = new ContentValues();
         values.put("residentId", userId);
         values.put("content", message.getContent());
@@ -107,4 +107,5 @@ public class MessageFragment extends Fragment {
         db.insert("message", null, values);
         db.close();
     }
+
 }

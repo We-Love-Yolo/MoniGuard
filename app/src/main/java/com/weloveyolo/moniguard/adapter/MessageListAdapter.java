@@ -1,6 +1,7 @@
 package com.weloveyolo.moniguard.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.weloveyolo.moniguard.R;
+import com.weloveyolo.moniguard.activity.PhotoDetailActivity;
 import com.weloveyolo.moniguard.api.Message;
 
 import org.jetbrains.annotations.NotNull;
@@ -88,6 +90,12 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             scene = itemView.findViewById(R.id.scene);
             camera = itemView.findViewById(R.id.camera);
             picture_time = itemView.findViewById(R.id.picture_time);
+
+            photo.setOnClickListener(v -> {
+                Context context = itemView.getContext();
+                Intent intent = new Intent(context, PhotoDetailActivity.class);
+                context.startActivity(intent);
+            });
         }
     }
 }

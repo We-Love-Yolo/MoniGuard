@@ -34,7 +34,7 @@ public class PhotoDetailActivity extends AppCompatActivity {
         strangeName = findViewById(R.id.stranger_name);
         deviceName = findViewById(R.id.device_name);
 
-        fillMainPhoto();
+//        fillMainPhoto();
         fillStrangerPhoto();
     }
 

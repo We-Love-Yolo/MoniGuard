@@ -1,5 +1,6 @@
 import asyncio
 import json
+import os
 
 import aiohttp
 from oauthlib.oauth2 import WebApplicationClient
@@ -33,8 +34,7 @@ oauth_params = OAuthParams(
     client_id='6e7fcbc1-b51f-4111-ad44-2cf0baee8597',
     client_secret='uy68Q~NPPZXDeBDfNlQBUDcB8MREXpXfpjcxJbCk',
     scope=['api://6e7fcbc1-b51f-4111-ad44-2cf0baee8597/MoniGuard.Read'],
-    redirect_url='https://localhost/callback',
-    authorized_redirect_url='https://localhost/callback'
+    redirect_url='https://localhost/callback'
 )
 
 oauth: WebApplicationClient
@@ -113,6 +113,9 @@ async def test_access_token() -> bool:
 async def main():
     global oauth
     global oauth_params
+
+    if not os.path.exists('oauth.json'):
+        save_login_info()
     load_login_info()
     oauth = WebApplicationClient(oauth_params.client_id)
 

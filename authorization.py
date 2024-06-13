@@ -99,11 +99,6 @@ async def refresh_access_token() -> str | None:
     return oauth_params.access_token
 
 
-def get_current_access_token() -> str:
-    global oauth_params
-    return oauth_params.authorized_redirect_url
-
-
 async def test_access_token() -> bool:
     global oauth_params
     url = 'https://mgapi.bitterorange.cn/WeatherForecast'
@@ -144,6 +139,12 @@ async def main():
 
     print('Failed to acquire access token or access token is invalid.')
     return -1
+
+
+def get_access_token() -> str:
+    global oauth_params
+    asyncio.run(main())
+    return oauth_params.authorized_redirect_url
 
 
 if __name__ == '__main__':

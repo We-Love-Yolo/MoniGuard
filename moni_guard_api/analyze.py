@@ -18,6 +18,12 @@ def get_known_face_encodings(faces_data: list[LoadFacesData]) -> list:
         _encoding_res.append(tmp.faces_encoding)
     return _encoding_res
 
+def _get_camera_id(face_img: str):
+    tmpList = face_img.split("_")
+    camera_id = int(tmpList[1])
+    return camera_id
+
+
 
 def start_analyze(faces_datas: list[LoadFacesData]):
     faces_img = sorted(os.listdir(faces))
@@ -33,8 +39,8 @@ def start_analyze(faces_datas: list[LoadFacesData]):
         best_match_index = np.argmin(_face_distances)
         if matches[best_match_index]:
             # means have match the face load
-            _id = faces_datas[best_match_index].guest_id
+            _guest_id = faces_datas[best_match_index].guest_id
             # todo: updateMessage, PostFace(可选), putFrame, postGuestToPhoto
-
+            _camera_id= _get_camera_id(face_img)
 
     pass

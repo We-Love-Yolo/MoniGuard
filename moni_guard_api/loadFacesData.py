@@ -34,7 +34,8 @@ def _API_data_load(scene_id: int) -> list[LoadFacesData]:
         authorization_response=get_url)
     # todo: get face data from API
     getGuestUrl = host + '/Scenes/GetGuest/' + str(scene_id)
-
+    # 2 step: getGuest -> id to getSampleFaceData
+    # numpy.load() ->
 
 
     pass

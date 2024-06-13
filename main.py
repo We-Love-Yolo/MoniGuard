@@ -1,6 +1,7 @@
 import asyncio
 import os
 import urllib.request
+import numpy as np
 
 import aiohttp
 import cv2
@@ -20,14 +21,15 @@ CAMERA_RTSP_URL = 'rtsp://admin:WUsan53408@192.168.239.109'
 # os.chdir('/mnt/c/Users/ab123/Pictures/DeepFace')
 
 
-def process_image(image, known_encodings) -> None:
+def process_image(image, known_encodings):
+    # Detect face locations
     face_locations = face_recognition.face_locations(image)
     face_encodings = face_recognition.face_encodings(image, face_locations)
 
     face_indices = []
     for face_encoding in face_encodings:
         # See if the face is a match for the known face(s)
-        matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
+        matches = face_recognition.compare_faces(known_encodings, face_encoding)
         # name = "Unknown"
 
         # # If a match was found in known_face_encodings, just use the first one.
@@ -36,37 +38,44 @@ def process_image(image, known_encodings) -> None:
         #     name = known_face_names[first_match_index]
 
         # Or instead, use the known face with the smallest distance to the new face
+        # best_match_index = -1
+        # for i, match in enumerate(matches):
+        #     if match and best_match_index == -1:
+        #         best_match_index = i
+        #         break
         face_distances = face_recognition.face_distance(known_encodings, face_encoding)
         best_match_index = np.argmin(face_distances)
+        res = -1
         if matches[best_match_index]:
-            best_match_index = known_face_names[best_match_index]
+            res = best_match_index
 
-        face_indices.append(best_match_index)
+        face_indices.append(res)
 
+    return face_locations, face_indices
     # Display the results
-    for (top, right, bottom, left), name in zip(face_locations, face_indices):
-        # Scale back up face locations since the frame we detected in was scaled to 1/4 size
-        # top *= 4
-        # right *= 4
-        # bottom *= 4
-        # left *= 4
-
-        # Draw a box around the face
-        cv2.rectangle(image, (left, top), (right, bottom), (0, 0, 255), 2)
-
-        # Draw a label with a name below the face
-        cv2.rectangle(image, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
-        font = cv2.FONT_HERSHEY_DUPLEX
-        cv2.putText(image, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-
-    # Display the resulting image
-    cv2.imshow('Video', image)
-    if len(face_locations) > 0:
-        cv2.imwrite('res.jpg', image)
-
-    # Hit 'q' on the keyboard to quit!
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        exit()
+    # for (top, right, bottom, left), name in zip(face_locations, face_indices):
+    #     # Scale back up face locations since the frame we detected in was scaled to 1/4 size
+    #     # top *= 4
+    #     # right *= 4
+    #     # bottom *= 4
+    #     # left *= 4
+    #
+    #     # Draw a box around the face
+    #     cv2.rectangle(image, (left, top), (right, bottom), (0, 0, 255), 2)
+    #
+    #     # Draw a label with a name below the face
+    #     cv2.rectangle(image, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
+    #     font = cv2.FONT_HERSHEY_DUPLEX
+    #     cv2.putText(image, str(name), (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+    #
+    # # Display the resulting image
+    # cv2.imshow('Video', image)
+    # if len(face_locations) > 0:
+    #     cv2.imwrite('res.jpg', image)
+    #
+    # # Hit 'q' on the keyboard to quit!
+    # if cv2.waitKey(1) & 0xFF == ord('q'):
+    #     exit()
 
 
 def process_video(known_encodings, process_function):
@@ -89,19 +98,20 @@ def process_video(known_encodings, process_function):
             )
             continue
 
-        # Resize frame of video to 1/4 size for faster face recognition processing
+        # # Resize frame of video to 1/4 size for faster face recognition processing
         small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+        #
+        # # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
+        # rgb_small_frame = small_frame[:, :, ::-1]
+        rgb_small_frame = cv2.cvtColor(small_frame, cv2.COLOR_BGR2RGB)
 
-        # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
-        rgb_small_frame = small_frame[:, :, ::-1]
-
-        process_function(rgb_small_frame, known_encodings)
+        print(process_function(rgb_small_frame, known_encodings))
     return True
 
 
 def main():
     photo = face_recognition.load_image_file('test/1.jpg')
-    known_encodings = face_recognition.face_encodings(photo)[0]
+    known_encodings = face_recognition.face_encodings(photo)
     process_video(known_encodings, process_image)
     exit(0)
     # oauth = WebApplicationClient(MGAPI_API_CLIENT_ID)

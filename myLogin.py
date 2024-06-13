@@ -50,26 +50,31 @@ async def main():
     # print("Code:", code)
     # print("State:", state)
 
-    url, headers, body = oauth.prepare_token_request(
-        'https://login.microsoftonline.com/28fe96eb-e8dc-47a0-8b84-f7af6525ec71/oauth2/v2.0/token',
-        authorization_response=get_url)
-
-    req = urllib.request.Request(url, body.encode(), headers=headers)
-    with urllib.request.urlopen(req) as res:
-        oauth.parse_request_body_response(res.read())
-
-    print(oauth.access_token)
-
+    # save Login URL to continue login
     gol.set_value("oauth", oauth)
-    oauth1 = gol.get_value("oauth")
+    gol.set_value("get_url", get_url)
 
-    url = 'https://mgapi.bitterorange.cn/Residents/GetResident'
-    url, headers, body = oauth1.add_token(url)
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url, headers=headers) as response:
-            print(await response.json())
-    print("done")
-    exit(0)
-    api = MoniGuardApi('https://mgapi.bitterorange.cn')
-    api.set_access_token('123')
-    await api.get_analysis_api().get_faces(1)
+
+    # url, headers, body = oauth.prepare_token_request(
+    #     'https://login.microsoftonline.com/28fe96eb-e8dc-47a0-8b84-f7af6525ec71/oauth2/v2.0/token',
+    #     authorization_response=get_url)
+    #
+    # req = urllib.request.Request(url, body.encode(), headers=headers)
+    # with urllib.request.urlopen(req) as res:
+    #     oauth.parse_request_body_response(res.read())
+    #
+    # print(oauth.access_token)
+    #
+    # gol.set_value("oauth", oauth)
+    # oauth1 = gol.get_value("oauth")
+    #
+    # url = 'https://mgapi.bitterorange.cn/Residents/GetResident'
+    # url, headers, body = oauth1.add_token(url)
+    # async with aiohttp.ClientSession() as session:
+    #     async with session.get(url, headers=headers) as response:
+    #         print(await response.json())
+    # print("done")
+    # exit(0)
+    # api = MoniGuardApi('https://mgapi.bitterorange.cn')
+    # api.set_access_token('123')
+    # await api.get_analysis_api().get_faces(1)

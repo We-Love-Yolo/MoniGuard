@@ -147,7 +147,7 @@ async def main():
 def get_access_token() -> str:
     global oauth_params
     asyncio.run(main())
-    return oauth_params.authorized_redirect_url
+    return oauth_params.access_token
 
 
 if __name__ == '__main__':

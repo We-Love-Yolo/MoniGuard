@@ -110,10 +110,12 @@ def process_video(known_encodings, process_function):
 
 
 def main():
-    photo = face_recognition.load_image_file('test/1.jpg')
-    known_encodings = face_recognition.face_encodings(photo)
-    process_video(known_encodings, process_image)
-    exit(0)
+    import authorization
+    print(authorization.get_access_token())
+    # photo = face_recognition.load_image_file('test/1.jpg')
+    # known_encodings = face_recognition.face_encodings(photo)
+    # process_video(known_encodings, process_image)
+    # exit(0)
     # oauth = WebApplicationClient(MGAPI_API_CLIENT_ID)
     # url, headers, body = oauth.prepare_authorization_request(
     #     'https://login.microsoftonline.com/28fe96eb-e8dc-47a0-8b84-f7af6525ec71/oauth2/v2.0/authorize',

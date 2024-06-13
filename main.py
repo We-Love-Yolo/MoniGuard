@@ -1,12 +1,9 @@
-import asyncio
-import os
-import urllib.request
-import numpy as np
-
-import aiohttp
 import cv2
 import face_recognition
-from oauthlib.oauth2 import WebApplicationClient
+import numpy as np
+
+import authorization
+from moni_guard_api.scenes_api import ScenesApi
 
 MGAPI_API_CLIENT_ID = '6e7fcbc1-b51f-4111-ad44-2cf0baee8597'
 MGAPI_API_CLIENT_SECRET = 'uy68Q~NPPZXDeBDfNlQBUDcB8MREXpXfpjcxJbCk'
@@ -19,6 +16,19 @@ CAMERA_RTSP_URL = 'rtsp://admin:WUsan53408@192.168.239.109'
 # The program we will be finding faces on the example below
 # 更改工作目录
 # os.chdir('/mnt/c/Users/ab123/Pictures/DeepFace')
+
+async def main():
+    sc = ScenesApi('https://mgapi.bitterorange.cn')
+    sc.set_access_token(await authorization.get_access_token())
+    guests = await sc.get_guests(12)
+    print(guests)
+
+
+if __name__ == '__main__':
+    import asyncio
+
+    asyncio.run(main())
+exit()
 
 
 def process_image(image, known_encodings):

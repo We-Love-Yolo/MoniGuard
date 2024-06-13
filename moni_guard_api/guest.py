@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 
 class Guest:
@@ -21,3 +21,9 @@ class Guest:
 
     def __repr__(self):
         return str(self)
+
+    @staticmethod
+    def from_json(json):
+        return [Guest(guest_id=guest_object['guestId'], scene_id=guest_object['sceneId'], name=guest_object['name'],
+                      created_at=datetime.strptime(guest_object['createdAt'][:-1], "%Y-%m-%dT%H:%M:%S.%f"),
+                      is_allowed=guest_object['isAllowed']) for guest_object in json]

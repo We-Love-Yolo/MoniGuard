@@ -2,7 +2,7 @@ import numpy
 import os
 import gol
 faces_data = '../faces_data'
-
+host = 'https://mgapi.bitterorange.cn/'
 
 class LoadFacesData:
     def __init__(self, scene_id: int, guest_id: int, guest_name: str, faces_encoding: numpy.ndarray):
@@ -33,6 +33,10 @@ def _API_data_load(scene_id: int) -> list[LoadFacesData]:
         'https://login.microsoftonline.com/28fe96eb-e8dc-47a0-8b84-f7af6525ec71/oauth2/v2.0/token',
         authorization_response=get_url)
     # todo: get face data from API
+    getGuestUrl = host + '/Scenes/GetGuest/' + str(scene_id)
+
+
+
     pass
 
 

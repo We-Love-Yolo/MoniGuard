@@ -26,7 +26,7 @@ namespace MoniGuardAPI.Controllers
             var scenes = await context.Scene.Where(s => s.ResidentId == residentId).ToListAsync();
             if (scenes.Count == 0)
             {
-                var scene = new Scene("Defualt", (int)residentId);
+                var scene = new Scene("默认", (int)residentId);
                 await context.Scene.AddAsync(scene);
                 await context.SaveChangesAsync();
             }

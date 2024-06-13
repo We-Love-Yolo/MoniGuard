@@ -144,9 +144,9 @@ async def main():
     return -1
 
 
-def get_access_token() -> str:
+async def get_access_token() -> str:
     global oauth_params
-    asyncio.run(main())
+    await main()
     return oauth_params.access_token
 
 

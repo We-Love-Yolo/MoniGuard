@@ -178,27 +178,41 @@ public class ScenesController(MoniGuardAPIContext context, IDistributedCache dis
     [HttpPost("{sceneId:int}")]
     public async Task<ActionResult<RequestCameraCreationResponse>> ConfirmCameraCreation([FromRoute] int sceneId, [FromQuery] int pinCode, [FromBody] CameraDto cameraDto)
     {
-        var residentId = await GetAuthorizedResidentId();
-        if (residentId == null)
-        {
-            return NotFound();
-        }
+        await using var transaction = await context.Database.BeginTransactionAsync();
 
-        var scene = await context.Scene.FirstOrDefaultAsync(s => s.SceneId == sceneId);
-        if (scene == null || scene.ResidentId != await GetAuthorizedResidentId())
+        try
         {
-            return Unauthorized();
-        }
+            var residentId = await GetAuthorizedResidentId();
+            if (residentId == null)
+            {
+                return NotFound();
+            }
 
-        var cameraUniqueId = await distributedCache.GetStringAsync($"moniguard_create_{pinCode}");
-        if (cameraUniqueId == null)
+            var scene = await context.Scene.FirstOrDefaultAsync(s => s.SceneId == sceneId);
+            if (scene == null || scene.ResidentId != residentId)
+            {
+                return Unauthorized();
+            }
+
+            var cameraUniqueId = await distributedCache.GetStringAsync($"moniguard_create_{pinCode}");
+            if (cameraUniqueId == null)
+            {
+                return NotFound();
+            }
+            var uniqueId = Guid.Parse(cameraUniqueId);
+
+            await context.Camera.AddAsync(new Camera(cameraDto.Name, cameraDto.Description, sceneId, uniqueId));
+            await distributedCache.RemoveAsync($"moniguard_create_{pinCode}");
+            await context.SaveChangesAsync();
+
+            await transaction.CommitAsync();
+            return NoContent();
+        }
+        catch (Exception)
         {
-            return NotFound();
+            await transaction.RollbackAsync();
+            throw;
         }
-
-        await context.Camera.AddAsync(new Camera(cameraDto.Name, cameraDto.Description));
-        await context.SaveChangesAsync();
-        return Ok();
     }
 
     //[HttpGet]
@@ -308,10 +322,21 @@ public class ScenesController(MoniGuardAPIContext context, IDistributedCache dis
         return resident.ResidentId;
     }
 
-    public struct RequestCameraCreationResponse(int pinCode, Guid cameraUniqueId)
+    /// <summary>
+    /// 请求添加摄像头的响应。
+    /// </summary>
+    /// <param name="pinCode">配对 PIN。</param>
+    /// <param name="cameraUniqueId">摄像头可能的 Unique ID。</param>
+    public readonly struct RequestCameraCreationResponse(int pinCode, Guid cameraUniqueId)
     {
+        /// <summary>
+        /// 配对 PIN。
+        /// </summary>
         public int PinCode { get; } = pinCode;
 
+        /// <summary>
+        /// 摄像头可能的 Unique ID。
+        /// </summary>
         public Guid CameraUniqueId { get; } = cameraUniqueId;
     }
 }

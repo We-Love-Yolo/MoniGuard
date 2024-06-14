@@ -34,17 +34,17 @@ builder.Services.AddSwaggerGen(options =>
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
-        Title = "ToDo API",
-        Description = "An ASP.NET Core Web API for managing ToDo items",
+        Title = "MoniGuard API",
+        Description = "MoniGuard 项目的 Web API 文档。",
         TermsOfService = new Uri("https://example.com/terms"),
         Contact = new OpenApiContact
         {
-            Name = "Example Contact",
+            Name = "联系方式",
             Url = new Uri("https://example.com/contact")
         },
         License = new OpenApiLicense
         {
-            Name = "Example License",
+            Name = "最终用户协议（EULA）",
             Url = new Uri("https://example.com/license")
         }
     });

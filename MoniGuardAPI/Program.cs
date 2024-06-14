@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using MoniGuardAPI.Data;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MoniGuardAPIContext>(options =>
@@ -71,6 +72,10 @@ builder.Services.AddSwaggerGen(options =>
     });
 
     options.OperationFilter<SecurityRequirementsOperationFilter>();
+
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    options.IncludeXmlComments(xmlPath, true);
 });
 if (!builder.Environment.IsDevelopment())
 {

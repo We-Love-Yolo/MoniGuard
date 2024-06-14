@@ -26,6 +26,13 @@ namespace MoniGuardAPI.Controllers
     {
         private readonly IDistributedCache _distributedCache = distributedCache;
 
+
+
+        /// <summary>
+        /// 添加消息至消息队列
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns>200: 添加成功</returns>
         [HttpPost]
         public async Task<IActionResult> UpdateMessages(Message message)
         {
@@ -51,11 +58,14 @@ namespace MoniGuardAPI.Controllers
                 var json = JsonSerializer.Serialize(messages);
                 await _distributedCache.SetStringAsync($"{id}_message", json, cacheEntryOptions);
             }
-            //todo: add the message to the database
             return Ok();
         }
 
 
+        /// <summary>
+        /// 获取当前消息队列所有消息
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<Message>>> GetMessages()
         {
@@ -81,6 +91,11 @@ namespace MoniGuardAPI.Controllers
            
         }
 
+        /// <summary>
+        /// 通过sceneId获取此场景下的所有人脸信息
+        /// </summary>
+        /// <param name="sceneId"></param>
+        /// <returns>返回人脸信息列表</returns>
         [HttpGet("{sceneId:int}")]
         public async Task<ActionResult<List<Face>>> GetFaces(int sceneId)
         {
@@ -105,6 +120,11 @@ namespace MoniGuardAPI.Controllers
             return faces;
         }
 
+        /// <summary>
+        /// 通过guestId获取此guest的所有人脸信息
+        /// </summary>
+        /// <param name="guestId"></param>
+        /// <returns>返回人脸信息列表</returns>
         [HttpGet("{guestId:int}")]
         public async Task<ActionResult<List<Face>>> GetFacesByGuestId(int guestId)
         {
@@ -130,6 +150,11 @@ namespace MoniGuardAPI.Controllers
         }
 
 
+        /// <summary>
+        /// 通过faceId获取人脸图片
+        /// </summary>
+        /// <param name="faceId"></param>
+        /// <returns>一张图片</returns>
         [HttpGet("{faceId:int}")]
         public async Task<IActionResult> GetFaceImage(int faceId)
         {
@@ -146,6 +171,12 @@ namespace MoniGuardAPI.Controllers
             return File(faceImage.Content, "image/*");
         }
 
+        /// <summary>
+        /// 新建一个人脸信息
+        /// </summary>
+        /// <param name="sceneId"></param>
+        /// <param name="face">只有guestId是需要提供的</param>
+        /// <returns>返回人脸信息</returns>
         [HttpPost("{sceneId:int}")]
         public async Task<ActionResult<Face>> PostFace(int sceneId, [FromBody] Face face)
         {
@@ -182,6 +213,12 @@ namespace MoniGuardAPI.Controllers
             return face;
         }
 
+        /// <summary>
+        /// 上传人脸图片，图片使用base64编码
+        /// </summary>
+        /// <param name="faceId"></param>
+        /// <param name="base64Image">图片的base64信息</param>
+        /// <returns>204</returns>
         [HttpPut("{faceId:int}")]
         public async Task<IActionResult> PutFaceImage(int faceId,[FromBody] string base64Image)
         {
@@ -221,6 +258,12 @@ namespace MoniGuardAPI.Controllers
         }
 
 
+        /// <summary>
+        /// 新增一个Guest，需要guestId，将faceEncoding base64编码在body中
+        /// </summary>
+        /// <param name="sceneId"></param>
+        /// <param name="faceEncodingDataBase64"></param>
+        /// <returns>status = 200 并返回一个Guest</returns>
         [HttpPost("{sceneId:int}")]
         public async Task<IActionResult> NewAGuest(int sceneId,[FromBody] string faceEncodingDataBase64)
         {
@@ -251,6 +294,11 @@ namespace MoniGuardAPI.Controllers
         }
 
 
+        /// <summary>
+        /// 获得对应的guest的faceEncoding数据
+        /// </summary>
+        /// <param name="guestId"></param>
+        /// <returns>文件</returns>
         [HttpGet("{guestId:int}")]
         public async Task<ActionResult> GetSampleFaceData(int guestId)
         {
@@ -279,6 +327,12 @@ namespace MoniGuardAPI.Controllers
             return File(faceData, "application/octet-stream", fileName);
         }
 
+        /// <summary>
+        /// 建立guest和photo连接
+        /// </summary>
+        /// <param name="guestId"></param>
+        /// <param name="photoId"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> PostGuestToPhoto(int guestId, int photoId)
         {
@@ -313,6 +367,11 @@ namespace MoniGuardAPI.Controllers
 
         }
 
+        /// <summary>
+        /// 获取和指定guestId相关的所有photo
+        /// </summary>
+        /// <param name="guestId"></param>
+        /// <returns></returns>
         [HttpGet("{guestId:int}")]
         public async Task<ActionResult<List<Photo>>> GetPhotos(int guestId)
         {
@@ -343,6 +402,11 @@ namespace MoniGuardAPI.Controllers
         }
 
 
+        /// <summary>
+        /// 根据photoId获取图片
+        /// </summary>
+        /// <param name="photoId"></param>
+        /// <returns></returns>
         [HttpGet("{photoId:int}")]
         public async Task<ActionResult> GetPhoto(int photoId)
         {
@@ -372,6 +436,13 @@ namespace MoniGuardAPI.Controllers
             return File(photo.Content, "image/*");
         }
 
+        /// <summary>
+        /// 上传图片，图片使用base64编码
+        /// </summary>
+        /// <param name="cameraId">图片的来源的摄像头</param>
+        /// <param name="name">图片名字</param>
+        /// <param name="base64Image"></param>
+        /// <returns></returns>
         [HttpPut("{cameraId:int}")]
         public async Task<ActionResult<Photo>> PutPhoto(int cameraId, string name, [FromBody] string base64Image)
         {
@@ -401,6 +472,12 @@ namespace MoniGuardAPI.Controllers
             return Ok(photo);
         }
 
+        /// <summary>
+        /// 通过photoId更改图片名字
+        /// </summary>
+        /// <param name="photoId"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [HttpPost("{photoId:int}")]
         public async Task<IActionResult> PostPhoto(int photoId, [FromBody] string name)
         {
@@ -435,6 +512,12 @@ namespace MoniGuardAPI.Controllers
         }
 
         
+        /// <summary>
+        /// 删除图片，同时删除和guest的关联
+        /// </summary>
+        /// <param name="photoId"></param>
+        /// <param name="guestId"></param>
+        /// <returns></returns>
         [HttpDelete("{photoId:int}")]
         public async Task<IActionResult> DeletePhoto(int photoId, int guestId)
         {

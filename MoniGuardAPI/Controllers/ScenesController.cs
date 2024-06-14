@@ -199,8 +199,9 @@ public class ScenesController(MoniGuardAPIContext context, IDistributedCache dis
             {
                 return NotFound();
             }
+            var uniqueId = Guid.Parse(cameraUniqueId);
 
-            await context.Camera.AddAsync(new Camera(cameraDto.Name, cameraDto.Description));
+            await context.Camera.AddAsync(new Camera(cameraDto.Name, cameraDto.Description, sceneId, uniqueId));
             await distributedCache.RemoveAsync($"moniguard_create_{pinCode}");
             await context.SaveChangesAsync();
 

@@ -54,7 +54,7 @@ public class Camera(int cameraId, string name, DateTime createdAt, int sceneId, 
     /// <summary>
     /// 摄像头唯一ID。
     /// </summary>
-    public Guid UniqueId { get; set; }
+    public Guid UniqueId { get; set; } = uniqueId;
 }
 
 /// <summary>

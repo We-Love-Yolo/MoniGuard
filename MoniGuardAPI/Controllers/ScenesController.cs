@@ -171,7 +171,7 @@ public class ScenesController(MoniGuardAPIContext context, IDistributedCache dis
     /// </summary>
     /// <param name="sceneId">添加摄像头的场景ID。</param>
     /// <param name="pinCode">配对 PIN。</param>
-    /// <param name="camera">摄像头信息。</param>
+    /// <param name="cameraDto">摄像头信息。</param>
     /// <returns>
     /// 摄像头可能的 Unique ID。
     /// </returns>

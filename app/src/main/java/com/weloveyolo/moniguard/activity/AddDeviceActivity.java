@@ -66,11 +66,11 @@ public class AddDeviceActivity extends AppCompatActivity {
         finish();
     }
 
-    public void addDevice(String deviceName,int deviceKey,String deviceDescription){
+    public void addDevice(String deviceName,int devicePinCode,String deviceDescription){
         new Thread(() -> {
             IMoniGuardApi moniGuardApi = new MoniGuardApi();
             MainActivity.ct.showLoadingToast("加载中");
-            moniGuardApi.getScenesApi().getCameraConnectString(deviceKey,deviceName,sceneId,deviceDescription, ((result, success) -> {
+            moniGuardApi.getScenesApi().confirmCameraCreation(sceneId, devicePinCode, deviceName, deviceDescription, ((result, success) -> {
                 if(success) {
                     links = result;
                     runOnUiThread(()->{

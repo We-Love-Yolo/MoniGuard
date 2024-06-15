@@ -26,6 +26,11 @@ public class Camera {
             createdAt = timeString.replace(" ", "T").concat("Z");
       }
 
+      public Camera(String name, String description) {
+            this.name = name;
+            this.description = description;
+      }
+
       @Override
       public String toString() {
             return "Camera{" +

@@ -40,4 +40,6 @@ public interface IScenesApi {
     void getGuest(int sceneId, ICallback<List<String>> callback);
 
     void getCameraConnectString(int key, String name, int sceneId, String description, ICallback<String> callback);
+
+    void confirmCameraCreation(int sceneId, int pinCode, String name, String description, ICallback<String> callback);
 }

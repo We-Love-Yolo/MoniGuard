@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="vertical"
@@ -10,8 +10,16 @@
     <ImageView
         android:id="@+id/screenshotitem1"
         android:layout_width="65dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/list_item_radius"
+        android:layout_height="65dp"
+        android:background="@null"
         android:scaleType="fitCenter"
         android:src="@drawable/fake_blacklist1" />
+    <CheckBox
+        android:id="@+id/check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-72dp"
+        android:layout_marginLeft="22dp"
+        android:visibility="gone"
+        />
 </LinearLayout>

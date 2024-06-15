@@ -5,7 +5,7 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.weloveyolo.moniguard.R;
@@ -26,6 +26,7 @@ public class AlbumActivity extends AppCompatActivity {
     private BlackListAdapter blackListAdapter;
     private List<String> whiteList;
     private List<String> blackList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,13 +34,15 @@ public class AlbumActivity extends AppCompatActivity {
 
         whiteList = new ArrayList<>();
         recyclerView1 = findViewById(R.id.white_album);
-        recyclerView1.setLayoutManager(new LinearLayoutManager(this));
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
+        recyclerView1.setLayoutManager(layoutManager);
         whiteListAdapter = new WhiteListAdapter(this, whiteList);
         recyclerView1.setAdapter(whiteListAdapter);
 
         blackList = new ArrayList<>();
         recyclerView2 = findViewById(R.id.black_album);
-        recyclerView2.setLayoutManager(new LinearLayoutManager(this));
+        GridLayoutManager layoutManager1 = new GridLayoutManager(this, 3);
+        recyclerView2.setLayoutManager(layoutManager1);
         blackListAdapter = new BlackListAdapter(this, blackList);
         recyclerView2.setAdapter(blackListAdapter);
 
@@ -53,6 +56,16 @@ public class AlbumActivity extends AppCompatActivity {
 
     public void fetchScenes(){
         whiteListAdapter.addFaceImage("https://www.hblqfrp.net/upload/2019/1a334fc25.jpg");
+        whiteListAdapter.addFaceImage("https://www.hblqfrp.net/upload/2019/1a334fc25.jpg");
+        whiteListAdapter.addFaceImage("https://www.hblqfrp.net/upload/2019/1a334fc25.jpg");
+        whiteListAdapter.addFaceImage("https://www.hblqfrp.net/upload/2019/1a334fc25.jpg");
+        whiteListAdapter.addFaceImage("https://www.hblqfrp.net/upload/2019/1a334fc25.jpg");
+        whiteListAdapter.addFaceImage("https://www.hblqfrp.net/upload/2019/1a334fc25.jpg");
+        blackListAdapter.addFaceImage("https://img0.baidu.com/it/u=1545054280,1016727184&fm=253&fmt=auto&app=138&f=JPEG?w=650&h=433");
+        blackListAdapter.addFaceImage("https://img0.baidu.com/it/u=1545054280,1016727184&fm=253&fmt=auto&app=138&f=JPEG?w=650&h=433");
+        blackListAdapter.addFaceImage("https://img0.baidu.com/it/u=1545054280,1016727184&fm=253&fmt=auto&app=138&f=JPEG?w=650&h=433");
+        blackListAdapter.addFaceImage("https://img0.baidu.com/it/u=1545054280,1016727184&fm=253&fmt=auto&app=138&f=JPEG?w=650&h=433");
+        blackListAdapter.addFaceImage("https://img0.baidu.com/it/u=1545054280,1016727184&fm=253&fmt=auto&app=138&f=JPEG?w=650&h=433");
         blackListAdapter.addFaceImage("https://img0.baidu.com/it/u=1545054280,1016727184&fm=253&fmt=auto&app=138&f=JPEG?w=650&h=433");
         IMoniGuardApi moniGuardApi = new MoniGuardApi();
         new Thread(() -> {
@@ -63,13 +76,12 @@ public class AlbumActivity extends AppCompatActivity {
                 }
                 scenes.forEach(scene -> moniGuardApi.getScenesApi().getGuests(scene.getSceneId(), (guests, success1) -> {
                     guests.forEach(guest -> {
-                        // TODO: 利用 guest 实例显示出相册图片
                         if(guest.isAllowed()){//白名单
-                            moniGuardApi.getAnalysisApi().getFacesByGuestId((list,success2)->{
+                            moniGuardApi.getAnalysisApi().getFacesByGuestId((list1,success2)->{
                                 if(!success2){
                                     return;
                                 }
-                                list.forEach((item)->{
+                                list1.forEach((item)->{
                                     moniGuardApi.getAnalysisApi().getFaceImage((url,success3)->{
                                         if(!success3){
                                             return;
@@ -82,11 +94,11 @@ public class AlbumActivity extends AppCompatActivity {
                             },guest.getGuestId());
 
                         }else{//黑名单
-                            moniGuardApi.getAnalysisApi().getFacesByGuestId((list,success2)->{
+                            moniGuardApi.getAnalysisApi().getFacesByGuestId((list2,success2)->{
                                 if(!success2){
                                     return;
                                 }
-                                list.forEach((item)->{
+                                list2.forEach((item)->{
                                     moniGuardApi.getAnalysisApi().getFaceImage((url,success3)->{
                                         if(!success3){
                                             return;
@@ -104,6 +116,19 @@ public class AlbumActivity extends AppCompatActivity {
                 }));
             });
         }).start();
+    }
+    public void AddWhiteList(View view){//选黑进白
+
+        findViewById(R.id.check_icon).setVisibility(View.VISIBLE);
+        findViewById(R.id.check_box).setVisibility(View.VISIBLE);
+
+        for (int i = 0; i < blackListAdapter.checkboxStates.size(); i++) {
+            blackListAdapter.checkboxStates.set(i, true); // 或者false，取决于你想要的状态
+        }
+        blackListAdapter.notifyDataSetChanged(); // 通知Adapter数据已经改变
+
+
+
     }
 
 }

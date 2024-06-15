@@ -73,6 +73,7 @@
             android:name=".activity.AddSceneActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.PhotoDetailActivity"/>
+        <activity android:name=".activity.AboutActivity"/>
     </application>
 
 </manifest>

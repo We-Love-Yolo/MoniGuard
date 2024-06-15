@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 
 import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
+import com.weloveyolo.moniguard.activity.AboutActivity;
 import com.weloveyolo.moniguard.activity.MessageInfoActivity;
 import com.weloveyolo.moniguard.activity.PhotoDetailActivity;
 import com.weloveyolo.moniguard.activity.UserInfoUpdateActivity;
@@ -73,7 +74,8 @@ public class MyFragment extends Fragment {
         //关于
         LinearLayout about = view.findViewById(R.id.about);
         about.setOnClickListener(v -> {
-
+            Intent intent = new Intent(getActivity(), AboutActivity.class);
+            startActivity(intent);
         });
     }
 

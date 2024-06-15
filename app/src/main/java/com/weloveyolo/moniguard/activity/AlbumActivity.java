@@ -122,13 +122,10 @@ public class AlbumActivity extends AppCompatActivity {
         findViewById(R.id.check_icon).setVisibility(View.VISIBLE);
         findViewById(R.id.check_box).setVisibility(View.VISIBLE);
 
-        for (int i = 0; i < blackListAdapter.checkboxStates.size(); i++) {
-            blackListAdapter.checkboxStates.set(i, true); // 或者false，取决于你想要的状态
-        }
-        blackListAdapter.notifyDataSetChanged(); // 通知Adapter数据已经改变
 
 
 
     }
+
 
 }

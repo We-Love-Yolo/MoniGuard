@@ -62,30 +62,31 @@
                 android:textSize="20dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <ImageView
                 android:id="@+id/white_list"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:src="@drawable/white_list"
                 android:clickable="true"
                 android:onClick="AddWhiteList"
+                android:src="@drawable/white_list"
                 tools:ignore="MissingConstraints"
                 tools:layout_editor_absoluteX="91dp"
                 tools:layout_editor_absoluteY="90dp" />
         </LinearLayout>
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginLeft="20dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/white_album"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="4"
+            app:spanCount="3"
             tools:listitem="@layout/item_whitelist" />
     </LinearLayout>
         <LinearLayout

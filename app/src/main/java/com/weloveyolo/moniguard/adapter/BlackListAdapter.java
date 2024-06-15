@@ -1,6 +1,5 @@
 package com.weloveyolo.moniguard.adapter;
 
-import android.annotation.SuppressLint;
 import android.app.DirectAction;
 import android.content.Context;
 import android.graphics.BitmapFactory;
@@ -8,8 +7,6 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,8 +24,6 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.Blac
     private List<String> blackList;
     private LayoutInflater layoutInflater;
     private Context context;
-    public List<Boolean> checkboxStates = new ArrayList<>();
-
     private SparseBooleanArray selectedItems;
 
     public BlackListAdapter(Context context, List<String> blackList) {
@@ -36,9 +31,6 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.Blac
         this.blackList = blackList;
         this.layoutInflater = LayoutInflater.from(context);
         this.selectedItems = new SparseBooleanArray();
-        for (int i = 0; i < blackList.size(); i++) {
-            checkboxStates.add(false);
-        }
     }
 
     @NonNull
@@ -57,15 +49,6 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.Blac
                 .load(imageUrl)
                 .apply(RequestOptions.circleCropTransform())
                 .into(holder.faceImageView);
-
-        holder.checkBox.setChecked(checkboxStates.get(position));
-
-        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                checkboxStates.set(holder.getAdapterPosition(), isChecked);
-            }
-        });
     }
 
     @Override
@@ -74,14 +57,12 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.Blac
     }
     public void addFaceImage(String imageUrl) {
         blackList.add(imageUrl);
-        checkboxStates.add(false);
         notifyItemInserted(blackList.size() - 1);
-        notifyDataSetChanged();
     }
 
 
     //选黑进白
-//
+
 //    public void toggleSelection(int position) {
 //        // 切换选中状态
 //        if (selectedItems.get(position, false)) {
@@ -102,15 +83,12 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.Blac
 
     static class BlackListViewHolder extends RecyclerView.ViewHolder {
         ImageView faceImageView;
-        CheckBox checkBox;
 
         public BlackListViewHolder(@NonNull View itemView) {
             super(itemView);
             faceImageView = itemView.findViewById(R.id.screenshotitem1);
-            checkBox = itemView.findViewById(R.id.check_box);
+
 
         }
     }
-
-
 }

@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static CustomToast ct = null;   // 轻提示
 
+    public Map<Integer, List<String>> guests= null;
     @Override
     public void onBackPressed() {
         // 将任务移至后台而不是销毁Activity
@@ -243,5 +244,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }

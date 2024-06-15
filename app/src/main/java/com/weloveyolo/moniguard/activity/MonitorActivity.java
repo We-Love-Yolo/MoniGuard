@@ -79,10 +79,10 @@ public class MonitorActivity extends AppCompatActivity {
         mediaPlayer = new MediaPlayer(libVLC);
 
         // 设置媒体资源
-//        Media media = new Media(libVLC, Uri.parse("rtsp://admin:WUsan53408@192.168.239.109"));
+        Media media = new Media(libVLC, Uri.parse("rtsp://admin:WUsan53408@192.168.239.109"));
 //        Media media = new Media(libVLC, Uri.parse(getIntent().getStringExtra("connectString")));
 
-        Media media = new Media(libVLC, Uri.parse("rtmp://liteavapp.qcloud.com/live/liteavdemoplayerstreamid"));
+//        Media media = new Media(libVLC, Uri.parse("rtmp://liteavapp.qcloud.com/live/liteavdemoplayerstreamid"));
 
         // 降低延迟
         media.addOption(":network-caching=200");    //200毫秒网络缓存

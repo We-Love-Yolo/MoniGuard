@@ -6,11 +6,12 @@
     android:orientation="vertical"
     android:layout_margin="5dp"
     >
+
     <ImageView
-        android:id="@+id/screenshotitem"
-        android:layout_width="150dp"
+        android:id="@+id/screenshotitem1"
+        android:layout_width="65dp"
         android:layout_height="wrap_content"
-        android:background="@null"
-        android:src="@drawable/fake_blacklist1"
-        android:scaleType="fitCenter"/>
+        android:background="@drawable/list_item_radius"
+        android:scaleType="fitCenter"
+        android:src="@drawable/fake_blacklist1" />
 </LinearLayout>

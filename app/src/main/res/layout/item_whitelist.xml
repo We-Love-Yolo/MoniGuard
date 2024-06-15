@@ -8,9 +8,9 @@
     >
     <ImageView
         android:id="@+id/screenshotitem"
-        android:layout_width="150dp"
+        android:layout_width="65dp"
         android:layout_height="wrap_content"
-        android:background="@null"
+        android:background="@drawable/list_item_radius"
         android:src="@drawable/fake_whitelist1"
         android:scaleType="fitCenter"/>
 </LinearLayout>

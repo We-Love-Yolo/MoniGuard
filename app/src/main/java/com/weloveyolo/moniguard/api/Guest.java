@@ -1,14 +1,18 @@
 package com.weloveyolo.moniguard.api;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public class Guest {
+    private final int guestId;
 
-    private int guestId;
+    private final int sceneId;
 
-    private int sceneId;
+    private final String name;
 
-    private String name;
+    private final String createdAt;
 
-    private String createdAt;
-
-    private boolean isAllowed;
+    private final boolean isAllowed;
 }

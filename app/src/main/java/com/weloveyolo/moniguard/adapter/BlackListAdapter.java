@@ -18,27 +18,27 @@ import com.weloveyolo.moniguard.R;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-public class WhiteListAdapter extends RecyclerView.Adapter<WhiteListAdapter.WhiteListViewHolder> {
-    private List<String> whiteList;
+public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.BlackListViewHolder> {
+    private List<String> blackList;
     private LayoutInflater layoutInflater;
     private Context context;
 
-    public WhiteListAdapter(Context context, List<String> whiteList) {
+    public BlackListAdapter(Context context, List<String> blackList) {
         this.context = context;
-        this.whiteList = whiteList;
+        this.blackList = blackList;
         this.layoutInflater = LayoutInflater.from(context);
     }
 
     @NonNull
     @Override
-    public WhiteListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BlackListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = layoutInflater.inflate(R.layout.item_blacklist, parent, false);
-        return new WhiteListViewHolder(itemView);
+        return new BlackListViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WhiteListViewHolder holder, int position) {
-        String imageUrl = whiteList.get(position);
+    public void onBindViewHolder(@NonNull BlackListViewHolder holder, int position) {
+        String imageUrl = blackList.get(position);
         // 使用 Glide 加载图片
         Glide.with(context)
                 .load(imageUrl)
@@ -47,18 +47,18 @@ public class WhiteListAdapter extends RecyclerView.Adapter<WhiteListAdapter.Whit
 
     @Override
     public int getItemCount() {
-        return whiteList.size();
+        return blackList.size();
     }
 
     public void addFaceImage(String imageUrl) {
-        whiteList.add(imageUrl);
-        notifyItemInserted(whiteList.size() - 1);
+        blackList.add(imageUrl);
+        notifyItemInserted(blackList.size() - 1);
     }
 
-    static class WhiteListViewHolder extends RecyclerView.ViewHolder {
+    static class BlackListViewHolder extends RecyclerView.ViewHolder {
         ImageView faceImageView;
 
-        public WhiteListViewHolder(@NonNull View itemView) {
+        public BlackListViewHolder(@NonNull View itemView) {
             super(itemView);
             faceImageView = itemView.findViewById(R.id.screenshotitem1);
         }

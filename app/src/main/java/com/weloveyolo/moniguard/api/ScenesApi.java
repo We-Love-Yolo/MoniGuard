@@ -85,6 +85,25 @@ public class ScenesApi implements IScenesApi {
         }
     }
 
+    public void getGuests(int sceneId, ICallback<List<Guest>> callback) {
+        Request request = new Request.Builder()
+                .url(getApiUrl() + "/GetGuest/" + sceneId)
+                .header("Authorization", "Bearer " + getAccessToken())
+                .build();
+        try (Response response = mainApi.getHttpClient().newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                callback.onCallback(null, false);
+                return;
+            }
+            Gson gson = new Gson();
+            Type guestListType = new TypeToken<List<Guest>>(){}.getType();
+            List<Guest> guests = gson.fromJson(Objects.requireNonNull(response.body()).string(), guestListType);
+            callback.onCallback(guests, true);
+        } catch (IOException e) {
+            callback.onCallback(null, false);
+        }
+    }
+
     @Override
     public void postScene(String sceneName, ICallback<?> callback) {
 //        Gson gson = new Gson();

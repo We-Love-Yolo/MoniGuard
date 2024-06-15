@@ -1,6 +1,7 @@
 package com.weloveyolo.moniguard.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.activity.AlbumActivity;
 import com.weloveyolo.moniguard.activity.Health_monitoring;
 import com.weloveyolo.moniguard.activity.Sports;
+import com.weloveyolo.moniguard.api.IScenesApi;
+import com.weloveyolo.moniguard.api.ScenesApi;
 
 import android.widget.ImageButton;
 
@@ -28,6 +32,8 @@ public class DiscoverFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
 
         // 进入智能相册
         ImageButton button1 = view.findViewById(R.id.smart_photo_album);
@@ -49,5 +55,14 @@ public class DiscoverFragment extends Fragment {
         });
     }
 
+    public void tryShow() {
+        MainActivity mainActivity = ((MainActivity) getActivity());
+        if (mainActivity == null) {
+            return;
+        }
+        if (mainActivity.scenes == null) {
+            return;
+        }
+    }
 }
 

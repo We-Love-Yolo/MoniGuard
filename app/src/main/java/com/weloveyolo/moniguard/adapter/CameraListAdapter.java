@@ -34,7 +34,7 @@ public class CameraListAdapter extends RecyclerView.Adapter<CameraListAdapter.My
     @Override
     public CameraListAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = inflater.inflate(R.layout.item_monitor, parent, false);
-        return new CameraListAdapter.MyHolder(itemView, sceneName);
+        return new CameraListAdapter.MyHolder(itemView);
     }
 
     @Override
@@ -42,6 +42,7 @@ public class CameraListAdapter extends RecyclerView.Adapter<CameraListAdapter.My
         Camera device = deviceList.get(position);
         holder.deviceTextView.setText(device.getName());
         holder.connectString = device.getConnectString();
+        holder.sceneName = sceneName;
     }
 
     @Override
@@ -64,11 +65,12 @@ public class CameraListAdapter extends RecyclerView.Adapter<CameraListAdapter.My
 
     static class MyHolder extends RecyclerView.ViewHolder {
 
+        String sceneName;
         TextView deviceTextView;
         ImageButton cameraImageButton;
         String connectString;
 
-        public MyHolder(@NonNull View itemView, String sceneName) {
+        public MyHolder(@NonNull View itemView) {
             super(itemView);
 
             deviceTextView = itemView.findViewById(R.id.camera_name);
@@ -77,7 +79,7 @@ public class CameraListAdapter extends RecyclerView.Adapter<CameraListAdapter.My
                 // 在这里执行点击跳转操作，例如跳转到另一个 Activity
 
                 Context context = itemView.getContext();
-                Intent intent = new Intent(context, MonitorActivity.class); // 替换 YourActivity 为目标 Activity 的类名
+                Intent intent = new Intent(context, MonitorActivity.class);
                 intent.putExtra("sceneName", sceneName);
                 intent.putExtra("cameraName", deviceTextView.getText());
                 intent.putExtra("connectString", connectString);

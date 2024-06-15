@@ -215,4 +215,18 @@ public class ScenesApi implements IScenesApi {
             callback.onCallback(null, false);
         }
     }
+
+    @Override
+    public void confirmCameraCreation(int sceneId, int pinCode, String name, String description, ICallback<String> callback) {
+        Camera camera = new Camera(name, description);
+        try (Response response = HttpClient.post(getApiUrl() + "/ConfirmCameraCreation/" + sceneId + "?" + "pinCode=" + pinCode,
+                null, camera)) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Failed to post ConfirmCameraCreation: " + response);
+            }
+            callback.onCallback(null, true);
+        } catch (IOException e) {
+            callback.onCallback(null, false);
+        }
+    }
 }

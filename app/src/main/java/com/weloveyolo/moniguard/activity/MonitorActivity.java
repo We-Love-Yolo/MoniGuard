@@ -85,7 +85,7 @@ public class MonitorActivity extends AppCompatActivity {
 //        Media media = new Media(libVLC, Uri.parse("rtmp://liteavapp.qcloud.com/live/liteavdemoplayerstreamid"));
 
         // 降低延迟
-        media.addOption(":network-caching=200");    //200毫秒网络缓存
+        media.addOption(":network-caching=400");    //400毫秒网络缓存
         media.addOption(":rtsp-tcp");   //低延迟的rtsp，而非默认的udp
 
         media.setHWDecoderEnabled(false, false);

@@ -24,7 +24,7 @@ public class AddDeviceActivity extends AppCompatActivity {
     private EditText name;
     private EditText key;
     private EditText description;
-    String links;
+    private String links;
 
 
 

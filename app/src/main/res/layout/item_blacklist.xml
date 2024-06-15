@@ -6,7 +6,6 @@
     android:orientation="vertical"
     android:layout_margin="5dp"
     >
-
     <ImageView
         android:id="@+id/screenshotitem1"
         android:layout_width="65dp"

@@ -7,6 +7,7 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,12 +26,14 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.Blac
     private LayoutInflater layoutInflater;
     private Context context;
     private SparseBooleanArray selectedItems;
+    public List<CheckBox> checkBoxes;
 
     public BlackListAdapter(Context context, List<String> blackList) {
         this.context = context;
         this.blackList = blackList;
         this.layoutInflater = LayoutInflater.from(context);
         this.selectedItems = new SparseBooleanArray();
+        checkBoxes = new ArrayList<>();
     }
 
     @NonNull
@@ -49,6 +52,9 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.Blac
                 .load(imageUrl)
                 .apply(RequestOptions.circleCropTransform())
                 .into(holder.faceImageView);
+
+
+        checkBoxes.add(position, holder.checkBox);
     }
 
     @Override
@@ -57,7 +63,7 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.Blac
     }
     public void addFaceImage(String imageUrl) {
         blackList.add(imageUrl);
-        notifyItemInserted(blackList.size() - 1);
+        notifyItemInserted(blackList.size());
     }
 
 
@@ -83,12 +89,12 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.Blac
 
     static class BlackListViewHolder extends RecyclerView.ViewHolder {
         ImageView faceImageView;
+        CheckBox checkBox;
 
         public BlackListViewHolder(@NonNull View itemView) {
             super(itemView);
             faceImageView = itemView.findViewById(R.id.screenshotitem1);
-
-
+            checkBox = itemView.findViewById(R.id.check_box);
         }
     }
 }

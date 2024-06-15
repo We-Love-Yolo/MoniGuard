@@ -40,6 +40,8 @@ public class AlbumActivity extends AppCompatActivity {
         recyclerView1.setAdapter(whiteListAdapter);
 
         blackList = new ArrayList<>();
+
+
         recyclerView2 = findViewById(R.id.black_album);
         GridLayoutManager layoutManager1 = new GridLayoutManager(this, 3);
         recyclerView2.setLayoutManager(layoutManager1);
@@ -120,10 +122,9 @@ public class AlbumActivity extends AppCompatActivity {
     public void AddWhiteList(View view){//选黑进白
 
         findViewById(R.id.check_icon).setVisibility(View.VISIBLE);
-        findViewById(R.id.check_box).setVisibility(View.VISIBLE);
-
-
-
+        blackListAdapter.checkBoxes.forEach(item->{
+            item.setVisibility(View.VISIBLE);
+        });
 
     }
 

@@ -26,6 +26,9 @@
             android:name=".activity.UserInfoUpdateActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.Sports"
+            android:exported="false" />
+        <activity
             android:name=".activity.MessageInfoActivity"
             android:exported="false" />
         <activity

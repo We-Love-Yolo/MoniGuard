@@ -3,7 +3,6 @@ package com.weloveyolo.moniguard.api;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

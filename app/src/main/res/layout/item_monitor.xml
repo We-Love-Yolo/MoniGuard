@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/connected"
+                android:text="@string/unconnected"
                 android:textSize="10dp" />
         </LinearLayout>
     </LinearLayout>

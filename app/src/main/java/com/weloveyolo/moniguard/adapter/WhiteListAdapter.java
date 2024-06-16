@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.weloveyolo.moniguard.R;
 
 import java.io.File;
@@ -32,17 +33,19 @@ public class WhiteListAdapter extends RecyclerView.Adapter<WhiteListAdapter.Whit
     @NonNull
     @Override
     public WhiteListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = layoutInflater.inflate(R.layout.item_blacklist, parent, false);
+        View itemView = layoutInflater.inflate(R.layout.item_whitelist, parent, false);
         return new WhiteListViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull WhiteListViewHolder holder, int position) {
         String imageUrl = whiteList.get(position);
-        // 使用 Glide 加载图片
-        Glide.with(context)
-                .load(imageUrl)
-                .into(holder.faceImageView);
+        if (holder.faceImageView != null && imageUrl != null) {
+            Glide.with(context)
+                    .load(imageUrl)
+                    .apply(RequestOptions.circleCropTransform()) // 应用
+                    .into(holder.faceImageView);
+        }
     }
 
     @Override
@@ -57,7 +60,6 @@ public class WhiteListAdapter extends RecyclerView.Adapter<WhiteListAdapter.Whit
 
     static class WhiteListViewHolder extends RecyclerView.ViewHolder {
         ImageView faceImageView;
-
         public WhiteListViewHolder(@NonNull View itemView) {
             super(itemView);
             faceImageView = itemView.findViewById(R.id.screenshotitem1);

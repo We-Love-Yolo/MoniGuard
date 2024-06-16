@@ -74,6 +74,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".activity.PhotoDetailActivity"/>
         <activity android:name=".activity.AboutActivity"/>
+        <activity android:name=".activity.AlbumDetailActivity"/>
     </application>
 
 </manifest>

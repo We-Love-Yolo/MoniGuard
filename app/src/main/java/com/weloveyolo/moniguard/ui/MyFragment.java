@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.activity.AboutActivity;
+import com.weloveyolo.moniguard.activity.AlbumDetailActivity;
 import com.weloveyolo.moniguard.activity.MessageInfoActivity;
 import com.weloveyolo.moniguard.activity.PhotoDetailActivity;
 import com.weloveyolo.moniguard.activity.UserInfoUpdateActivity;

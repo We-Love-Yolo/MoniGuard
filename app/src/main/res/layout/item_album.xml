@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:layout_margin="5dp">
+
+    <ImageView
+        android:id="@+id/album_item"
+        android:layout_width="110dp"
+        android:layout_height="80dp"
+        android:background="@drawable/edittext_circle_background"
+        android:src="@drawable/stranger"
+        android:scaleType="fitCenter"/>
+</LinearLayout>

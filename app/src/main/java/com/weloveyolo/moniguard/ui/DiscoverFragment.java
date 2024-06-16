@@ -13,8 +13,10 @@ import androidx.fragment.app.Fragment;
 import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.activity.AlbumActivity;
+import com.weloveyolo.moniguard.activity.AlbumDetailActivity;
 import com.weloveyolo.moniguard.activity.Health_monitoring;
 import com.weloveyolo.moniguard.activity.Sports;
+import com.weloveyolo.moniguard.api.Guest;
 import com.weloveyolo.moniguard.api.IScenesApi;
 import com.weloveyolo.moniguard.api.ScenesApi;
 
@@ -47,10 +49,16 @@ public class DiscoverFragment extends Fragment {
             Intent intent = new Intent(getActivity(), Health_monitoring.class);
             startActivity(intent);
         });
+
         //进入趣味运动
         ImageButton button3 = view.findViewById(R.id.happy_sport);
         button3.setOnClickListener(view1 -> {
-            Intent intent = new Intent(getActivity(), Sports.class);
+            Bundle bundle = new Bundle();
+            Guest guest = new Guest(1,1,"凤凰战士",null,false, null);
+            bundle.putSerializable("guest", guest);
+            Intent intent = new Intent(getActivity(), AlbumDetailActivity.class);
+            intent.putExtras(bundle);
+            intent.putExtra("photo", "https://pic1.zhimg.com/70/v2-74a44ef0c3e5a22a7965d8a5b25d029a_1440w.image?source=172ae18b&biz_tag=Post");
             startActivity(intent);
         });
     }

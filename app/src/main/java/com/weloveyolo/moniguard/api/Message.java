@@ -16,6 +16,8 @@ public class Message {
 
     private int type;
 
+    private int cameraId;
+
     @Override
     public String toString() {
         return "Message{" +
@@ -23,6 +25,7 @@ public class Message {
                 ", content='" + content + '\'' +
                 ", createdAt='" + createdAt + '\'' +
                 ", type=" + type +
+                ", cameraId=" + cameraId +
                 '}';
     }
 }

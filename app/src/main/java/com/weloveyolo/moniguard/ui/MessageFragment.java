@@ -82,7 +82,7 @@ public class MessageFragment extends Fragment {
                 String content = cursor.getString(cursor.getColumnIndexOrThrow("content"));
                 String createdAt = cursor.getString(cursor.getColumnIndexOrThrow("createdAt"));
                 int type = cursor.getInt(cursor.getColumnIndexOrThrow("type"));
-                Message message = new Message(residentId, content, createdAt, type);
+                Message message = new Message(residentId, content, createdAt, type, 0);
                 messages.add(message);
             } while (cursor.moveToNext());
         }

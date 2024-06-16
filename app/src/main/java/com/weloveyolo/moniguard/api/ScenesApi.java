@@ -204,6 +204,19 @@ public class ScenesApi implements IScenesApi {
     }
 
     @Override
+    public void putGuest(int guestId, Guest guest, ICallback<String> callback) {
+        String path = getApiUrl() + "/PutGuest/" + guestId;
+        try (Response response = HttpClient.put(path, guest)) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Failed to put guest: " + response);
+            }
+            callback.onCallback(null, true);
+        } catch (IOException e) {
+            callback.onCallback(null, false);
+        }
+    }
+
+    @Override
     public void getCameraConnectString(int key, String name, int sceneId, String description, ICallback<String> callback) {
         try (Response response = HttpClient.queryGet(getApiUrl() + "/GetCameraConnectString",
                 "key", key, "name", name, "sceneId", sceneId, "description", description)) {

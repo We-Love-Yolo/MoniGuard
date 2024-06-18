@@ -75,8 +75,7 @@ public class MyFragment extends Fragment {
         //关于
         LinearLayout about = view.findViewById(R.id.about);
         about.setOnClickListener(v -> {
-//            Intent intent = new Intent(getActivity(), AboutActivity.class);
-            Intent intent = new Intent(getActivity(), PhotoDetailActivity.class);
+            Intent intent = new Intent(getActivity(), AboutActivity.class);
             startActivity(intent);
         });
     }

@@ -5,6 +5,10 @@ using MoniGuardAPI.Data;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
+using RedLockNet.SERedis.Configuration;
+using RedLockNet.SERedis;
+using System.Configuration;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MoniGuardAPIContext>(options =>
@@ -19,6 +23,17 @@ builder.Services.AddStackExchangeRedisCache(options =>
 
     options.InstanceName = "Redis_";
 });
+
+var redLockEndPoint = new RedLockEndPoint
+{
+    EndPoint = new DnsEndPoint(builder.Configuration["RedLockEndPoints:Endpoint"]!,
+                int.Parse(builder.Configuration["RedLockEndPoints:Port"]!)),
+    Password = builder.Configuration["RedLockEndPoints:Password"]
+};
+
+var redLockFactory = RedLockFactory.Create(new List<RedLockEndPoint> { redLockEndPoint });
+builder.Services.AddSingleton(redLockFactory);
+
 builder.Services.AddMemoryCache();
 
 var azureAdConfigurationSection = builder.Configuration.GetSection("AzureAd");

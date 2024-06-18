@@ -238,6 +238,11 @@ public class ScenesController(MoniGuardAPIContext context, IDistributedCache dis
     //    return connectString;
     //}
 
+    /// <summary>
+    /// 获取来宾信息。该 API 应当由客户端调用。
+    /// </summary>
+    /// <param name="sceneId"></param>
+    /// <returns></returns>
     [HttpGet("{sceneId:int}")]
     public async Task<ActionResult<List<Guest>>> GetGuest(int sceneId)
     {
@@ -255,27 +260,73 @@ public class ScenesController(MoniGuardAPIContext context, IDistributedCache dis
         return await context.Guests.Where(g => g.SceneId == sceneId).ToListAsync();
     }
 
-    [HttpPost("{guestId:int}")]
-    public async Task<IActionResult> PostGuest(int guestId, [FromBody] Guest guest)
+    /// <summary>
+    /// 新增来宾并声明其信息。该 API 应当由摄像头设备调用。
+    /// </summary>
+    /// <param name="sceneId">场景 ID。</param>
+    /// <param name="guestDto">来宾信息。</param>
+    /// <returns>空内容。</returns>
+    [HttpPost("{sceneId:int}")]
+    public async Task<ActionResult<Guest>> PostGuest([FromRoute] int sceneId, [FromBody] GuestDto guestDto)
     {
         var residentId = await GetAuthorizedResidentId();
         if (residentId == null)
         {
             return NotFound();
         }
-            
+
+        var scene = await context.Scene.FirstOrDefaultAsync(s => s.SceneId == sceneId);
+        if (scene == null)
+        {
+            return NotFound();
+        }
+        if (scene.ResidentId != residentId)
+        {
+            return Unauthorized();
+        }
+
+        var guest = new Guest(sceneId, guestDto.Name, guestDto.IsWhitelisted ?? false);
+        await context.Guests.AddAsync(guest);
+        await context.SaveChangesAsync();
+        return guest;
+    }
+
+    /// <summary>
+    /// 指定来宾的来宾 ID，编辑该来宾的信息。该 API 应当由客户端调用。
+    /// </summary>
+    /// <returns>空内容。</returns>
+    [HttpPut("{guestId:int}")]
+    public async Task<IActionResult> PutGuest([FromRoute] int guestId, [FromBody] GuestDto guestDto)
+    {
+        //var guest = context.Guests.FirstOrDefault(g => g.GuestId == guestId);
+        //if (guest == null)
+        //{
+        //    return NotFound();
+        //}
+        var guest = await context.Guests.FirstOrDefaultAsync(g => g.GuestId == guestId);
+        if (guest == null)
+        {
+            return NotFound();
+        }
+
+        var scene = await context.Scene.FirstOrDefaultAsync(s => s.SceneId == guest.SceneId);
+        if (scene == null || scene.ResidentId != await GetAuthorizedResidentId())
+        {
+            return Unauthorized();
+        }
+
+        guest.Name = guestDto.Name;
+        guest.IsWhitelisted = guestDto.IsWhitelisted ?? guest.IsWhitelisted;
         context.Entry(guest).State = EntityState.Modified;
-        try
-        {
-            await context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            return BadRequest();
-        }
+        await context.SaveChangesAsync();
         return NoContent();
     }
 
+    /// <summary>
+    /// 删除指定的来宾。该 API 应当由客户端调用。
+    /// </summary>
+    /// <param name="guestId">来宾 ID。</param>
+    /// <returns>空内容。</returns>
     [HttpDelete("{guestId:int}")]
     public async Task<IActionResult> DeleteGuest(int guestId)
     {

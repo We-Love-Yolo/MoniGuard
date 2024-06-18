@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MoniGuardAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class Star : Migration
+    public partial class Depth : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -54,8 +54,8 @@ namespace MoniGuardAPI.Migrations
                     SceneId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsAllowed = table.Column<bool>(type: "bit", nullable: false),
-                    FaceEncodingDataBytes = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
+                    IsWhitelisted = table.Column<bool>(type: "bit", nullable: false),
+                    FaceEncoding = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
                 },
                 constraints: table =>
                 {

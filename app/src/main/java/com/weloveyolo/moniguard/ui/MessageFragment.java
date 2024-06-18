@@ -56,10 +56,10 @@ public class MessageFragment extends Fragment {
     private void getMessage() {
         int userId = ((MainActivity)requireActivity()).resident.getResidentId();
         selectAllMessages(userId);
-        new Thread(() -> ((MainActivity)getActivity()).moniGuardApi.getAnalysisApi().getMessages((messages, success) -> {
+        new Thread(() -> ((MainActivity) requireActivity()).moniGuardApi.getAnalysisApi().getMessages((messages, success) -> {
             if (success) {
                 messages.forEach(message->{
-                    getActivity().runOnUiThread(()->{
+                    requireActivity().runOnUiThread(()->{
                         insertMessage(message, userId);
                     });
                 });
@@ -72,17 +72,19 @@ public class MessageFragment extends Fragment {
         List<Message> messages = new ArrayList<>();
         SQLiteDatabase db = new DBHelper(getActivity()).getWritableDatabase();
         Cursor cursor = db.query("message",
-                new String[]{"mid", "residentId", "content", "createdAt", "type"},
+                new String[]{"mid", "content", "type", "cameraId", "createdAt"},
                 "residentId = ?", new String[]{String.valueOf(userId)}, null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 int mid = cursor.getInt(cursor.getColumnIndexOrThrow("mid"));
-                int residentId = cursor.getInt(cursor.getColumnIndexOrThrow("residentId"));
                 String content = cursor.getString(cursor.getColumnIndexOrThrow("content"));
-                String createdAt = cursor.getString(cursor.getColumnIndexOrThrow("createdAt"));
                 int type = cursor.getInt(cursor.getColumnIndexOrThrow("type"));
-                Message message = new Message(residentId, content, createdAt, type, 0);
+                int cameraId = cursor.getInt(cursor.getColumnIndexOrThrow("cameraId"));
+                String createdAt = cursor.getString(cursor.getColumnIndexOrThrow("createdAt"));
+                int residentId = cursor.getInt(cursor.getColumnIndexOrThrow("residentId"));
+
+                Message message = new Message(content, type, cameraId, createdAt, residentId);
                 messages.add(message);
             } while (cursor.moveToNext());
         }
@@ -99,10 +101,11 @@ public class MessageFragment extends Fragment {
         messages.add(message);
         messageList.getAdapter().notifyItemInserted(messages.size() - 1);
         ContentValues values = new ContentValues();
-        values.put("residentId", userId);
         values.put("content", message.getContent());
-        values.put("createdAt", message.getCreatedAt());
         values.put("type", message.getType());
+        values.put("cameraId", message.getCameraId());
+        values.put("createdAt", message.getCreatedAt());
+        values.put("residentId", userId);
         SQLiteDatabase db = new DBHelper(getActivity()).getWritableDatabase();
         db.insert("message", null, values);
         db.close();

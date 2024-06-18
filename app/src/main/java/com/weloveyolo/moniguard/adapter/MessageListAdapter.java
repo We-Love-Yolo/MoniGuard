@@ -2,6 +2,7 @@ package com.weloveyolo.moniguard.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,8 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
         holder.scene.setText(message.getContent());
         holder.camera.setText(message.getContent()); // 修改为根据 message 数据设置合适的值
+
+        holder.message = message;
     }
 
     private ZonedDateTime parseZonedDateTime(String time) {
@@ -83,6 +86,8 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         TextView camera;
         TextView picture_time;
 
+        Message message;
+
         public MyHolder(@NonNull View itemView) {
             super(itemView);
             message_time = itemView.findViewById(R.id.message_time);
@@ -94,6 +99,9 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             photo.setOnClickListener(v -> {
                 Context context = itemView.getContext();
                 Intent intent = new Intent(context, PhotoDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("message", message);
+                intent.putExtras(bundle);
                 context.startActivity(intent);
             });
         }

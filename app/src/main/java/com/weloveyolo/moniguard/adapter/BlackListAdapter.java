@@ -2,7 +2,9 @@ package com.weloveyolo.moniguard.adapter;
 
 import android.app.DirectAction;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.weloveyolo.moniguard.R;
+import com.weloveyolo.moniguard.activity.AlbumDetailActivity;
+import com.weloveyolo.moniguard.api.Guest;
+import com.weloveyolo.moniguard.api.Scene;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,13 +32,18 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.Blac
     private Context context;
     private SparseBooleanArray selectedItems;
     public List<CheckBox> checkBoxes;
+    public List<Guest> guestList;
+    public List<String> sceneNameList;
 
     public BlackListAdapter(Context context, List<String> blackList) {
         this.context = context;
         this.blackList = blackList;
         this.layoutInflater = LayoutInflater.from(context);
         this.selectedItems = new SparseBooleanArray();
+
         checkBoxes = new ArrayList<>();
+        guestList = new ArrayList<>();
+        sceneNameList = new ArrayList<>();
     }
 
     @NonNull
@@ -55,6 +65,10 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.Blac
 
 
         checkBoxes.add(position, holder.checkBox);
+        holder.photoUrl = blackList.get(position);
+        holder.guest = guestList.get(position);
+        holder.sceneName = sceneNameList.get(position);
+
     }
 
     @Override
@@ -90,11 +104,31 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.Blac
     static class BlackListViewHolder extends RecyclerView.ViewHolder {
         ImageView faceImageView;
         CheckBox checkBox;
+        String photoUrl;
+        Guest guest;
+        String sceneName;
 
         public BlackListViewHolder(@NonNull View itemView) {
             super(itemView);
+
             faceImageView = itemView.findViewById(R.id.screenshotitem1);
             checkBox = itemView.findViewById(R.id.check_box);
+
+            // 跳转
+            Context context = itemView.getContext();
+            faceImageView.setOnClickListener(v -> {
+                Intent intent = new Intent(context, AlbumDetailActivity.class);
+
+                intent.putExtra("photo", photoUrl);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("guest", guest);
+                intent.putExtras(bundle);
+
+                intent.putExtra("sceneName", sceneName);
+
+                context.startActivity(intent);
+            });
         }
     }
 }

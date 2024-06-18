@@ -14,9 +14,9 @@ public class Guest implements Serializable {
 
     private final String name;
 
-    private final String isWhitelisted;
+    private final String createdAt;
 
-    private final boolean isAllowed;
+    private final boolean isWhitelisted;
 
     private final String faceEncoding;
 }

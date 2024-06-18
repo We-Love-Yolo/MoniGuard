@@ -14,12 +14,20 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+//        String CREATE_TABLE_MESSAGE = "CREATE TABLE IF NOT EXISTS message (" +
+//                "mid INTEGER PRIMARY KEY AUTOINCREMENT," +
+//                "residentId INTEGER," +
+//                "content TEXT," +
+//                "createdAt TEXT," +
+//                "type INTEGER)";
         String CREATE_TABLE_MESSAGE = "CREATE TABLE IF NOT EXISTS message (" +
                 "mid INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "residentId INTEGER," +
                 "content TEXT," +
+                "type INTEGER," +
+                "cameraId INTEGER," +
                 "createdAt TEXT," +
-                "type INTEGER)";
+                "residentId INTEGER)";
+
         db.execSQL(CREATE_TABLE_MESSAGE);
     }
 

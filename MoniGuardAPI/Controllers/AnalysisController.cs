@@ -155,6 +155,200 @@ public class AnalysisController(IDistributedCache distributedCache, MoniGuardAPI
     }
 
     /// <summary>
+    /// 获取指定访客的头像。该 API 应当由客户端调用，客户端应当只能调用这个从而获取头像。
+    /// </summary>
+    /// <param name="guestId">访客 ID。</param>
+    /// <returns>图片文件，表示人脸图片。</returns>
+    [HttpGet("{guestId:int}")]
+    public async Task<IActionResult> GetFaceImageByGuest([FromRoute] int guestId)
+    {
+        if (guestId <= 0)
+        {
+            return BadRequest();
+        }
+        var guest = context.Guests.FirstOrDefault(g => g.GuestId == guestId);
+        if (guest == null)
+        {
+            return NotFound();
+        }
+        var scene = await context.Scene.FirstOrDefaultAsync(s => s.SceneId == guest.SceneId);
+        if (scene == null)
+        {
+            return NotFound();
+        }
+        var resident = await GetAuthorizedResident();
+        if (resident == null || resident.ResidentId != scene.ResidentId)
+        {
+            return Unauthorized();
+        }
+        var faceImage = await context.Faces.FirstAsync<Face>(f => f.GuestId == guestId);
+        return File(faceImage.Content!, "image/*");
+    }
+
+
+    /// <summary>
+    /// 获取和指定guestId相关的所有photo，该 API 应当由客户端调用。
+    /// </summary>
+    /// <param name="guestId"></param>
+    /// <returns></returns>
+    [HttpGet("{guestId:int}")]
+    public async Task<ActionResult<List<Photo>>> GetPhotos(int guestId)
+    {
+        if (guestId <= 0)
+        {
+            return BadRequest();
+        }
+        var resident = await GetAuthorizedResident();
+        if (resident == null)
+        {
+            return Unauthorized();
+        }
+        var guest = await context.Guests.FirstOrDefaultAsync(g => g.GuestId == guestId);
+        if (guest == null)
+        {
+            return NotFound();
+        }
+        var scene = await context.Scene.FirstOrDefaultAsync(s => s.SceneId == guest.SceneId);
+        if (scene == null || scene.ResidentId != resident.ResidentId)
+        {
+            return BadRequest();
+        }
+        var photos = await (from p in context.Photos
+                            join g in context.GuestToPhotos on p.PhotoId equals g.PhotoId
+                            where g.GuestId == guestId
+                            select p).ToListAsync();
+        return photos;
+    }
+
+
+    /// <summary>
+    /// 根据photoId获取图片，该 API 应当由客户端调用。
+    /// </summary>
+    /// <param name="photoId"></param>
+    /// <returns></returns>
+    [HttpGet("{photoId:int}")]
+    public async Task<ActionResult> GetPhoto(int photoId)
+    {
+        var resident = await GetAuthorizedResident();
+        if (resident == null)
+        {
+            return Unauthorized();
+        }
+
+        // join Photo, Scene and Camera to get ResidentId
+        var residentId =
+            await (from p in context.Photos
+                   join c in context.Camera on p.CameraId equals c.CameraId
+                   join s in context.Scene on c.SceneId equals s.SceneId
+                   where p.PhotoId == photoId
+                   select s.ResidentId).FirstAsync();
+        if (residentId != resident.ResidentId)
+        {
+            return Forbid();
+        }
+        var photo = await context.Photos.FirstOrDefaultAsync(p => p.PhotoId == photoId);
+        if (photo == null)
+        {
+            return NotFound();
+        }
+
+        return File(photo.Content, "image/*");
+    }
+
+    /// <summary>
+    /// 通过photoId更改图片名字，该 API 应当由客户端调用。
+    /// </summary>
+    /// <param name="photoId"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    [HttpPost("{photoId:int}")]
+    public async Task<IActionResult> PostPhoto(int photoId, [FromBody] string name)
+    {
+        if (name == "" || photoId <= 0)
+        {
+            return BadRequest();
+        }
+        var resident = await GetAuthorizedResident();
+        if (resident == null)
+        {
+            return Unauthorized();
+        }
+
+        var residentId =
+            await (from p in context.Photos
+                   join c in context.Camera on p.CameraId equals c.CameraId
+                   join s in context.Scene on c.SceneId equals s.SceneId
+                   where p.PhotoId == photoId
+                   select s.ResidentId).FirstAsync();
+        if (residentId != resident.ResidentId)
+        {
+            return Forbid();
+        }
+        var photo = await context.Photos.FirstOrDefaultAsync(p => p.PhotoId == photoId);
+        if (photo == null)
+        {
+            return NotFound();
+        }
+        photo.Name = name;
+        await context.SaveChangesAsync();
+        return NoContent();
+    }
+
+
+    /// <summary>
+    /// 删除图片，同时删除和guest的关联，该 API 应当由客户端调用。
+    /// </summary>
+    /// <param name="photoId"></param>
+    /// <param name="guestId"></param>
+    /// <returns></returns>
+    [HttpDelete("{photoId:int}")]
+    public async Task<IActionResult> DeletePhoto(int photoId, int guestId)
+    {
+        if (photoId <= 0 || guestId <= 0)
+        {
+            return BadRequest();
+        }
+        var resident = await GetAuthorizedResident();
+        if (resident == null)
+        {
+            return Unauthorized();
+        }
+
+        var residentId =
+            await (from p in context.Photos
+                   join c in context.Camera on p.CameraId equals c.CameraId
+                   join s in context.Scene on c.SceneId equals s.SceneId
+                   where p.PhotoId == photoId
+                   select s.ResidentId).FirstAsync();
+        if (residentId != resident.ResidentId)
+        {
+            return Forbid();
+        }
+        // remove the photo from context.Photo and context.GuestToPhotos
+
+        var photo = await context.Photos.FirstOrDefaultAsync(p => p.PhotoId == photoId);
+        if (photo == null)
+        {
+            return NotFound();
+        }
+        var guest = context.Guests.FirstOrDefault(g => g.GuestId == guestId);
+        if (guest == null)
+        {
+            return NotFound();
+        }
+        var guestToPhoto = context.GuestToPhotos.FirstOrDefault(g => g.PhotoId == photoId && g.GuestId == guestId);
+        if (guestToPhoto == null)
+        {
+            return NotFound();
+        }
+
+        context.GuestToPhotos.Remove(guestToPhoto);
+        await context.SaveChangesAsync();
+        return NoContent();
+    }
+
+
+    /*/// <summary>
     /// 获取指定场景下所有的人脸。该 API 应当由客户端调用。
     /// </summary>
     /// <param name="sceneId">场景 ID。</param>
@@ -178,9 +372,9 @@ public class AnalysisController(IDistributedCache distributedCache, MoniGuardAPI
                       join f in context.Faces on g.GuestId equals f.GuestId
                       where s.SceneId == sceneId && s.ResidentId == resident.ResidentId
                       select new Face(f.FaceId, f.GuestId, f.Name, f.CapturedAt, f.Hash)).ToListAsync();
-    }
+    }*/
 
-    /// <summary>
+    /*/// <summary>
     /// 获取指定来宾的所有人脸。该 API 应当由客户端调用。
     /// </summary>
     /// <param name="guestId">来宾 ID。</param>
@@ -200,10 +394,11 @@ public class AnalysisController(IDistributedCache distributedCache, MoniGuardAPI
             join f in context.Faces on g.GuestId equals f.GuestId
             where g.GuestId == guestId
             select new Face(f.FaceId, f.GuestId, f.Name, f.CapturedAt, f.Hash)).ToListAsync();
-    }
+    }*/
 
 
-    /// <summary>
+   
+    /*/// <summary>
     /// 获取指定人脸的图片。该 API 应当由客户端调用。
     /// </summary>
     /// <param name="faceId">人脸 ID。</param>
@@ -222,52 +417,58 @@ public class AnalysisController(IDistributedCache distributedCache, MoniGuardAPI
         }
         var faceImage = await context.Faces.FirstAsync<Face>(f => f.FaceId == faceId);
         return File(faceImage.Content!, "image/*");
-    }
+    }*/
 
     /// <summary>
-    /// 新增人脸。该 API 应当由摄像头设备调用。
+    /// 为新的guest上传头像。该 API 应当由分析程序调用。
+    /// 如果为已经有头像的guest上传头像，将会覆盖原有头像。
     /// </summary>
-    /// <param name="sceneId">人脸捕捉所发生场景的场景 ID。</param>
-    /// <param name="face">只有guestId是需要提供的</param>
+    /// <param name="guestId">guest的头像。</param>
+    /// <param name="base64FaceImage">base64FaceImage:face图片的数据经过base64后的字符串</param>
     /// <returns>返回人脸信息</returns>
-    [HttpPost("{sceneId:int}")]
-    public async Task<ActionResult<Face>> PostFace([FromRoute] int sceneId, [FromBody] Face face)
+    [HttpPost("{guestId:int}")]
+    public async Task<ActionResult<Face>> PostFace([FromRoute]int guestId, [FromBody] string base64FaceImage)
     {
-        if (sceneId <= 0)
+        if (guestId <= 0)
         {
             return BadRequest();
         }
-        var scene = await context.Scene.FirstAsync(s => s.SceneId == sceneId);
+        var guest = context.Guests.FirstOrDefault(g => g.GuestId == guestId);
+        if (guest == null)
+        {
+            return NotFound();
+        }
+        var scene = await context.Scene.FirstOrDefaultAsync(s => s.SceneId == guest.SceneId);
         if (scene == null)
         {
             return NotFound();
         }
         var resident = await GetAuthorizedResident();
-        if (resident == null)
+        if (resident == null || resident.ResidentId != scene.ResidentId)
         {
             return Unauthorized();
         }
-        if (resident.ResidentId != scene.ResidentId)
+        var face = await context.Faces.FirstAsync<Face>(f => f.GuestId == guestId);
+        if (face != null)
         {
-            return BadRequest();
+            face.Content = Convert.FromBase64String(base64FaceImage);
         }
-        var guest = await context.Guests.FirstAsync(g => g.GuestId == face.GuestId);
-        if (guest == null)
+        else
         {
-            return NotFound();
+            face = new Face
+            {
+                GuestId = guestId,
+                Content = Convert.FromBase64String(base64FaceImage)
+            };
+            await context.Faces.AddAsync(face);
         }
-        if (guest.SceneId != sceneId)
-        {
-            return BadRequest();
-        }
-
-        await context.Faces.AddAsync(face);
         await context.SaveChangesAsync();
-        return face;
+        return Ok(face);
     }
 
     /// <summary>
-    /// 上传人脸图片，图片使用base64编码
+    /// 上传人脸图片，图片使用base64编码,该 API 应当由分析程序调用。
+    /// 该API暂不使用
     /// </summary>
     /// <param name="faceId"></param>
     /// <param name="base64Image">图片的base64信息</param>
@@ -349,14 +550,47 @@ public class AnalysisController(IDistributedCache distributedCache, MoniGuardAPI
     //    return Ok(guest);
     //}
 
+    /// <summary>
+    /// 上传guest的faceEncoding数据，该 API 应当由分析程序调用。
+    /// </summary>
+    /// <param name="guestId"></param>
+    /// <param name="base64EncodingData">经过base64后的encoding data</param>
+    /// <returns></returns>
+    [HttpPost("{guestId:int}")]
+    public async Task<IActionResult> PostGuestFaceEncoding(int guestId, string base64EncodingData)
+    {
+        if (guestId <= 0)
+        {
+            return BadRequest();
+        }
+        var guest = context.Guests.FirstOrDefault(g => g.GuestId == guestId);
+        if (guest == null)
+        {
+            return NotFound();
+        }
+        var scene = await context.Scene.FirstOrDefaultAsync(s => s.SceneId == guest.SceneId);
+        if (scene == null)
+        {
+            return NotFound();
+        }
+        var resident = await GetAuthorizedResident();
+        if (resident == null || resident.ResidentId != scene.ResidentId)
+        {
+            return Unauthorized();
+        }
+        guest.FaceEncoding = Convert.FromBase64String(base64EncodingData);
+        await context.SaveChangesAsync();
+        return Ok();
+    }
+
 
     /// <summary>
-    /// 获得对应的guest的faceEncoding数据
+    /// 获得对应的guest的faceEncoding数据，该 API 应当由分析程序调用。
     /// </summary>
     /// <param name="guestId"></param>
     /// <returns>文件</returns>
     [HttpGet("{guestId:int}")]
-    public async Task<ActionResult> GetSampleFaceData(int guestId)
+    public async Task<ActionResult> GetFaceEncodingData(int guestId)
     {
         if (guestId <= 0)
         {
@@ -384,7 +618,7 @@ public class AnalysisController(IDistributedCache distributedCache, MoniGuardAPI
     }
 
     /// <summary>
-    /// 建立guest和photo连接
+    /// 建立guest和photo连接，该 API 应当由分析程序调用。
     /// </summary>
     /// <param name="guestId"></param>
     /// <param name="photoId"></param>
@@ -423,77 +657,10 @@ public class AnalysisController(IDistributedCache distributedCache, MoniGuardAPI
 
     }
 
-    /// <summary>
-    /// 获取和指定guestId相关的所有photo
-    /// </summary>
-    /// <param name="guestId"></param>
-    /// <returns></returns>
-    [HttpGet("{guestId:int}")]
-    public async Task<ActionResult<List<Photo>>> GetPhotos(int guestId)
-    {
-        if (guestId <= 0)
-        {
-            return BadRequest();
-        }
-        var resident = await GetAuthorizedResident();
-        if (resident == null)
-        {
-            return Unauthorized();
-        }
-        var guest = await context.Guests.FirstOrDefaultAsync(g => g.GuestId == guestId);
-        if (guest == null)
-        {
-            return NotFound();
-        }
-        var scene = await context.Scene.FirstOrDefaultAsync(s => s.SceneId == guest.SceneId);
-        if (scene == null || scene.ResidentId != resident.ResidentId)
-        {
-            return BadRequest();
-        }
-        var photos = await (from p in context.Photos
-                            join g in context.GuestToPhotos on p.PhotoId equals g.PhotoId
-                            where g.GuestId == guestId
-                            select p).ToListAsync();
-        return photos;
-    }
-
+    
 
     /// <summary>
-    /// 根据photoId获取图片
-    /// </summary>
-    /// <param name="photoId"></param>
-    /// <returns></returns>
-    [HttpGet("{photoId:int}")]
-    public async Task<ActionResult> GetPhoto(int photoId)
-    {
-        var resident = await GetAuthorizedResident();
-        if (resident == null)
-        {
-            return Unauthorized();
-        }
-
-        // join Photo, Scene and Camera to get ResidentId
-        var residentId =
-            await (from p in context.Photos
-                   join c in context.Camera on p.CameraId equals c.CameraId
-                   join s in context.Scene on c.SceneId equals s.SceneId
-                   where p.PhotoId == photoId
-                   select s.ResidentId).FirstAsync();
-        if (residentId != resident.ResidentId)
-        {
-            return Forbid();
-        }
-        var photo = await context.Photos.FirstOrDefaultAsync(p => p.PhotoId == photoId);
-        if (photo == null)
-        {
-            return NotFound();
-        }
-
-        return File(photo.Content, "image/*");
-    }
-
-    /// <summary>
-    /// 上传图片，图片使用base64编码
+    /// 上传图片，图片使用base64编码，该 API 应当由分析程序调用。
     /// </summary>
     /// <param name="cameraId">图片的来源的摄像头</param>
     /// <param name="name">图片名字</param>
@@ -528,98 +695,7 @@ public class AnalysisController(IDistributedCache distributedCache, MoniGuardAPI
         return Ok(photo);
     }
 
-    /// <summary>
-    /// 通过photoId更改图片名字
-    /// </summary>
-    /// <param name="photoId"></param>
-    /// <param name="name"></param>
-    /// <returns></returns>
-    [HttpPost("{photoId:int}")]
-    public async Task<IActionResult> PostPhoto(int photoId, [FromBody] string name)
-    {
-        if (name == "" || photoId <= 0)
-        {
-            return BadRequest();
-        }
-        var resident = await GetAuthorizedResident();
-        if (resident == null)
-        {
-            return Unauthorized();
-        }
-
-        var residentId =
-            await (from p in context.Photos
-                   join c in context.Camera on p.CameraId equals c.CameraId
-                   join s in context.Scene on c.SceneId equals s.SceneId
-                   where p.PhotoId == photoId
-                   select s.ResidentId).FirstAsync();
-        if (residentId != resident.ResidentId)
-        {
-            return Forbid();
-        }
-        var photo = await context.Photos.FirstOrDefaultAsync(p => p.PhotoId == photoId);
-        if (photo == null)
-        {
-            return NotFound();
-        }
-        photo.Name = name;
-        await context.SaveChangesAsync();
-        return NoContent();
-    }
-
-
-    /// <summary>
-    /// 删除图片，同时删除和guest的关联
-    /// </summary>
-    /// <param name="photoId"></param>
-    /// <param name="guestId"></param>
-    /// <returns></returns>
-    [HttpDelete("{photoId:int}")]
-    public async Task<IActionResult> DeletePhoto(int photoId, int guestId)
-    {
-        if (photoId <= 0 || guestId <= 0)
-        {
-            return BadRequest();
-        }
-        var resident = await GetAuthorizedResident();
-        if (resident == null)
-        {
-            return Unauthorized();
-        }
-
-        var residentId =
-            await (from p in context.Photos
-                   join c in context.Camera on p.CameraId equals c.CameraId
-                   join s in context.Scene on c.SceneId equals s.SceneId
-                   where p.PhotoId == photoId
-                   select s.ResidentId).FirstAsync();
-        if (residentId != resident.ResidentId)
-        {
-            return Forbid();
-        }
-        // remove the photo from context.Photo and context.GuestToPhotos
-
-        var photo = await context.Photos.FirstOrDefaultAsync(p => p.PhotoId == photoId);
-        if (photo == null)
-        {
-            return NotFound();
-        }
-        var guest = context.Guests.FirstOrDefault(g => g.GuestId == guestId);
-        if (guest == null)
-        {
-            return NotFound();
-        }
-        var guestToPhoto = context.GuestToPhotos.FirstOrDefault(g => g.PhotoId == photoId && g.GuestId == guestId);
-        if (guestToPhoto == null)
-        {
-            return NotFound();
-        }
-
-        context.GuestToPhotos.Remove(guestToPhoto);
-        await context.SaveChangesAsync();
-        return NoContent();
-    }
-
+   
     private async Task<Resident?> GetAuthorizedResident()
     {
         var nameIdentifier = User.FindFirstValue(ClaimTypes.NameIdentifier);

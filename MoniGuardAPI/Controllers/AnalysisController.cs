@@ -267,49 +267,44 @@ public class AnalysisController(IDistributedCache distributedCache, MoniGuardAPI
     }
 
     /// <summary>
-    /// 上传人脸图片，图片使用base64编码
+    /// 更新指定人脸的图片。该 API 应当由摄像头设备调用。
     /// </summary>
-    /// <param name="faceId"></param>
-    /// <param name="base64Image">图片的base64信息</param>
-    /// <returns>204</returns>
+    /// <param name="faceId">人脸 ID。</param>
+    /// <param name="faceImage">人脸数据。</param>
+    /// <returns>无内容。</returns>
     [HttpPut("{faceId:int}")]
-    public async Task<IActionResult> PutFaceImage(int faceId, [FromBody] FormFile faceImage)
+    public async Task<IActionResult> PutFaceImage(int faceId, IFormFile faceImage)
     {
-        if (faceId <= 0)
-        {
-            return BadRequest();
-        }
         var resident = await GetAuthorizedResident();
         if (resident == null)
         {
             return Unauthorized();
         }
-        var face = await context.Faces.FirstAsync(f => f.FaceId == faceId);
+
+        var face = await context.Faces.FirstOrDefaultAsync(f => f.FaceId == faceId);
         if (face == null)
         {
             return NotFound();
         }
-        //  check face is resident's
-        //  faceId -> face.GuestId -> guest.ScenceId -> scene.ResidentId
-        //  check if scene.ResidentId == resident.ResidentId;
 
+        //check face is resident's
+        //faceId -> face.GuestId -> guest.ScenceId -> scene.ResidentId
+        //check if scene.ResidentId == resident.ResidentId;
         var scene = await (from s in context.Scene
                            join g in context.Guests on s.SceneId equals g.SceneId
                            join f in context.Faces on g.GuestId equals f.GuestId
                            where f.FaceId == faceId
                            select new Scene(s.SceneId, s.Name, s.ResidentId)
-                           ).FirstAsync();
+                           ).FirstOrDefaultAsync();
         if (scene == null || scene.ResidentId != resident.ResidentId)
         {
-            return BadRequest();
+            return NotFound();
         }
 
-        using var stream = new MemoryStream();
+        var stream = new MemoryStream();
         await faceImage.CopyToAsync(stream);
-        stream.Seek(0, SeekOrigin.Begin);
+        face.Content = stream.ToArray();
 
-
-        await context.SaveChangesAsync();
         return NoContent();
     }
 

@@ -30,7 +30,10 @@ public class Camera {
             this.name = name;
             this.description = description;
       }
-
+      public Camera(){}
+      public Camera(int cameraId){
+            this.cameraId = cameraId;
+      }
       @Override
       public String toString() {
             return "Camera{" +

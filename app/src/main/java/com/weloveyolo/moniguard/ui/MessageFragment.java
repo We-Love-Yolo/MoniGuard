@@ -41,7 +41,7 @@ public class MessageFragment extends Fragment {
         messageList = view.findViewById(R.id.message_list);
         messageList.setLayoutManager(new GridLayoutManager(getContext(), 1));
 
-        messageListAdapter = new MessageListAdapter(getContext(), messages);
+        messageListAdapter = new MessageListAdapter(getContext(), messages, (MainActivity) requireActivity());
         messageList.setAdapter(messageListAdapter);
 
         return view;

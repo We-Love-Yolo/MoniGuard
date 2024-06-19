@@ -11,11 +11,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.activity.PhotoDetailActivity;
+import com.weloveyolo.moniguard.api.Camera;
 import com.weloveyolo.moniguard.api.IMoniGuardApi;
 import com.weloveyolo.moniguard.api.Message;
 import com.weloveyolo.moniguard.api.MoniGuardApi;
+import com.weloveyolo.moniguard.api.Scene;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,10 +31,12 @@ import lombok.Setter;
 public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.MyHolder> {
     private List<Message> messageList;
     private LayoutInflater inflater;
+    private MainActivity mainActivity;
 
-    public MessageListAdapter(Context context, List<Message> messages) {
+    public MessageListAdapter(Context context, List<Message> messages, MainActivity mainActivity) {
         inflater = LayoutInflater.from(context);
         messageList = messages;  // 使用传入的 messages 列表
+        this.mainActivity = mainActivity;
     }
 
     @Override
@@ -64,11 +69,22 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 //        holder.camera.setText(message.getContent()); // 修改为根据 message 数据设置合适的值
         holder.photo.setImageResource(Integer.parseInt(message.getContent()));
         holder.cameraId = message.getCameraId();
-        String cameraName;
+
+//        Camera camera = new Camera();
         new Thread(() -> {
             IMoniGuardApi moniGuardApi = new MoniGuardApi();
-//            cameraName = moniGuardApi.getScenesApi(
-//                    holder.camera.setText();
+            moniGuardApi.getScenesApi().getCamera(message.getCameraId(),(result,success)->{
+                if(success){
+                    holder.camera.setText(result.getName());
+                    for (Scene scene : mainActivity.scenes) {
+                        if (scene.getSceneId() == result.getSceneId()) {
+                            holder.scene.setText(scene.getName());
+                            break;
+                        }
+                    }
+                }
+            });
+
         }).start();
 
     }

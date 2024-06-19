@@ -41,6 +41,7 @@ public class MessageFragment extends Fragment {
         messageList = view.findViewById(R.id.message_list);
         messageList.setLayoutManager(new GridLayoutManager(getContext(), 1));
 
+        messages = new ArrayList<>();
         messageListAdapter = new MessageListAdapter(getContext(), messages, (MainActivity) requireActivity());
         messageList.setAdapter(messageListAdapter);
 
@@ -54,13 +55,15 @@ public class MessageFragment extends Fragment {
     }
 
     private void getMessage() {
-        int userId = ((MainActivity)requireActivity()).resident.getResidentId();
-        selectAllMessages(userId);
-        new Thread(() -> ((MainActivity) requireActivity()).moniGuardApi.getAnalysisApi().getMessages((messages, success) -> {
+    //    int userId = ((MainActivity)requireActivity()).resident.getResidentId();
+    //    selectAllMessages(userId);
+        new Thread(() -> ((MainActivity) requireActivity()).moniGuardApi.getAnalysisApi().getMessages((result, success) -> {
             if (success) {
-                messages.forEach(message->{
+                result.forEach(message->{
                     requireActivity().runOnUiThread(()->{
-                        insertMessage(message, userId);
+                    //    insertMessage(message, userId);
+                        messages.add(message);
+                        messageList.getAdapter().notifyItemInserted(messages.size() - 1);
                     });
                 });
             }

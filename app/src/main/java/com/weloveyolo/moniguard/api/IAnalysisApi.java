@@ -21,4 +21,6 @@ public interface IAnalysisApi {
     void getPhotos(ICallback<List<Photo>> callback, int guestId);
 
     void getPhoto(ICallback<Photo> callback, int photoId);
+
+    void getFaceImageByGuestId(ICallback<byte[]> callback, int guestId);
 }

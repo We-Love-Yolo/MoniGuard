@@ -3,6 +3,7 @@ package com.weloveyolo.moniguard.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         }
 
         Message message = messageList.get(position);
+        holder.message = message;
         String time = message.getCreatedAt();
         ZonedDateTime zonedDateTime = parseZonedDateTime(time);
 
@@ -102,9 +104,11 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
                         holder.camera.post(() -> {
                             if (result != null) {
                                 holder.camera.setText(result.getName());
+                                holder.cameraName = result.getName();
                                 // 确保mainActivity是final或者有效的作用域内变量
                                 for (Scene scene : mainActivity.scenes) {
                                     if (scene.getSceneId() == result.getSceneId()) {
+                                        holder.sceneId = scene.getSceneId();
                                         holder.scene.post(() -> holder.scene.setText(scene.getName()));
                                         break;
                                     }
@@ -140,6 +144,10 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         TextView picture_time;
         int cameraId;
 
+        Message message;
+        String cameraName;
+        int sceneId;
+
         public MyHolder(@NonNull View itemView) {
             super(itemView);
             message_time = itemView.findViewById(R.id.message_time);
@@ -148,9 +156,15 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             camera = itemView.findViewById(R.id.camera);
             picture_time = itemView.findViewById(R.id.picture_time);
 
-            photo.setOnClickListener(v -> {
+            itemView.setOnClickListener(v -> {
                 Context context = itemView.getContext();
                 Intent intent = new Intent(context, PhotoDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("message", message);
+                intent.putExtras(bundle);
+                intent.putExtra("cameraName", cameraName);
+                intent.putExtra("sceneId", sceneId);
+                intent.putExtra("guestId", 2);  // TODO 待修改
                 context.startActivity(intent);
             });
         }

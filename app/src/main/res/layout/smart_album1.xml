@@ -32,7 +32,6 @@
                 android:clickable="true"
                 android:onClick="gotoDiscoverPage"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
@@ -43,20 +42,21 @@
                 android:textStyle="bold"
                 android:textColor="@color/bar_text"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@id/goback"
                 app:layout_constraintEnd_toEndOf="parent" />
+
             <ImageView
                 android:id="@+id/check_icon"
                 android:layout_width="30dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:src="@drawable/check_yes"
-                android:layout_marginLeft="140dp"
-                android:clickable="true"
-                android:onClick="TransToWhite"
+                android:layout_height="40dp"
+                android:layout_marginEnd="10dp"
+            android:clickable="true"
                 android:visibility="gone"
+            android:onClick="TransToWhite"
+            android:src="@drawable/check_yes"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-                />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

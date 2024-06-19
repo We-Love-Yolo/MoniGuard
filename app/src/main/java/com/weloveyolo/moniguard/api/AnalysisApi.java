@@ -126,4 +126,16 @@ public class AnalysisApi implements IAnalysisApi{
             callback.onCallback(null, false);
         }
     }
+
+    @Override
+    public void getFaceImageByGuestId(ICallback<byte[]> callback, int guestId) {
+        try (Response response = HttpClient.get(getApiUrl() + "/GetFaceImageByGuestId", String.valueOf(guestId))) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Failed to get faceImage by guestId: " + response);
+            }
+            callback.onCallback(response.body().bytes(), true);
+        } catch (IOException e) {
+            callback.onCallback(null, false);
+        }
+    }
 }

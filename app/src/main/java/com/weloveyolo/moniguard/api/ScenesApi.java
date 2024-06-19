@@ -242,4 +242,18 @@ public class ScenesApi implements IScenesApi {
             callback.onCallback(null, false);
         }
     }
+
+    @Override
+    public void getCamera(int cameraId, ICallback<Camera> callback) {
+        try (Response response = HttpClient.get(getApiUrl() + "/GetCamera", String.valueOf(cameraId))) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Failed to get camera: " + response);
+            }
+            Gson gson = new Gson();
+            Camera camera = gson.fromJson(Objects.requireNonNull(response.body()).string(), Camera.class);
+            callback.onCallback(camera, true);
+        } catch (IOException e) {
+            callback.onCallback(null, false);
+        }
+    }
 }

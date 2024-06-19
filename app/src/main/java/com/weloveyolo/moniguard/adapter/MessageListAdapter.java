@@ -2,7 +2,6 @@ package com.weloveyolo.moniguard.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.activity.PhotoDetailActivity;
+import com.weloveyolo.moniguard.api.IMoniGuardApi;
 import com.weloveyolo.moniguard.api.Message;
+import com.weloveyolo.moniguard.api.MoniGuardApi;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -59,10 +60,17 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         // 设置图像资源，假设 message.getType() 返回图像资源 ID
 //        holder.photo.setImageResource(message.getType());
 
-        holder.scene.setText(message.getContent());
-        holder.camera.setText(message.getContent()); // 修改为根据 message 数据设置合适的值
+//        holder.scene.setText(message.getContent());
+//        holder.camera.setText(message.getContent()); // 修改为根据 message 数据设置合适的值
+        holder.photo.setImageResource(Integer.parseInt(message.getContent()));
+        holder.cameraId = message.getCameraId();
+        String cameraName;
+        new Thread(() -> {
+            IMoniGuardApi moniGuardApi = new MoniGuardApi();
+//            cameraName = moniGuardApi.getScenesApi(
+//                    holder.camera.setText();
+        }).start();
 
-        holder.message = message;
     }
 
     private ZonedDateTime parseZonedDateTime(String time) {
@@ -85,8 +93,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         TextView scene;
         TextView camera;
         TextView picture_time;
-
-        Message message;
+        int cameraId;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
@@ -99,9 +106,6 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             photo.setOnClickListener(v -> {
                 Context context = itemView.getContext();
                 Intent intent = new Intent(context, PhotoDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("message", message);
-                intent.putExtras(bundle);
                 context.startActivity(intent);
             });
         }

@@ -15,22 +15,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="120dp">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/img_scan"></ImageView>
-        </LinearLayout>
+                android:src="@drawable/img_scan">
 
+            </ImageView>
+        </LinearLayout>
 
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
+            android:layout_marginBottom="50dp"
             android:layout_weight="3"
             android:text="欢迎"
             android:textColor="@color/main_tone"
-            android:textSize="100sp"
+            android:textSize="45sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,55 +47,52 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center_horizontal">
 
         <Button
             android:id="@+id/imgButton_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-40dp"
             android:background="@drawable/login"
             android:onClick="buttonLoginOnClick"
             android:scaleType="fitCenter"
             android:text="前往登录/注册"
-            android:textSize="30dp"
+            android:textSize="20dp"
             android:textColor="@color/white"
             android:paddingRight="50dp"
             android:paddingLeft="50dp"
-            android:paddingTop="30dp"
-            android:paddingBottom="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             ></Button>
     </LinearLayout>
 
 
-<!--
-    <TextView
-        android:id="@+id/label_signin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/to_signin"
-        android:textSize="19sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginLeft="25dp"
-        android:layout_marginBottom="25dp"
-        android:textColor="@color/main_tone"
-        android:onClick="onLinkClicked" />
+    <!--
+        <TextView
+            android:id="@+id/label_signin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/to_signin"
+            android:textSize="19sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginLeft="25dp"
+            android:layout_marginBottom="25dp"
+            android:textColor="@color/main_tone"
+            android:onClick="onLinkClicked" />
 
-    <TextView
-        android:id="@+id/label_forget"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/forget_password"
-        android:textSize="19sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginRight="25dp"
-        android:layout_marginBottom="25dp"
-        android:textColor="@color/main_tone"
-        android:onClick="onLinkClicked2" />
-    !-->
+        <TextView
+            android:id="@+id/label_forget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/forget_password"
+            android:textSize="19sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginRight="25dp"
+            android:layout_marginBottom="25dp"
+            android:textColor="@color/main_tone"
+            android:onClick="onLinkClicked2" />
+        !-->
 
 </LinearLayout>

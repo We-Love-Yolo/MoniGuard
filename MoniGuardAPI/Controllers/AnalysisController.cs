@@ -448,22 +448,57 @@ public class AnalysisController(IDistributedCache distributedCache, MoniGuardAPI
         {
             return Unauthorized();
         }
-        var face = await context.Faces.FirstAsync<Face>(f => f.GuestId == guestId);
-        if (face != null)
+        base64FaceImage = base64FaceImage.Replace("\"", "");
+        //var face = await context.Faces.FirstAsync(f => f.GuestId == guestId);
+        //if (face != null)
+        //{
+        //    face.Content = Convert.FromBase64String(base64FaceImage);
+        //}
+        //else
+        //{
+        //    face = new Face
+        //    {
+        //        GuestId = guestId,
+        //        Content = Convert.FromBase64String(base64FaceImage)
+        //    };
+        //    await context.Faces.AddAsync(face);
+        //}
+        //await context.SaveChangesAsync();
+        try
         {
+            // 尝试获取Face对象
+            var face = await context.Faces.FirstAsync(f => f.GuestId == guestId);
+
+            // 更新找到的Face对象的内容
             face.Content = Convert.FromBase64String(base64FaceImage);
+
+            // 保存更改到数据库
+            await context.SaveChangesAsync();
+            return Ok(face);
         }
-        else
+        catch (InvalidOperationException ex)
         {
-            face = new Face
+            if (ex.Message.Contains("Sequence contains no elements."))
             {
-                GuestId = guestId,
-                Content = Convert.FromBase64String(base64FaceImage)
-            };
-            await context.Faces.AddAsync(face);
+                // 没有找到Face对象，创建一个新的Face对象
+                var face = new Face
+                {
+                    GuestId = guestId,
+                    Content = Convert.FromBase64String(base64FaceImage)
+                };
+
+                // 添加到数据库并保存更改
+                await context.Faces.AddAsync(face);
+                await context.SaveChangesAsync();
+                return Ok(face);
+            }
+            else
+            {
+                // 抛出其他类型的异常
+                throw;
+            }
         }
-        await context.SaveChangesAsync();
-        return Ok(face);
+        return BadRequest();
     }
 
     /// <summary>
@@ -557,7 +592,7 @@ public class AnalysisController(IDistributedCache distributedCache, MoniGuardAPI
     /// <param name="base64EncodingData">经过base64后的encoding data</param>
     /// <returns></returns>
     [HttpPost("{guestId:int}")]
-    public async Task<IActionResult> PostGuestFaceEncoding(int guestId, string base64EncodingData)
+    public async Task<IActionResult> PostGuestFaceEncoding(int guestId,[FromBody] string base64EncodingData)
     {
         if (guestId <= 0)
         {
@@ -578,6 +613,7 @@ public class AnalysisController(IDistributedCache distributedCache, MoniGuardAPI
         {
             return Unauthorized();
         }
+        base64EncodingData = base64EncodingData.Replace("\"", "");
         guest.FaceEncoding = Convert.FromBase64String(base64EncodingData);
         await context.SaveChangesAsync();
         return Ok();
@@ -688,6 +724,8 @@ public class AnalysisController(IDistributedCache distributedCache, MoniGuardAPI
         {
             return Forbid();
         }
+
+        base64Image = base64Image.Replace("\"", "");
         byte[] content = Convert.FromBase64String(base64Image);
         var photo = new Photo(cameraId, content, name);
         await context.Photos.AddAsync(photo);

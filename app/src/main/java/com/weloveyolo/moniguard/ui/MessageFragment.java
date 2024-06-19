@@ -72,7 +72,7 @@ public class MessageFragment extends Fragment {
         List<Message> messages = new ArrayList<>();
         SQLiteDatabase db = new DBHelper(getActivity()).getWritableDatabase();
         Cursor cursor = db.query("message",
-                new String[]{"mid", "content", "type", "cameraId", "createdAt"},
+                new String[]{"mid", "content", "type", "cameraId", "createdAt","residentId"},
                 "residentId = ?", new String[]{String.valueOf(userId)}, null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {

@@ -2,6 +2,7 @@ package com.weloveyolo.moniguard.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.activity.PhotoDetailActivity;
@@ -24,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.TreeMap;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -48,6 +51,11 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MessageListAdapter.MyHolder holder, int position) {
+        if (messageList == null || position >= messageList.size()) {
+            // 处理错误情况，例如显示错误信息
+            return;
+        }
+
         Message message = messageList.get(position);
         String time = message.getCreatedAt();
         ZonedDateTime zonedDateTime = parseZonedDateTime(time);
@@ -67,24 +75,45 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
 //        holder.scene.setText(message.getContent());
 //        holder.camera.setText(message.getContent()); // 修改为根据 message 数据设置合适的值
-        holder.photo.setImageResource(Integer.parseInt(message.getContent()));
-        holder.cameraId = message.getCameraId();
 
+        // 使用View.post()确保Glide在主线程执行
+        holder.photo.post(() -> {
+            // 确保message.getContent()不为空
+            String content = message.getContent();
+            if (content != null && !content.isEmpty()) {
+                Glide.with(holder.photo.getContext())
+                        .load(content)
+                        .into(holder.photo);
+            }
+        });
 //        Camera camera = new Camera();
-        new Thread(() -> {
+        // 确保message.getCameraId()不为空
+        int cameraId = message.getCameraId();
+        if (cameraId == 0) {
+            // 处理错误情况，例如显示错误信息
+            return;
+        }
+        holder.cameraId = cameraId;
+        new Thread(()-> {
             IMoniGuardApi moniGuardApi = new MoniGuardApi();
-            moniGuardApi.getScenesApi().getCamera(message.getCameraId(),(result,success)->{
-                if(success){
-                    holder.camera.setText(result.getName());
-                    for (Scene scene : mainActivity.scenes) {
-                        if (scene.getSceneId() == result.getSceneId()) {
-                            holder.scene.setText(scene.getName());
-                            break;
-                        }
-                    }
+            moniGuardApi.getScenesApi().getCamera(cameraId, (result, success) -> {
+                if (success) {
+                    mainActivity.runOnUiThread(() -> {
+                        holder.camera.post(() -> {
+                            if (result != null) {
+                                holder.camera.setText(result.getName());
+                                // 确保mainActivity是final或者有效的作用域内变量
+                                for (Scene scene : mainActivity.scenes) {
+                                    if (scene.getSceneId() == result.getSceneId()) {
+                                        holder.scene.post(() -> holder.scene.setText(scene.getName()));
+                                        break;
+                                    }
+                                }
+                            }
+                        });
+                    });
                 }
             });
-
         }).start();
 
     }

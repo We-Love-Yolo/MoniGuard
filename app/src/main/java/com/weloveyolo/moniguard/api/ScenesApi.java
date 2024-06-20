@@ -63,6 +63,7 @@ public class ScenesApi implements IScenesApi {
         } catch (IOException e) {
             callback.onCallback(null, false);
         }
+        Log.e("getscenes", "getScenes: success");
     }
 
     @Override

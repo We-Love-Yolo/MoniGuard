@@ -30,7 +30,6 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.Blac
     private List<String> blackList;
     private LayoutInflater layoutInflater;
     private Context context;
-    private SparseBooleanArray selectedItems;
     public List<CheckBox> checkBoxes;
     public List<Guest> guestList;
     public List<String> sceneNameList;
@@ -39,7 +38,6 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.Blac
         this.context = context;
         this.blackList = blackList;
         this.layoutInflater = LayoutInflater.from(context);
-        this.selectedItems = new SparseBooleanArray();
 
         checkBoxes = new ArrayList<>();
         guestList = new ArrayList<>();
@@ -80,26 +78,6 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.Blac
         notifyItemInserted(blackList.size());
     }
 
-
-    //选黑进白
-
-//    public void toggleSelection(int position) {
-//        // 切换选中状态
-//        if (selectedItems.get(position, false)) {
-//            selectedItems.delete(position);
-//        } else {
-//            selectedItems.put(position, true);
-//        }
-//        notifyItemChanged(position);
-//    }
-//    public List<Integer> getSelectedItems() {
-//        // 获取选中项的位置列表
-//        List<Integer> items = new ArrayList<>(selectedItems.size());
-//        for (int i = 0; i < selectedItems.size(); i++) {
-//            items.add(selectedItems.keyAt(i));
-//        }
-//        return items;
-//    }
 
     static class BlackListViewHolder extends RecyclerView.ViewHolder {
         ImageView faceImageView;

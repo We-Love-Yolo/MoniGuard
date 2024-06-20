@@ -3,11 +3,13 @@ package com.weloveyolo.moniguard.activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.adapter.BlackListAdapter;
 import com.weloveyolo.moniguard.adapter.WhiteListAdapter;
@@ -39,10 +41,7 @@ public class AlbumActivity extends AppCompatActivity {
         recyclerView1.setLayoutManager(layoutManager);
         whiteListAdapter = new WhiteListAdapter(this, whiteList);
         recyclerView1.setAdapter(whiteListAdapter);
-
         blackList = new ArrayList<>();
-
-
         recyclerView2 = findViewById(R.id.black_album);
         GridLayoutManager layoutManager1 = new GridLayoutManager(this, 3);
         recyclerView2.setLayoutManager(layoutManager1);
@@ -78,12 +77,11 @@ public class AlbumActivity extends AppCompatActivity {
         blackListAdapter.addFaceImage("https://n.sinaimg.cn/sinakd10113/354/w900h1054/20200706/d4a9-ivwfwmp9066114.jpg");
         blackListAdapter.addFaceImage("https://imgconvert.csdnimg.cn/aHR0cHM6Ly9tbWJpei5xcGljLmNuL3N6X21tYml6X3BuZy9rT1ROa2ljNWdWQkhvb2FGb3FzeW9pY2NKRElLTHhsNnBYalM2cTZGdHR2RmZBMW1neGNEYXpYVEZQaGVwajAwQkJkalpiREFkaWNZU3N1RmsyTzVDVXBUQS82NDA?x-oss-process=image/format,png");
 
-
+//好像根本没进新线程
         IMoniGuardApi moniGuardApi = new MoniGuardApi();
         new Thread(() -> {
             moniGuardApi.getScenesApi().getScenes((scenes, success) -> {
                 if (!success) {
-                    Log.e("--","Failed to...");
                     return;
                 }
                 scenes.forEach(scene -> moniGuardApi.getScenesApi().getGuests(scene.getSceneId(), (guests, success1) -> {
@@ -131,14 +129,77 @@ public class AlbumActivity extends AppCompatActivity {
             });
         }).start();
     }
-    public void AddWhiteList(View view){//选黑进白
-
+    public void AddWhiteList(View view) {
+        // 显示check_icon图标
         findViewById(R.id.check_icon).setVisibility(View.VISIBLE);
-        blackListAdapter.checkBoxes.forEach(item->{
+
+        // 遍历黑名单项并显示复选框
+        blackListAdapter.checkBoxes.forEach(item -> {
             item.setVisibility(View.VISIBLE);
         });
 
-    }
+        IMoniGuardApi moniGuardApi = new MoniGuardApi();
 
+        // 处理确认按钮点击事件
+        findViewById(R.id.check_icon).setOnClickListener(v -> {
+//           勾选可以勾但没确定
+//            for (int i = 0; i < blackListAdapter.checkBoxes.size(); i++) {
+//                CheckBox checkBox = blackListAdapter.checkBoxes.get(i);
+//                Guest guest = blackListAdapter.guestList.get(i);
+//
+//                // 根据复选框的选中状态创建更新后的Guest对象
+//                boolean newWhitelistStatus = checkBox.isChecked();
+//                Guest updatedGuest = new Guest(
+//                        guest.getGuestId(),
+//                        guest.getSceneId(),
+//                        guest.getName(),
+//                        guest.getCreatedAt(),
+//                        newWhitelistStatus,
+//                        guest.getFaceEncoding()
+//                );
+//
+//                // 调用接口来更新Guest对象
+//                new Thread(() -> {
+//                    moniGuardApi.getScenesApi().putGuest(updatedGuest.getGuestId(), updatedGuest, (result, success) -> {
+//                        if (success) {
+//                            runOnUiThread(() -> {
+//                                // 更新成功，设置Guest对象的属性
+//                                updatedGuest.setWhitelisted(newWhitelistStatus);
+//
+//                                // 将该 guest 从黑名单移除
+//                                blackListAdapter.guestList.remove(guest);
+//                                blackListAdapter.notifyDataSetChanged();
+//                                whiteListAdapter.notifyDataSetChanged();
+//                            });
+//                        }
+//                    });
+//                }).start();
+//            }
+            findViewById(R.id.check_icon).setVisibility(View.GONE);
+            blackListAdapter.checkBoxes.forEach(item -> {
+                item.setVisibility(View.GONE);
+            });
+        });
+
+        // 返回判断事件OK的
+        findViewById(R.id.goback).setOnClickListener(v -> {
+            if (findViewById(R.id.check_icon).getVisibility() == View.VISIBLE) {
+                for (CheckBox checkBox : blackListAdapter.checkBoxes) {
+                    checkBox.setChecked(false);
+                }
+                // 隐藏所有的复选框
+                blackListAdapter.checkBoxes.forEach(item -> {
+                    item.setVisibility(View.GONE);
+                });
+                // 隐藏确认图标
+                findViewById(R.id.check_icon).setVisibility(View.GONE);
+                // 刷新适配器以显示更新后的数据
+                blackListAdapter.notifyDataSetChanged();
+            } else {
+                // 如果确认图标不可见，则结束当前活动
+                finish();
+            }
+        });
+    }
 
 }

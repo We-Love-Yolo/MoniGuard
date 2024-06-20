@@ -33,6 +33,8 @@ public class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.View
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // 创建一个新的视图
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_album, parent, false);
+        view.setMinimumHeight(500);
+        view.setMinimumWidth(300);
         return new ViewHolder(view);
     }
 

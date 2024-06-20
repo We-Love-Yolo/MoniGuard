@@ -15,7 +15,7 @@ public class Guest implements Serializable {
 
     private final int sceneId;
 
-    private final String name;
+    private String name;
 
     private final String createdAt;
 
@@ -25,5 +25,9 @@ public class Guest implements Serializable {
 
     public void setWhitelisted(boolean isWhitelisted) {
         this.isWhitelisted = isWhitelisted;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

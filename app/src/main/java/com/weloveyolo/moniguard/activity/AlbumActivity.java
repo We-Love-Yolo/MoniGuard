@@ -66,30 +66,30 @@ public class AlbumActivity extends AppCompatActivity {
     public void fetchScenes(){
 
         // 测试数据
-        whiteListAdapter.guestList.add(new Guest(1,1,"熟人1", "2024-06-06T10:26:12.3281952", true,null));
-        whiteListAdapter.guestList.add(new Guest(1,1,"熟人2", "2024-06-16T07:51:12.3281952", true,null));
-
-        whiteListAdapter.sceneNameList.add("红豆斋");
-        whiteListAdapter.sceneNameList.add("石楠轩");
-
-        whiteListAdapter.addFaceImage("https://tse1-mm.cn.bing.net/th/id/OIP-C.f6PKBW6dgTNevbbqXSeDMAHaJU?rs=1&pid=ImgDetMain");
-        whiteListAdapter.addFaceImage("https://tse1-mm.cn.bing.net/th/id/OIP-C.gFcNp1Kq9WC-GG1pQ42SVgAAAA?rs=1&pid=ImgDetMain");
-
-
-        blackListAdapter.guestList.add(new Guest(1,1,"组长", ":2024-06-18T13:26:12.3281952", false,null));
-        blackListAdapter.guestList.add(new Guest(1,1,"组员1", "2024-06-19T15:35:12.3281952", false,null));
-        blackListAdapter.guestList.add(new Guest(1,1,"组员2", "2024-06-20T10:32:12.3281952", false,null));
-        blackListAdapter.guestList.add(new Guest(1,1,"组员3", "2024-06-10T07:01:12.3281952", false,null));
-
-        blackListAdapter.sceneNameList.add("春笛");
-        blackListAdapter.sceneNameList.add("夏筝");
-        blackListAdapter.sceneNameList.add("秋瑟");
-        blackListAdapter.sceneNameList.add("冬筑");
-
-        blackListAdapter.addFaceImage("https://img-blog.csdnimg.cn/f9ef14c5c658464d91bb05bcf13b1cac.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5LiA5ouz5Y2B5Liq6ZS16ZS15oCq,size_20,color_FFFFFF,t_70,g_se,x_16");
-        blackListAdapter.addFaceImage("https://img.zcool.cn/community/014ab057b6f04f0000018c1bc1cd18.jpg@1280w_1l_2o_100sh.jpg");
-        blackListAdapter.addFaceImage("https://n.sinaimg.cn/sinakd10113/354/w900h1054/20200706/d4a9-ivwfwmp9066114.jpg");
-        blackListAdapter.addFaceImage("https://imgconvert.csdnimg.cn/aHR0cHM6Ly9tbWJpei5xcGljLmNuL3N6X21tYml6X3BuZy9rT1ROa2ljNWdWQkhvb2FGb3FzeW9pY2NKRElLTHhsNnBYalM2cTZGdHR2RmZBMW1neGNEYXpYVEZQaGVwajAwQkJkalpiREFkaWNZU3N1RmsyTzVDVXBUQS82NDA?x-oss-process=image/format,png");
+//        whiteListAdapter.guestList.add(new Guest(1,1,"熟人1", "2024-06-06T10:26:12.3281952", true,null));
+//        whiteListAdapter.guestList.add(new Guest(1,1,"熟人2", "2024-06-16T07:51:12.3281952", true,null));
+//
+//        whiteListAdapter.sceneNameList.add("红豆斋");
+//        whiteListAdapter.sceneNameList.add("石楠轩");
+//
+//        whiteListAdapter.addFaceImage("https://tse1-mm.cn.bing.net/th/id/OIP-C.f6PKBW6dgTNevbbqXSeDMAHaJU?rs=1&pid=ImgDetMain");
+//        whiteListAdapter.addFaceImage("https://tse1-mm.cn.bing.net/th/id/OIP-C.gFcNp1Kq9WC-GG1pQ42SVgAAAA?rs=1&pid=ImgDetMain");
+//
+//
+//        blackListAdapter.guestList.add(new Guest(1,1,"组长", ":2024-06-18T13:26:12.3281952", false,null));
+//        blackListAdapter.guestList.add(new Guest(1,1,"组员1", "2024-06-19T15:35:12.3281952", false,null));
+//        blackListAdapter.guestList.add(new Guest(1,1,"组员2", "2024-06-20T10:32:12.3281952", false,null));
+//        blackListAdapter.guestList.add(new Guest(1,1,"组员3", "2024-06-10T07:01:12.3281952", false,null));
+//
+//        blackListAdapter.sceneNameList.add("春笛");
+//        blackListAdapter.sceneNameList.add("夏筝");
+//        blackListAdapter.sceneNameList.add("秋瑟");
+//        blackListAdapter.sceneNameList.add("冬筑");
+//
+//        blackListAdapter.addFaceImage("https://img-blog.csdnimg.cn/f9ef14c5c658464d91bb05bcf13b1cac.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5LiA5ouz5Y2B5Liq6ZS16ZS15oCq,size_20,color_FFFFFF,t_70,g_se,x_16");
+//        blackListAdapter.addFaceImage("https://img.zcool.cn/community/014ab057b6f04f0000018c1bc1cd18.jpg@1280w_1l_2o_100sh.jpg");
+//        blackListAdapter.addFaceImage("https://n.sinaimg.cn/sinakd10113/354/w900h1054/20200706/d4a9-ivwfwmp9066114.jpg");
+//        blackListAdapter.addFaceImage("https://imgconvert.csdnimg.cn/aHR0cHM6Ly9tbWJpei5xcGljLmNuL3N6X21tYml6X3BuZy9rT1ROa2ljNWdWQkhvb2FGb3FzeW9pY2NKRElLTHhsNnBYalM2cTZGdHR2RmZBMW1neGNEYXpYVEZQaGVwajAwQkJkalpiREFkaWNZU3N1RmsyTzVDVXBUQS82NDA?x-oss-process=image/format,png");
 
 
         new Thread(() -> {
@@ -176,13 +176,15 @@ public class AlbumActivity extends AppCompatActivity {
 //            });
 //        }).start();
     }
-    public void AddWhiteList(View view){//选黑进白
+    public void AddWhiteList(View view) {//选黑进白
         // 显示UI
         ImageView tickView = findViewById(R.id.check_icon);
         tickView.setVisibility(View.VISIBLE);
         blackListAdapter.checkBoxes.forEach(item->{
             item.setVisibility(View.VISIBLE);
         });
+
+
 
         // 监听打勾
         tickView.setOnClickListener(v -> {
@@ -191,6 +193,8 @@ public class AlbumActivity extends AppCompatActivity {
                     // 本地更新UI
                     Guest blackGuest = blackListAdapter.guestList.get(i);
                     blackGuest.setWhitelisted(true);
+                    blackGuest.setName("熟人");
+
                     whiteListAdapter.guestList.add(blackGuest);
                     blackListAdapter.guestList.remove(i);
 
@@ -199,34 +203,42 @@ public class AlbumActivity extends AppCompatActivity {
 
                     blackListAdapter.checkBoxes.remove(i);
 
-                    whiteListAdapter.addFaceImage(blackListAdapter.removeFaceImage(i));
+                    String temp = blackListAdapter.removeFaceImage(i);
+                    whiteListAdapter.addFaceImage(temp);
 
                     // 发请求更新
-                    new Thread(()->{
-                        moniGuardApi.getScenesApi().putGuest(blackGuest.getGuestId(), blackGuest, (result, success)->{
-                            if (!success) runOnUiThread(()->{
-                                MainActivity.ct.showErrorToast("更改失败", 500);
-                            });
-                        });
-                    }).start();
+//                    new Thread(()->{
+//                        moniGuardApi.getScenesApi().putGuest(blackGuest.getGuestId(), blackGuest, (result, success)->{
+//                            if (!success) runOnUiThread(()->{
+//                                MainActivity.ct.showErrorToast("更改失败", 500);
+//                            });
+//                        });
+//                    }).start();
+
+                    --i;
                 }
             }
+            blackListAdapter.checkBoxes.forEach(item->{
+                item.setVisibility(View.GONE);
+            });
             tickView.setVisibility(View.GONE);
         });
 
 
+        /*
 
-
-//        IMoniGuardApi moniGuardApi = new MoniGuardApi();
+        IMoniGuardApi moniGuardApi = new MoniGuardApi();
 
         // 处理确认按钮点击事件
-//        findViewById(R.id.check_icon).setOnClickListener(v -> {
-//           勾选可以勾但没确定
-//            for (int i = 0; i < blackListAdapter.checkBoxes.size(); i++) {
-//                CheckBox checkBox = blackListAdapter.checkBoxes.get(i);
-//                Guest guest = blackListAdapter.guestList.get(i);
-//
-//                // 根据复选框的选中状态创建更新后的Guest对象
+        findViewById(R.id.check_icon).setOnClickListener(v -> {
+        //   勾选可以勾但没确定
+            for (int i = 0; i < blackListAdapter.checkBoxes.size(); i++) {
+                CheckBox checkBox = blackListAdapter.checkBoxes.get(i);
+                Guest guest = blackListAdapter.guestList.get(i);
+
+            //    blackListAdapter.guestList.remove(i);
+
+                // 根据复选框的选中状态创建更新后的Guest对象
 //                boolean newWhitelistStatus = checkBox.isChecked();
 //                Guest updatedGuest = new Guest(
 //                        guest.getGuestId(),
@@ -246,19 +258,23 @@ public class AlbumActivity extends AppCompatActivity {
 //                                updatedGuest.setWhitelisted(newWhitelistStatus);
 //
 //                                // 将该 guest 从黑名单移除
-//                                blackListAdapter.guestList.remove(guest);
+//
 //                                blackListAdapter.notifyDataSetChanged();
 //                                whiteListAdapter.notifyDataSetChanged();
 //                            });
 //                        }
 //                    });
 //                }).start();
-//            }
-//            findViewById(R.id.check_icon).setVisibility(View.GONE);
-//            blackListAdapter.checkBoxes.forEach(item -> {
-//                item.setVisibility(View.GONE);
-//            });
-//        });
+            }
+            findViewById(R.id.check_icon).setVisibility(View.GONE);
+            blackListAdapter.checkBoxes.forEach(item -> {
+                item.setVisibility(View.GONE);
+            });
+        });
+
+        */
+
+
 
         // 返回判断事件OK的
         findViewById(R.id.goback).setOnClickListener(v -> {

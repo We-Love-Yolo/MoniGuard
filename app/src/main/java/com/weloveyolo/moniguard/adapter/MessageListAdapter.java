@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
@@ -36,11 +39,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.MyHolder> {
+
+    private Context context;
+
     private List<Message> messageList;
     private LayoutInflater inflater;
     private MainActivity mainActivity;
 
     public MessageListAdapter(Context context, List<Message> messages, MainActivity mainActivity) {
+        this.context = context;
         inflater = LayoutInflater.from(context);
         messageList = messages;  // 使用传入的 messages 列表
         this.mainActivity = mainActivity;
@@ -109,9 +116,23 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
             // 设置图片
             if (photoUrl != null && !photoUrl.isEmpty()) {
-                Glide.with(holder.photo.getContext())
-                        .load(photoUrl)
-                        .into(holder.photo);
+//                Glide.with(holder.photo.getContext())
+//                        .load(photoUrl)
+//                        .into(holder.photo);
+                IMoniGuardApi moniGuardApi = new MoniGuardApi();
+                Handler mainHandler = new Handler(Looper.getMainLooper());
+                String finalPhotoUrl = photoUrl;
+                new Thread(() -> {
+                    moniGuardApi.getAnalysisApi().getByteArrayWithToken((result, success) -> {
+                        if (!success) return;
+                        mainHandler.post(() -> {
+                            Glide.with(context)
+                                    .load(result) // 使用从API获取的字节数组
+                                    .apply(RequestOptions.circleCropTransform())
+                                    .into(holder.photo);
+                        });
+                    }, finalPhotoUrl);
+                }).start();
             }
         });
 //        Camera camera = new Camera();

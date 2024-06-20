@@ -98,7 +98,7 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.Blac
     public String removeFaceImage(int index) {
         String temp = blackList.get(index);
         blackList.remove(index);
-        notifyItemInserted(blackList.size() - 1);
+        notifyItemRemoved(index);
         return temp;
     }
 

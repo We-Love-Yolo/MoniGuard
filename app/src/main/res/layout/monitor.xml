@@ -69,7 +69,8 @@
             android:layout_height="20dp"
             app:srcCompat="@drawable/more2"
             android:layout_gravity="end"
-            android:layout_marginEnd="20dp"/>
+            android:layout_marginEnd="20dp"
+            android:visibility="gone"/>
     </Toolbar>
 
     <!--监控-->
@@ -176,7 +177,8 @@
             android:layout_height="25dp"
             android:clickable="true"
             android:onClick="goto_album"
-            app:srcCompat="@drawable/right" />
+            app:srcCompat="@drawable/right"
+            android:rotation="90"/>
 </LinearLayout>
         <ImageView
             android:id="@+id/imageView5"

@@ -79,7 +79,10 @@ public class MonitorActivity extends AppCompatActivity {
         mediaPlayer = new MediaPlayer(libVLC);
 
         // 设置媒体资源
-        Media media = new Media(libVLC, Uri.parse("rtsp://admin:WUsan53408@192.168.239.109"));
+        String uriString = getIntent().getStringExtra("videoSource");
+        uriString = uriString == null ? uriString : "rtsp://admin:WUsan53408@192.168.239.109";
+
+        Media media = new Media(libVLC, Uri.parse(uriString));
 //        Media media = new Media(libVLC, Uri.parse(getIntent().getStringExtra("videoSource")));
 
 //        Media media = new Media(libVLC, Uri.parse("rtmp://liteavapp.qcloud.com/live/liteavdemoplayerstreamid"));
@@ -130,6 +133,17 @@ public class MonitorActivity extends AppCompatActivity {
             }
             mediaPlayer.setVolume(cur);
         });
+        // 展开框
+        ImageView imageView4 = findViewById(R.id.imageView4);
+        imageView4.setOnClickListener(v -> {
+            if (recyclerView.getVisibility() == View.VISIBLE) {
+                v.setRotation(0);
+                recyclerView.setVisibility(View.GONE);
+            } else if (recyclerView.getVisibility() == View.GONE) {
+                v.setRotation(90);
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
@@ -152,11 +166,12 @@ public class MonitorActivity extends AppCompatActivity {
         mediaPlayer.stop();
     }
 
-    // 进入智能相册
+    // 进入智能相册（改为收回截图）
     public void goto_album(View view) {
         try {
-            Intent intent = new Intent(this, AlbumActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(this, AlbumActivity.class);
+//            startActivity(intent);
+
         } catch (Exception e) {
             e.printStackTrace(); // 可以将异常信息输出到日志中
             Toast.makeText(this, "Error starting AlbumActivity", Toast.LENGTH_SHORT).show();

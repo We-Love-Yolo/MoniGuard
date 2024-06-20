@@ -55,6 +55,35 @@ public class ScenesController(MoniGuardAPIContext context, IDistributedCache dis
         return await context.Camera.Where(c => c.SceneId == sceneId).ToListAsync();
     }
 
+    /// <summary>
+    /// 获取指定摄像头的信息。该 API 应当由客户端调用。
+    /// </summary>
+    /// <param name="cameraId"></param>
+    /// <returns></returns>
+    [HttpGet("{cameraId:int}")]
+    public async Task<ActionResult<Camera>> GetCamera(int cameraId)
+    {
+        var residentId = await GetAuthorizedResidentId();
+        if (residentId == null)
+        {
+            return NotFound();
+        }
+
+        var camera = await context.Camera.FirstOrDefaultAsync(c => c.CameraId == cameraId);
+        if (camera == null)
+        {
+            return NotFound();
+        }
+
+        var scene = await context.Scene.FirstOrDefaultAsync(s => s.SceneId == camera.SceneId);
+        if (scene == null || scene.ResidentId != residentId)
+        {
+            return NotFound();
+        }
+
+        return camera;
+    }
+
     // POST /Scenes/PostScene
     //[Authorize]
     [HttpPost("{sceneName:length(2, 50)}")]

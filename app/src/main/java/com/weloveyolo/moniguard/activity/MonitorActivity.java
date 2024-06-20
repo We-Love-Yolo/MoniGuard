@@ -80,7 +80,7 @@ public class MonitorActivity extends AppCompatActivity {
 
         // 设置媒体资源
         Media media = new Media(libVLC, Uri.parse("rtsp://admin:WUsan53408@192.168.239.109"));
-//        Media media = new Media(libVLC, Uri.parse(getIntent().getStringExtra("connectString")));
+//        Media media = new Media(libVLC, Uri.parse(getIntent().getStringExtra("videoSource")));
 
 //        Media media = new Media(libVLC, Uri.parse("rtmp://liteavapp.qcloud.com/live/liteavdemoplayerstreamid"));
 

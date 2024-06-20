@@ -20,7 +20,9 @@ public interface IAnalysisApi {
 
     void getPhotos(ICallback<List<Photo>> callback, int guestId);
 
-    void getPhoto(ICallback<Photo> callback, int photoId);
+    void getPhoto(ICallback<byte[]> callback, int photoId);
 
-    void getFaceImageByGuestId(ICallback<byte[]> callback, int guestId);
+    void getFaceImageByGuest(ICallback<byte[]> callback, int guestId);
+
+    void getByteArrayWithToken(ICallback<byte[]> callback, String path);
 }

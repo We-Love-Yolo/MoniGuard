@@ -3,6 +3,7 @@ package com.weloveyolo.moniguard.activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.BoringLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,6 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.adapter.AlbumListAdapter;
 import com.weloveyolo.moniguard.api.Guest;
+import com.weloveyolo.moniguard.api.IMoniGuardApi;
+import com.weloveyolo.moniguard.api.MoniGuardApi;
+import com.weloveyolo.moniguard.api.Photo;
 import com.weloveyolo.moniguard.util.HttpClient;
 
 import java.io.IOException;
@@ -37,9 +41,11 @@ public class AlbumDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album_detail);
 
+
         guest = (Guest) getIntent().getSerializableExtra("guest");    // 访客
-        String midPhotoUrl = getIntent().getStringExtra("photo"); // 主图url
+        String midPhotoUrl = getIntent().getStringExtra("photoUrl"); // 主图url
         String sceneName = getIntent().getStringExtra("sceneName"); // 场景名
+        Boolean isWhitelisted = getIntent().getBooleanExtra("isWhitelisted", false);
 
         recyclerView = findViewById(R.id.album_area);
 
@@ -55,7 +61,7 @@ public class AlbumDetailActivity extends AppCompatActivity {
 
 
         try {
-            firstRender(midPhotoUrl, sceneName);
+            firstRender(midPhotoUrl, sceneName, isWhitelisted);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -63,21 +69,22 @@ public class AlbumDetailActivity extends AppCompatActivity {
         renderPhotos();
     }
 
-    public void firstRender(String midPhotoUrl, String sceneName) throws Exception{
+    public void firstRender(String midPhotoUrl, String sceneName, boolean isWhitelisted) throws Exception {
         // 名字
         TextView nameView = findViewById(R.id.album_name);
         nameView.setText(guest.getName());
 
         // 日期+地点
         String locaAndDate = "";
+        String personType = isWhitelisted ? "的熟人" : "的怪人";
         try {
             Pattern pattern = Pattern.compile("\\d{4}-(\\d{2})-(\\d{2})T");
             Matcher matcher = pattern.matcher(guest.getCreatedAt());
             if (matcher.find()) {
-                locaAndDate  += matcher.group(1) + "月" + matcher.group(2) + "日开始出现在" + sceneName + "的怪人";
+                locaAndDate  += matcher.group(1) + "月" + matcher.group(2) + "日开始出现在" + sceneName + personType;
             }
         } catch (Exception e) {
-            locaAndDate = "暂无行踪信息";
+            locaAndDate = "暂无行踪信息" + personType;
         }
         TextView introView = findViewById(R.id.album_intro);
         introView.setText(locaAndDate);
@@ -99,38 +106,36 @@ public class AlbumDetailActivity extends AppCompatActivity {
         }).start();
     }
 
-    public void renderPhotos(){
-
-        // 测试数据
-        urls.add("https://img95.699pic.com/photo/50131/2108.jpg_wh300.jpg!/fh/300/quality/90");
-        recyclerView.getAdapter().notifyItemInserted(0);
-        urls.add("https://pic88.ibaotu.com/preview/2020/10/08/16021107295f7e4509651ed.jpg!wgi");
-        recyclerView.getAdapter().notifyItemInserted(1);
-        urls.add("https://img95.699pic.com/photo/50116/0506.jpg_wh300.jpg!/fh/300/quality/90");
-        recyclerView.getAdapter().notifyItemInserted(2);
-        urls.add("https://img.shetu66.com/2023/06/21/1687327028476920.jpg");
-        recyclerView.getAdapter().notifyItemInserted(3);
-        urls.add("https://img95.699pic.com/photo/50139/9656.jpg_wh300.jpg!/fh/300/quality/90");
-        recyclerView.getAdapter().notifyItemInserted(4);
-
-
-//        IMoniGuardApi moniGuardApi = new MoniGuardApi();
-//        new Thread(()->{
-//            moniGuardApi.getAnalysisApi().getFacesByGuestId((faceList, success1)->{
-//                if (!success1) return;
-//                faceList.forEach(face -> {
-//                    new Thread(()->{
-//                        moniGuardApi.getAnalysisApi().getFaceImage((url, success2)->{
-//                            if (!success2) return;
-//                            urls.add(url);
-//                            runOnUiThread(()->{
-//                                recyclerView.getAdapter().notifyItemInserted(urls.size() - 1);
-//                            });
-//                        }, face.getFaceId());
-//                    }).start();
-//                });
-//            }, guest.getGuestId());
-//        }).start();
+    public void renderPhotos() {
+        IMoniGuardApi moniGuardApi = new MoniGuardApi();
+        new Thread(()->{
+            moniGuardApi.getAnalysisApi().getPhotos((photoList, success1)->{
+                if (success1) {
+                    photoList.forEach(photo -> {
+                        String photoUrl = moniGuardApi.getBaseUrl() + "/Analysis"
+                                + "/GetPhoto/" + photo.getPhotoId();
+                        urls.add(photoUrl);
+                        runOnUiThread(()->{
+                            recyclerView.getAdapter().notifyItemInserted(urls.size() - 1);
+                        });
+                    });
+                } else {
+                    // 测试数据
+                    runOnUiThread(()->{
+                        urls.add("https://img95.699pic.com/photo/50131/2108.jpg_wh300.jpg!/fh/300/quality/90");
+                        recyclerView.getAdapter().notifyItemInserted(urls.size() - 1);
+                        urls.add("https://pic88.ibaotu.com/preview/2020/10/08/16021107295f7e4509651ed.jpg!wgi");
+                        recyclerView.getAdapter().notifyItemInserted(urls.size() - 1);
+                        urls.add("https://img95.699pic.com/photo/50116/0506.jpg_wh300.jpg!/fh/300/quality/90");
+                        recyclerView.getAdapter().notifyItemInserted(urls.size() - 1);
+                        urls.add("https://img.shetu66.com/2023/06/21/1687327028476920.jpg");
+                        recyclerView.getAdapter().notifyItemInserted(urls.size() - 1);
+                        urls.add("https://img95.699pic.com/photo/50139/9656.jpg_wh300.jpg!/fh/300/quality/90");
+                        recyclerView.getAdapter().notifyItemInserted(urls.size() - 1);
+                    });
+                }
+            }, guest.getGuestId());
+        }).start();
     }
 
     public void toBack(View view){

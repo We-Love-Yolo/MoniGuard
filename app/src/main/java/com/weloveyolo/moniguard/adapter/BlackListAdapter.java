@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.activity.AlbumDetailActivity;
 import com.weloveyolo.moniguard.api.Guest;
+import com.weloveyolo.moniguard.api.IMoniGuardApi;
+import com.weloveyolo.moniguard.api.MoniGuardApi;
 import com.weloveyolo.moniguard.api.Scene;
 
 import java.io.File;
@@ -49,7 +53,6 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.Blac
     @NonNull
     @Override
     public BlackListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View itemView = layoutInflater.inflate(R.layout.item_blacklist, parent, false);
         return new BlackListViewHolder(itemView);
     }
@@ -58,10 +61,23 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.Blac
     public void onBindViewHolder(@NonNull BlackListViewHolder holder, int position) {
         String imageUrl = blackList.get(position);
         // 使用 Glide 加载图片
-        Glide.with(context)
-                .load(imageUrl)
-                .apply(RequestOptions.circleCropTransform())
-                .into(holder.faceImageView);
+//        Glide.with(context)
+//                .load(imageUrl)
+//                .apply(RequestOptions.circleCropTransform())
+//                .into(holder.faceImageView);
+        IMoniGuardApi moniGuardApi = new MoniGuardApi();
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+        new Thread(() -> {
+            moniGuardApi.getAnalysisApi().getByteArrayWithToken((result, success) -> {
+                if (!success) return;
+                mainHandler.post(() -> {
+                    Glide.with(context)
+                            .load(result) // 使用从API获取的字节数组
+                            .apply(RequestOptions.circleCropTransform())
+                            .into(holder.faceImageView);
+                });
+            }, imageUrl);
+        }).start();
 
 
         checkBoxes.add(position, holder.checkBox);
@@ -75,9 +91,17 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.Blac
     public int getItemCount() {
         return blackList.size();
     }
+
     public void addFaceImage(String imageUrl) {
         blackList.add(imageUrl);
-        notifyItemInserted(blackList.size());
+        notifyItemInserted(blackList.size() - 1);
+    }
+
+    public String removeFaceImage(int index) {
+        String temp = blackList.get(index);
+        blackList.remove(index);
+        notifyItemInserted(blackList.size() - 1);
+        return temp;
     }
 
 
@@ -118,15 +142,12 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.Blac
             Context context = itemView.getContext();
             faceImageView.setOnClickListener(v -> {
                 Intent intent = new Intent(context, AlbumDetailActivity.class);
-
-                intent.putExtra("photo", photoUrl);
-
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("guest", guest);
                 intent.putExtras(bundle);
-
+                intent.putExtra("photoUrl", photoUrl);
                 intent.putExtra("sceneName", sceneName);
-
+                intent.putExtra("isWhitelisted", false);
                 context.startActivity(intent);
             });
         }

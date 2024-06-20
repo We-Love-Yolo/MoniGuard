@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -11,24 +12,20 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="40dp" >
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="13dp"
             android:layout_marginLeft="18dp"
-            android:layout_marginRight="18dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:layout_marginRight="18dp">
 
             <ImageView
                 android:id="@+id/goback"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:adjustViewBounds="true"
-                app:srcCompat="@drawable/goback3"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/goback"
                 android:clickable="true"
                 android:onClick="gotoDiscoverPage"
                 app:layout_constraintTop_toTopOf="parent"
@@ -42,25 +39,28 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/bar_text"
+                android:layout_marginLeft="16dp"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/goback"/>
+
             <ImageView
                 android:id="@+id/check_icon"
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@drawable/check_yes"
-                android:layout_marginLeft="140dp"
                 android:clickable="true"
                 android:onClick="TransToWhite"
                 android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-                />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <LinearLayout
+            android:layout_marginTop="39dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -78,8 +78,8 @@
 
             <ImageView
                 android:id="@+id/white_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginTop="14dp"
                 android:clickable="true"
                 android:onClick="AddWhiteList"

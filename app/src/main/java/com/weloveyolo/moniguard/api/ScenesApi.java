@@ -47,14 +47,25 @@ public class ScenesApi implements IScenesApi {
 
     @Override
     public void getScenes(ICallback<List<Scene>> callback) {
-        Request request = new Request.Builder()
-                .url(getApiUrl() + "/GetScenes")
-                .header("Authorization", "Bearer " + getAccessToken())
-                .build();
-        try (Response response = mainApi.getHttpClient().newCall(request).execute()) {
+//        Request request = new Request.Builder()
+//                .url(getApiUrl() + "/GetScenes")
+//                .header("Authorization", "Bearer " + getAccessToken())
+//                .build();
+//        try (Response response = mainApi.getHttpClient().newCall(request).execute()) {
+//            if (!response.isSuccessful()) {
+//                callback.onCallback(null, false);
+//                return;
+//            }
+//            Gson gson = new Gson();
+//            Type sceneListType = new TypeToken<List<Scene>>(){}.getType();
+//            List<Scene> sceneList = gson.fromJson(Objects.requireNonNull(response.body()).string(), sceneListType);
+//            callback.onCallback(sceneList, true);
+//        } catch (IOException e) {
+//            callback.onCallback(null, false);
+//        }
+        try (Response response = HttpClient.get(getApiUrl() + "/GetScenes", null)) {
             if (!response.isSuccessful()) {
-                callback.onCallback(null, false);
-                return;
+                throw new IOException("Failed to get scenes: " + response);
             }
             Gson gson = new Gson();
             Type sceneListType = new TypeToken<List<Scene>>(){}.getType();

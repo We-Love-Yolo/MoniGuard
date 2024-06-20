@@ -3,7 +3,6 @@ package com.weloveyolo.moniguard.activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -146,7 +145,7 @@ public class PhotoDetailActivity extends AppCompatActivity {
     private void fillSmallPhoto() {
         new Thread(() -> {
             IMoniGuardApi moniGuardApi = new MoniGuardApi();
-            moniGuardApi.getAnalysisApi().getFaceImageByGuestId((result, success)->{
+            moniGuardApi.getAnalysisApi().getFaceImageByGuest((result, success)->{
                 if (success) {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(result, 0, result.length);
                     runOnUiThread(()->{

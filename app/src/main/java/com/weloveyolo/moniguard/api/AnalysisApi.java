@@ -102,14 +102,12 @@ public class AnalysisApi implements IAnalysisApi{
     }
 
     @Override
-    public void getPhoto(ICallback<Photo> callback, int photoId) {
+    public void getPhoto(ICallback<byte[]> callback, int photoId) {
         try (Response response = HttpClient.get(getApiUrl() + "/GetPhoto", String.valueOf(photoId))) {
             if (!response.isSuccessful()) {
                 throw new IOException("Failed to get photo: " + response);
             }
-            Gson gson = new Gson();
-            Photo photo = gson.fromJson(Objects.requireNonNull(response.body()).string(), Photo.class);
-            callback.onCallback(photo, true);
+            callback.onCallback(response.body().bytes(), true);
         } catch (IOException e) {
             callback.onCallback(null, false);
         }
@@ -128,10 +126,22 @@ public class AnalysisApi implements IAnalysisApi{
     }
 
     @Override
-    public void getFaceImageByGuestId(ICallback<byte[]> callback, int guestId) {
-        try (Response response = HttpClient.get(getApiUrl() + "/GetFaceImageByGuestId", String.valueOf(guestId))) {
+    public void getFaceImageByGuest(ICallback<byte[]> callback, int guestId) {
+        try (Response response = HttpClient.get(getApiUrl() + "/GetFaceImageByGuest", String.valueOf(guestId))) {
             if (!response.isSuccessful()) {
-                throw new IOException("Failed to get faceImage by guestId: " + response);
+                throw new IOException("Failed to get faceImage by guest: " + response);
+            }
+            callback.onCallback(response.body().bytes(), true);
+        } catch (IOException e) {
+            callback.onCallback(null, false);
+        }
+    }
+
+    @Override
+    public void getByteArrayWithToken(ICallback<byte[]> callback, String path) {
+        try (Response response = HttpClient.get(path, null)) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Failed to get byteArray with token: " + response);
             }
             callback.onCallback(response.body().bytes(), true);
         } catch (IOException e) {

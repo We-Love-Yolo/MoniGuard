@@ -40,7 +40,7 @@ public class CameraListAdapter extends RecyclerView.Adapter<CameraListAdapter.My
     public void onBindViewHolder(@NonNull CameraListAdapter.MyHolder holder, int position) {
         Camera device = deviceList.get(position);
         holder.deviceTextView.setText(device.getName());
-        holder.connectString = device.getVideoSource();
+        holder.videoSource = device.getVideoSource();
         holder.sceneName = sceneName;
     }
 
@@ -67,7 +67,7 @@ public class CameraListAdapter extends RecyclerView.Adapter<CameraListAdapter.My
         String sceneName;
         TextView deviceTextView;
         ImageButton cameraImageButton;
-        String connectString;
+        String videoSource;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
@@ -81,7 +81,7 @@ public class CameraListAdapter extends RecyclerView.Adapter<CameraListAdapter.My
                 Intent intent = new Intent(context, MonitorActivity.class);
                 intent.putExtra("sceneName", sceneName);
                 intent.putExtra("cameraName", deviceTextView.getText());
-                intent.putExtra("connectString", connectString);
+                intent.putExtra("videoSource", videoSource);
                 context.startActivity(intent);
             });
         }

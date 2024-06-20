@@ -46,3 +46,15 @@ class ScenesApi:
                 return Guest.from_json(await response.json())
         # except Exception as e:
         #     raise Exception(f'Error occurred while getting guests: {e}')
+
+    # /// <summary>
+    # /// 请求将摄像头添加到指定场景。该 API 应当由摄像头设备调用。
+    # /// </summary>
+    # /// <param name="sceneId">添加摄像头的场景ID。</param>
+    # /// <returns>
+    # /// 摄像头可能的 Unique ID。
+    # /// </returns>
+    async def request_camera_creation(self, scene_id: int) -> str:
+        async with ClientSession(headers={'Authorization': 'Bearer ' + self._access_token}) as session:
+            async with session.post(f'{self._main_url}/Scenes/RequestCameraCreation/{scene_id}') as response:
+                return await response.text()

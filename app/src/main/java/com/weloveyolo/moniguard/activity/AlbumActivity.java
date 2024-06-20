@@ -17,7 +17,6 @@ import com.weloveyolo.moniguard.adapter.WhiteListAdapter;
 import com.weloveyolo.moniguard.api.Guest;
 import com.weloveyolo.moniguard.api.IMoniGuardApi;
 import com.weloveyolo.moniguard.api.MoniGuardApi;
-import com.weloveyolo.moniguard.util.CustomToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -216,6 +215,70 @@ public class AlbumActivity extends AppCompatActivity {
         });
 
 
+
+
+//        IMoniGuardApi moniGuardApi = new MoniGuardApi();
+
+        // 处理确认按钮点击事件
+//        findViewById(R.id.check_icon).setOnClickListener(v -> {
+//           勾选可以勾但没确定
+//            for (int i = 0; i < blackListAdapter.checkBoxes.size(); i++) {
+//                CheckBox checkBox = blackListAdapter.checkBoxes.get(i);
+//                Guest guest = blackListAdapter.guestList.get(i);
+//
+//                // 根据复选框的选中状态创建更新后的Guest对象
+//                boolean newWhitelistStatus = checkBox.isChecked();
+//                Guest updatedGuest = new Guest(
+//                        guest.getGuestId(),
+//                        guest.getSceneId(),
+//                        guest.getName(),
+//                        guest.getCreatedAt(),
+//                        newWhitelistStatus,
+//                        guest.getFaceEncoding()
+//                );
+//
+//                // 调用接口来更新Guest对象
+//                new Thread(() -> {
+//                    moniGuardApi.getScenesApi().putGuest(updatedGuest.getGuestId(), updatedGuest, (result, success) -> {
+//                        if (success) {
+//                            runOnUiThread(() -> {
+//                                // 更新成功，设置Guest对象的属性
+//                                updatedGuest.setWhitelisted(newWhitelistStatus);
+//
+//                                // 将该 guest 从黑名单移除
+//                                blackListAdapter.guestList.remove(guest);
+//                                blackListAdapter.notifyDataSetChanged();
+//                                whiteListAdapter.notifyDataSetChanged();
+//                            });
+//                        }
+//                    });
+//                }).start();
+//            }
+//            findViewById(R.id.check_icon).setVisibility(View.GONE);
+//            blackListAdapter.checkBoxes.forEach(item -> {
+//                item.setVisibility(View.GONE);
+//            });
+//        });
+
+        // 返回判断事件OK的
+        findViewById(R.id.goback).setOnClickListener(v -> {
+            if (findViewById(R.id.check_icon).getVisibility() == View.VISIBLE) {
+                for (CheckBox checkBox : blackListAdapter.checkBoxes) {
+                    checkBox.setChecked(false);
+                }
+                // 隐藏所有的复选框
+                blackListAdapter.checkBoxes.forEach(item -> {
+                    item.setVisibility(View.GONE);
+                });
+                // 隐藏确认图标
+                findViewById(R.id.check_icon).setVisibility(View.GONE);
+                // 刷新适配器以显示更新后的数据
+                blackListAdapter.notifyDataSetChanged();
+            } else {
+                // 如果确认图标不可见，则结束当前活动
+                finish();
+            }
+        });
     }
 
 }

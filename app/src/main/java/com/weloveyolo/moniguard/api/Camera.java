@@ -15,12 +15,12 @@ public class Camera {
       private String createdAt;
       private String description;
       private int sceneId;
-      private String connectString;
+      private String videoSource;
 
 
       public Camera(String name, Date cur) {
             this.name = name;
-            connectString = "connected";
+            videoSource = "connected";
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault());
             String timeString = dateFormat.format(cur);
             createdAt = timeString.replace(" ", "T").concat("Z");

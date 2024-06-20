@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,7 +40,7 @@ public class CameraListAdapter extends RecyclerView.Adapter<CameraListAdapter.My
     public void onBindViewHolder(@NonNull CameraListAdapter.MyHolder holder, int position) {
         Camera device = deviceList.get(position);
         holder.deviceTextView.setText(device.getName());
-        holder.connectString = device.getConnectString();
+        holder.connectString = device.getVideoSource();
         holder.sceneName = sceneName;
     }
 

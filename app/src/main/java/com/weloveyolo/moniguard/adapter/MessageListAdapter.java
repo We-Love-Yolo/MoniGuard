@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.weloveyolo.moniguard.MainActivity;
 import com.weloveyolo.moniguard.R;
 import com.weloveyolo.moniguard.activity.PhotoDetailActivity;
@@ -27,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import lombok.Getter;
@@ -82,9 +85,32 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         holder.photo.post(() -> {
             // 确保message.getContent()不为空
             String content = message.getContent();
-            if (content != null && !content.isEmpty()) {
+
+
+//            String content = "{\"text\": \"\u964c\u751f\u4eba\u6765\u8bbf\", \"guestId\": 2, \"photoUrl\": \"https://mgapi.bitterorange.cn/Analysis/GetPhoto/6\"}";
+
+            // 解析content
+            String text;
+            String photoUrl;
+            try{
+                Gson gson = new Gson();
+                Map<String, Object> map = gson.fromJson(content, Map.class);
+                // 从Map中获取值
+                text = (String) map.get("text");
+                photoUrl = (String) map.get("photoUrl");
+            } catch (Exception e) {
+                text = "神秘的消息";
+                photoUrl = "https://img2.baidu.com/it/u=1306524414,3423224355&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=800";
+            }
+
+            // 设置消息文字内容
+            holder.messageText.setText(text);
+
+
+            // 设置图片
+            if (photoUrl != null && !photoUrl.isEmpty()) {
                 Glide.with(holder.photo.getContext())
-                        .load(content)
+                        .load(photoUrl)
                         .into(holder.photo);
             }
         });
@@ -119,7 +145,6 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
                 }
             });
         }).start();
-
     }
 
     private ZonedDateTime parseZonedDateTime(String time) {
@@ -139,6 +164,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
     static class MyHolder extends RecyclerView.ViewHolder {
         TextView message_time;
         ImageView photo;
+        TextView messageText;
         TextView scene;
         TextView camera;
         TextView picture_time;
@@ -152,6 +178,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             super(itemView);
             message_time = itemView.findViewById(R.id.message_time);
             photo = itemView.findViewById(R.id.photo);
+            messageText = itemView.findViewById(R.id.message_text);
             scene = itemView.findViewById(R.id.scene);
             camera = itemView.findViewById(R.id.camera);
             picture_time = itemView.findViewById(R.id.picture_time);
@@ -164,7 +191,6 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
                 intent.putExtras(bundle);
                 intent.putExtra("cameraName", cameraName);
                 intent.putExtra("sceneId", sceneId);
-                intent.putExtra("guestId", 2);  // TODO 待修改
                 context.startActivity(intent);
             });
         }

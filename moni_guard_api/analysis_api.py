@@ -1,13 +1,10 @@
-import datetime
+import base64
 import json
 from typing import Any
 
-from aiohttp import ClientSession, StreamReader
-from mylog import *
-import base64
+from aiohttp import ClientSession
 
-from moni_guard_api.face import Face
-from moni_guard_api.photo import Photo
+from mylog import *
 
 
 class AnalysisApi:
@@ -143,3 +140,14 @@ class AnalysisApi:
                     return False
                 else:
                     return True
+
+    async def get_face_encoding_data(self, guest_id: int) -> bytes:
+        url = f'{self._main_url}/Analysis/GetFaceEncodingData/{guest_id}'
+        async with ClientSession(headers={'Authorization': 'Bearer ' + self._access_token}) as session:
+            async with session.get(url) as response:
+                if response.status != 200:
+                    error(f'Failed to get face encoding data. Status code: {response.status}', 'AnalysisApi')
+                    return None
+                else:
+                    response_text = await response.text()
+                    return base64.b64decode(json.loads(response_text))

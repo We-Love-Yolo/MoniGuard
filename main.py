@@ -1,10 +1,12 @@
-import os
 import asyncio
+import os
 import threading
 
 import authorization
-from moni_guard_api.analysis_api import AnalysisApi
+import local_server
+import service
 from moni_guard_api import analyze
+from moni_guard_api.analysis_api import AnalysisApi
 
 
 def showMenu():
@@ -14,7 +16,6 @@ def showMenu():
     print("3. Remove Cameras")
     print("4. Exit")
     return int(input("Enter your choice: "))
-
 
 
 def run_analyze(analyze11: analyze.Analyze):
@@ -31,14 +32,30 @@ def list_cameras(camera_list: list[analyze.Analyze]):
 
 
 if __name__ == "__main__":
+
     camera_list = []
     camera_thread_list = []
+
+    # face_encodings = []
+
     print("Welcome to the camera management system!")
     print("Is time to log in")
     access_token = asyncio.run(authorization.get_access_token())
     aapi = AnalysisApi("https://mgapi.bitterorange.cn")
     aapi.set_access_token(access_token)
+
+    sapi = service.ScenesApi("https://mgapi.bitterorange.cn")
+    sapi.set_access_token(access_token)
+
+    serv = asyncio.run(service.get_service(sapi))
+
+    print("Updating face encodings...")
+    face_encodings = asyncio.run(sapi.get_guests(serv.scene_id))
+
+
+    local_server.run()
     # os.system('clear')
+    exit()
     while True:
         choice = showMenu()
         if choice == 1:

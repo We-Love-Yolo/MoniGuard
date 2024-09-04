@@ -23,3 +23,19 @@ The system architecture consists of:
 - **Backend**: ASP.NET (Web API for device and user management)
 - **Analysis**: Python (for facial recognition and image processing)
 - **Mobile Client**: Android (for real-time monitoring and alerts)
+
+## Android Client
+
+https://github.com/We-Love-Yolo/MoniGuard/tree/android
+
+## Edge Computing Service (Python)
+
+https://github.com/We-Love-Yolo/MoniGuard/tree/edge-service
+
+## Face Capturer (C++, OpenCV)
+
+https://github.com/We-Love-Yolo/MoniGuard/tree/face-capturer
+
+## Web API (C#, ASP.NET)
+
+https://github.com/We-Love-Yolo/MoniGuard/tree/webapi
